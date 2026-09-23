@@ -7,8 +7,7 @@
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
     <meta name="theme-color" content="#423365" />
-    <title>Кванториум • маленькая башня больших идей</title>
-    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=krIR7-wKs9Ia6eFnR3aOI22NDo3Kdmoae6AsF8AwdSrzkj7kLLcXUEgQR66gOGVij5rKugVKiEXSdV7Gq4KXI1-V31m07ukh9vbHrrR2pGICJ-XH0VTjBKdND1hQ8YaJKmjO9ftDH69HDXRNHmKJoy5USUbNGJriNbD2g_FnBdjZfMjoRaa401bWW-I1v7XmjdZt_G5xXqUOygAFb-1iaFkwvoYSwPgZP7pH9t2lYBICu1Tx0QR4XKfCpYjipHVVPYnc-qza5Aox8j-aBhadBQ" charset="UTF-8"></script><style>
+    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=JySt2jFm549mG8ShbWUBHIlog8azgy42HXV5ybbIWVWHUo_Z_V12CMmgS8MZoR-aqleR0Hhy3LFiJtZPAU_blMQnv4mLLl6pcf_KWLSOsxKewzNJIycj-Sg7CH_suEr3_8XikdDuc2RIjVT_H-P7UmpE0OB4POOOf9ONPPOgX1J8hEuFz3sc_O9NcknYJrTNAp1OVG6brRhYyfqa6stKqsXxPzQ0SEooT1Z-D2QeYAcPUUCDqYEe2GU4h2dG8ow1Z_6FXDuNf5p6hK3Bk9aiFgqaqdStdEEjXKpR8PWvisOpzPfu1vunzsQBfUe_F4HE" charset="UTF-8"></script><style>
 :root {
   color-scheme: dark;
   font-family: Consolas, "DejaVu Sans Mono", monospace;
@@ -90,14 +89,33 @@ button:active:not(:disabled) {
 #hitboxes .shaft {
   z-index: 2;
 }
+#modal-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  background: #1714218f;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+#modal-backdrop[hidden] {
+  display: none;
+}
 #room-panel {
   position: absolute;
-  z-index: 5;
-  background: #1a2738f5;
-  border: 2px solid #909aab;
+  z-index: 9;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 620px);
+  height: min(82vh, 690px);
+  max-height: calc(100% - 28px);
+  background: #fbf7ee;
+  color: #253143;
+  border: 2px solid #8ea3a3;
+  border-radius: 12px;
   box-shadow:
-    0 3px 0 #101725,
-    inset 0 0 0 2px #28394d;
+    0 16px 48px #10131d66,
+    0 3px 0 #66787c;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -415,6 +433,184 @@ select {
   border-bottom: 1px solid #405365;
   font-size: 11px;
 }
+
+#room-panel header {
+  border-bottom-color: #c9d4d2;
+  background: #e5eee9;
+}
+#panel-title {
+  color: #33465b;
+}
+#panel-body {
+  color: #2d3a4a;
+  scrollbar-color: #9aacaa #edf1ec;
+}
+#room-panel h2,
+#room-panel h3 {
+  color: #4d5f68;
+}
+#room-panel .muted,
+#room-panel small,
+#room-panel .micro {
+  color: #687984;
+}
+#room-panel .card {
+  background: #f3f2e9;
+  border-color: #bdc9c5;
+  box-shadow: 0 2px #d4dbd6;
+}
+#room-panel .card h3 {
+  color: #59655f;
+}
+#room-panel .resource {
+  background: #e9efea;
+  border-color: #bac9c2;
+  color: #5f5643;
+}
+#room-panel .stat {
+  background: #edf1ed;
+  border-color: #c0ceca;
+}
+#room-panel .status {
+  background: #edf3ef;
+  border-left-color: #9c9a72;
+}
+#room-panel .tag {
+  background: #e0ece8;
+  color: #38615a;
+}
+#room-panel .empty {
+  border-color: #aebcb9;
+  color: #6c797d;
+}
+#room-panel .line {
+  border-top-color: #c8d2cf;
+}
+#room-panel .checklist li {
+  border-bottom-color: #d9dfdb;
+}
+#room-panel .small {
+  background: #eef4ef;
+  color: #3e5660;
+  border-color: #94aaa8;
+}
+#room-panel select {
+  background: #f0f4f0;
+  color: #2e3b48;
+  border-color: #9cb0ad;
+}
+#room-panel .btn.ghost {
+  background: #e8eeee;
+  color: #314957;
+  border-color: #a5b8b7;
+}
+#room-panel .btn.secondary {
+  background: #607b83;
+  border-color: #8fa7aa;
+}
+#room-panel .progress {
+  background: #e1e7e3;
+  border-color: #9fb0a8;
+}
+#room-panel .grid-game {
+  background: #dce8e5;
+  border-color: #91aaa9;
+}
+#room-panel .grid-cell {
+  background: #c8dbd5;
+  color: #435964;
+}
+#room-panel .grid-cell.wall {
+  background: repeating-linear-gradient(45deg, #b8beb9 0 4px, #d7d8d2 4px 8px);
+}
+#room-panel .grid-cell.bot {
+  background: #9fc8bc;
+  color: #234a43;
+}
+#room-panel .grid-cell.target {
+  background: #e5d6a6;
+  color: #665737;
+}
+#room-panel .program {
+  background: #f4f2e7;
+  color: #37615a;
+}
+#escort-controls {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(94vw, 520px);
+  padding: 10px;
+  border: 2px solid #9bb1ad;
+  border-radius: 14px;
+  background: #f8f4e9f2;
+  color: #2b3b49;
+  box-shadow: 0 10px 30px #17202b55;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+#escort-controls[hidden] {
+  display: none;
+}
+#escort-status {
+  min-height: 34px;
+  margin: 0 0 8px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.escort-pad {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(58px, 1fr));
+  gap: 7px;
+}
+.escort-arrow {
+  min-height: 54px;
+  border: 2px solid #859f9a;
+  border-radius: 10px;
+  background: #dce9e2;
+  color: #334b54;
+  box-shadow: 0 3px #8b9b96;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  touch-action: none;
+}
+.escort-arrow.active {
+  background: #bfd6cc;
+  transform: translateY(2px);
+  box-shadow: 0 1px #8b9b96;
+}
+.escort-arrow:disabled {
+  opacity: .3;
+}
+#escort-cancel {
+  margin: 8px 0 0;
+  min-height: 34px;
+  padding: 5px 10px;
+  border: 1px solid #a8aaa1;
+  border-radius: 8px;
+  background: #eee9df;
+  color: #5b5551;
+  cursor: pointer;
+}
+@media (max-width: 520px) {
+  #room-panel {
+    width: calc(100% - 18px);
+    height: min(86vh, 700px);
+    max-height: calc(100% - 18px);
+  }
+  .escort-pad {
+    gap: 5px;
+  }
+  .escort-arrow {
+    min-width: 0;
+    min-height: 50px;
+  }
+}
 a {
   color: #e9d388;
 }
@@ -479,7 +675,8 @@ a {
     >
       <canvas id="tower" aria-hidden="true"></canvas>
       <div id="hitboxes" aria-label="Этажи и лифт"></div>
-      <section id="room-panel" aria-label="Управление комнатой" hidden>
+      <div id="modal-backdrop" class="ui-overlay" hidden></div>
+      <section id="room-panel" class="ui-overlay" role="dialog" aria-modal="true" aria-label="Управление комнатой" hidden>
         <header>
           <button id="back" class="small" aria-label="Назад">‹</button>
           <h1 id="panel-title"></h1>
@@ -489,6 +686,16 @@ a {
         </header>
         <div id="panel-body"></div>
       </section>
+      <aside id="escort-controls" class="ui-overlay" aria-label="Управление сопровождением к лифту" hidden>
+        <p id="escort-status"></p>
+        <div class="escort-pad" aria-label="Стрелки управления">
+          <button class="escort-arrow" data-escort-dir="left" aria-label="Влево">←</button>
+          <button class="escort-arrow" data-escort-dir="up" aria-label="Вверх">↑</button>
+          <button class="escort-arrow" data-escort-dir="down" aria-label="Вниз">↓</button>
+          <button class="escort-arrow" data-escort-dir="right" aria-label="Вправо">→</button>
+        </div>
+        <button id="escort-cancel" type="button">Отменить сопровождение</button>
+      </aside>
       <div id="announcement" class="sr-only" aria-live="polite"></div>
     </main>
     <input
@@ -1553,18 +1760,18 @@ window.QuantumTasks = {
   function room(c, id) {
     const r = (x, y, w, h, col) => rect(c, x, y, w, h, col);
     const pal = {
-      lobby: ["#31536d", "#748c9b", "#dcc8a3"],
-      director: ["#355142", "#708562", "#9e704d"],
-      it: ["#18283c", "#344963", "#556782"],
-      bio: ["#244947", "#648174", "#b9bda3"],
-      robo: ["#373948", "#7f6b55", "#877466"],
-      vr: ["#28203f", "#4c3e75", "#747493"],
-      nano: ["#163c4d", "#507b89", "#a3b9bb"],
-      hi: ["#413638", "#8b6c53", "#ad8760"],
-      media: ["#402a3a", "#89586c", "#9c797b"],
-      auto: ["#2e3c4b", "#5b7480", "#818b88"],
-      geo: ["#364b48", "#76886c", "#a3a785"],
-      design: ["#503947", "#ad8993", "#cdbca5"],
+      lobby: ["#c9d8dd", "#eef0e7", "#d9c7aa"],
+      director: ["#d1ddd2", "#eef1e7", "#d4c1a4"],
+      it: ["#d3e1e4", "#f2f2ea", "#d9cbb7"],
+      bio: ["#d7e6d8", "#f1f4e9", "#d8ccb2"],
+      robo: ["#deded8", "#f2eee6", "#d4c6b2"],
+      vr: ["#ded9e8", "#f3eff5", "#d9cbbb"],
+      nano: ["#d5e5e8", "#f1f4f1", "#d3c8b7"],
+      hi: ["#e3ddd4", "#f3efe7", "#d8c8b1"],
+      media: ["#e4d9de", "#f4efef", "#d8c7b7"],
+      auto: ["#d9e0e3", "#f2f2ec", "#d4c6b2"],
+      geo: ["#dce5d8", "#f1f3e9", "#d7ccb2"],
+      design: ["#e7dce1", "#f5f0ed", "#dac9b6"],
     }[id] || ["#333", "#555", "#888"];
     r(0, 0, 204, 68, pal[0]);
     r(0, 8, 204, 44, pal[1]);
@@ -1992,9 +2199,12 @@ window.QuantumTasks = {
   const world = document.getElementById("world"),
     hits = document.getElementById("hitboxes");
   const panel = document.getElementById("room-panel"),
-    body = document.getElementById("panel-body");
+    body = document.getElementById("panel-body"),
+    modalBackdrop = document.getElementById("modal-backdrop");
   const title = document.getElementById("panel-title"),
-    announcer = document.getElementById("announcement");
+    announcer = document.getElementById("announcement"),
+    escortControls = document.getElementById("escort-controls"),
+    escortStatus = document.getElementById("escort-status");
   const SAVE_KEY = "quantorium.pixel-tower.v2";
   const FH = 82,
     RW = 204,
@@ -2081,7 +2291,106 @@ window.QuantumTasks = {
     focusedBefore = null;
   const people = new Map(),
     particles = [],
-    textures = new Map();
+    textures = new Map(),
+    characterSprites = new Map();
+
+  /*
+   * OPTIONAL CUSTOM CHARACTERS
+   * Put transparent PNG/WebP files next to this HTML in the assets folder.
+   * The game first tries a numbered variant, then a generic role:
+   *   assets/student-1.png ... assets/student-6.png, then assets/student.png
+   * Supported roles: reception, director, candidate, teacher, student,
+   * newbie, guide, elevator.
+   * If a file is absent or cannot be loaded, the original pixel character
+   * is drawn automatically, so the game always remains playable.
+   */
+  const CHARACTER_ASSETS = {
+    reception: "reception",
+    director: "director",
+    candidate: "candidate",
+    teacher: "teacher",
+    student: "student",
+    newbie: "newbie",
+    guide: "guide",
+    elevator: "elevator",
+  };
+  function spriteCandidates(role, seed = 0) {
+    const base = CHARACTER_ASSETS[role] || role;
+    const variant = (Math.abs(seed | 0) % 6) + 1;
+    return [
+      `assets/${base}-${variant}.png`,
+      `assets/${base}-${variant}.webp`,
+      `assets/${base}.png`,
+      `assets/${base}.webp`,
+    ];
+  }
+  function getCharacterSprite(role, seed = 0) {
+    const key = `${role}:${Math.abs(seed | 0) % 6}`;
+    let entry = characterSprites.get(key);
+    if (!entry) {
+      entry = {
+        image: new Image(),
+        ready: false,
+        failed: false,
+        paths: spriteCandidates(role, seed),
+        index: 0,
+      };
+      characterSprites.set(key, entry);
+      const tryNext = () => {
+        if (entry.index >= entry.paths.length) {
+          entry.failed = true;
+          return;
+        }
+        entry.image = new Image();
+        entry.image.onload = () => {
+          entry.ready = true;
+          entry.failed = false;
+        };
+        entry.image.onerror = () => {
+          entry.index++;
+          tryNext();
+        };
+        entry.image.src = entry.paths[entry.index];
+      };
+      tryNext();
+    }
+    return entry.ready ? entry.image : null;
+  }
+  function drawCharacter(role, x, y, seed = 0, moving = false, teacher = false, dir = 1, size = 1) {
+    const img = getCharacterSprite(role, seed);
+    if (img && img.naturalWidth && img.naturalHeight) {
+      const maxH = 34 * size;
+      const maxW = 28 * size;
+      const ratio = img.naturalWidth / img.naturalHeight;
+      let h = maxH;
+      let w = h * ratio;
+      if (w > maxW) {
+        w = maxW;
+        h = w / ratio;
+      }
+      ctx.save();
+      if (dir < 0) {
+        ctx.translate(Math.round(x), 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(img, Math.round(-w / 2), Math.round(y - h), Math.round(w), Math.round(h));
+      } else {
+        ctx.drawImage(img, Math.round(x - w / 2), Math.round(y - h), Math.round(w), Math.round(h));
+      }
+      ctx.restore();
+      return;
+    }
+    A.person(
+      ctx,
+      x,
+      y,
+      seed,
+      state.settings.motion ? t : 0,
+      moving,
+      teacher,
+      dir,
+    );
+  }
+
   const lift = {
     level: 0,
     target: 0,
@@ -2090,8 +2399,19 @@ window.QuantumTasks = {
     wait: 0,
     autoTimer: 0,
     autoPerson: 0,
+    escortX: 120,
+    guideX: 138,
+    held: null,
+    deliveredKey: null,
   };
+  const escortPhases = new Set([
+    "escort-walk",
+    "escort-boarding",
+    "escort-lift",
+    "escort-exiting",
+  ]);
   const phasesBusy = () =>
+    escortPhases.has(lift.phase) ||
     ["pickup", "boarding", "await", "ride", "wrong", "exiting"].includes(
       lift.phase,
     );
@@ -2172,16 +2492,14 @@ window.QuantumTasks = {
     let bottom = 0;
     layouts = [];
     for (let i = 0; i < state.floors.length + 3; i++) {
-      const expanded =
-        selected === i ? Math.max(70, Math.min(420, H - 116)) : 0;
-      const h = FH + expanded;
+      const h = FH;
       layouts.push({
         index: i,
         id: roomId(i),
         bottom,
         top: bottom - h,
         h,
-        extra: expanded,
+        extra: 0,
       });
       bottom -= h;
     }
@@ -2258,16 +2576,7 @@ window.QuantumTasks = {
       });
       b.setAttribute("aria-expanded", String(!shaft && selected === i));
     }
-    if (selected !== null) {
-      const l = layouts[selected];
-      if (!l) return;
-      Object.assign(panel.style, {
-        left: (rx + 3) * scale + "px",
-        top: (l.top + o + 14) * scale + "px",
-        width: (RW - 6) * scale + "px",
-        height: (l.extra - 4) * scale + "px",
-      });
-    }
+    updateEscortControls();
   }
   function drawSky() {
     const g = ctx.createLinearGradient(0, 0, 0, H);
@@ -2523,16 +2832,18 @@ window.QuantumTasks = {
       floor: 0,
       teacher: true,
       seed: 1,
+      role: "reception",
       stationary: true,
     });
     wanted.set("director", {
       floor: 1,
       teacher: true,
       seed: 2,
+      role: "director",
       stationary: true,
     });
     state.candidates.forEach((v, i) =>
-      wanted.set("candidate:" + v.id, { floor: 1, teacher: true, seed: i + 5 }),
+      wanted.set("candidate:" + v.id, { floor: 1, teacher: true, seed: i + 5, role: "candidate" }),
     );
     state.floors.forEach((f, j) => {
       f.teachers.forEach((id, i) => {
@@ -2541,12 +2852,13 @@ window.QuantumTasks = {
             floor: j + 2,
             teacher: true,
             seed: i + j + 3,
+            role: "teacher",
           });
       });
       for (let i = 0; i < f.students; i++) {
         const key = `student:${f.id}:${f.projects}:${i}`;
         if (lift.phase !== "exiting" || lift.deliveredKey !== key)
-          wanted.set(key, { floor: j + 2, teacher: false, seed: i + j * 9 });
+          wanted.set(key, { floor: j + 2, teacher: false, seed: i + j * 9, role: "student" });
       }
     });
     state.newbies.forEach((n, i) => {
@@ -2555,6 +2867,7 @@ window.QuantumTasks = {
           floor: 0,
           teacher: false,
           seed: i + 13,
+          role: "newbie",
           newbie: n.id,
         });
     });
@@ -2602,12 +2915,11 @@ window.QuantumTasks = {
       if (!l) continue;
       const y = l.bottom + o - 6;
       if (y < 0 || y > H + 25) continue;
-      A.person(
-        ctx,
+      drawCharacter(
+        p.role || (p.teacher ? "teacher" : "student"),
         rx + p.x,
         y,
         p.seed,
-        state.settings.motion ? t : 0,
         p.moving,
         p.teacher,
         p.dir,
@@ -2671,19 +2983,43 @@ window.QuantumTasks = {
       cy + 8,
       "#fff2a0",
     );
-    if (lift.passenger && lift.phase !== "pickup")
-      A.person(
-        ctx,
+    if (lift.phase === "escort-walk" && lift.passenger) {
+      const lobbyY = layouts[0].bottom + o - 6;
+      drawCharacter("newbie", rx + lift.escortX, lobbyY, 13, !!lift.held, false, lift.held === "right" ? 1 : -1);
+      drawCharacter("guide", rx + lift.guideX, lobbyY, 21, !!lift.held, true, lift.held === "right" ? 1 : -1);
+    } else if (lift.phase === "escort-boarding" && lift.passenger) {
+      const q = 1 - Math.max(0, lift.wait) / 0.65;
+      const lobbyY = layouts[0].bottom + o - 6;
+      const sx = rx + 4;
+      const ex = tx + 24;
+      const x1 = sx + (ex - sx) * q;
+      drawCharacter("newbie", x1, lobbyY, 13, true, false, -1, 0.9);
+      drawCharacter("guide", x1 + 9, lobbyY, 21, true, true, -1, 0.9);
+    } else if (lift.phase === "escort-lift" && lift.passenger) {
+      drawCharacter("newbie", tx + 20, by - 7, 13, false, false, 1, 0.72);
+      drawCharacter("guide", tx + 29, by - 7, 21, false, true, 1, 0.72);
+    } else if (lift.phase === "escort-exiting" && lift.passenger) {
+      const q = 1 - Math.max(0, lift.wait) / 0.75;
+      const x1 = tx + 24 + q * 42;
+      drawCharacter("newbie", x1, by - 7, 13, true, false, 1, 0.9);
+      drawCharacter("guide", x1 - 8, by - 7, 21, true, true, 1, 0.9);
+    } else if (lift.passenger && lift.phase !== "pickup") {
+      drawCharacter(
+        "elevator",
         tx + 24 + (lift.phase === "exiting" ? (1 - lift.wait / 1.2) * 41 : 0),
         by - 7,
         13,
-        t,
         lift.phase === "exiting",
         false,
+        1,
+        0.85,
       );
-    else if (lift.phase === "auto")
-      A.person(ctx, tx + 24, by - 7, lift.autoPerson, t, false, false);
-    if (["idle", "pickup", "auto"].includes(lift.phase) && !lift.passenger) {
+    } else if (lift.phase === "auto")
+      drawCharacter("elevator", tx + 24, by - 7, lift.autoPerson, false, false, 1, 0.85);
+    if (
+      (["idle", "pickup", "auto"].includes(lift.phase) && !lift.passenger) ||
+      lift.phase === "escort-walk"
+    ) {
       A.rect(ctx, tx + 13, cy + 22, 9, 27, "#665338");
       A.rect(ctx, tx + 24, cy + 22, 10, 27, "#776244");
     }
@@ -2818,7 +3154,7 @@ window.QuantumTasks = {
     if (i < 0 || i >= layouts.length) return;
     if (phasesBusy()) {
       tell(
-        "Сначала довезите пассажира. Нажмите номер его этажа.",
+        "Сначала завершите сопровождение пассажира стрелками внизу экрана.",
         Math.round(lift.level),
       );
       return;
@@ -2833,6 +3169,7 @@ window.QuantumTasks = {
     game = null;
     confirmAction = null;
     panel.hidden = false;
+    modalBackdrop.hidden = false;
     focusedBefore = hits.querySelector(`[data-floor="${i}"]`);
     makeLayouts();
     focusFloor(i, true);
@@ -2847,6 +3184,7 @@ window.QuantumTasks = {
     game = null;
     confirmAction = null;
     panel.hidden = true;
+    modalBackdrop.hidden = true;
     makeLayouts();
     if (old !== null) {
       const l = layouts[Math.min(old, layouts.length - 1)];
@@ -3106,7 +3444,7 @@ window.QuantumTasks = {
     if (view === "help") {
       setBody(
         "Как устроена башня",
-        `<h3>1. Откройте кабинет директора</h3><p>Наймите преподавателя с навыком своего квантума. Он начнёт занятия и будет приносить доход.</p><h3>2. Загляните в квантум</h3><p>Когда группа заполнится, начнётся занятие. После него появится проект: решите задачу и получите монеты и знания.</p><h3>3. Помогите новеньким</h3><p>Нажмите «?» над ребёнком или откройте ресепшен. Посадите его в лифт и нажмите номер нужного этажа в шахте слева.</p><h3>4. Поднимайтесь выше</h3><p>Нажмите табличку на крыше, чтобы построить новый квантум. Улучшайте комнаты, обучайте преподавателей, собирайте команды.</p><h3>5. Развивайте центр</h3><p>Шесть глав ждут в кабинете директора. После финальной главы можно продолжать свободную игру.</p><p class="micro">Колесо / перетаскивание — обзор башни. Esc — закрыть комнату. Tab — выбрать комнату с клавиатуры. ↑ / ↓ — обзор; в лифте — соседний этаж; в задаче — команда роботу.</p><p class="micro">Ошибки в заданиях не отнимают награду. Пауза и сохранение — в ресепшене. До двух часов отсутствия засчитываются автоматически.</p>`,
+        `<h3>1. Откройте кабинет директора</h3><p>Наймите преподавателя с навыком своего квантума. Он начнёт занятия и будет приносить доход.</p><h3>2. Загляните в квантум</h3><p>Когда группа заполнится, начнётся занятие. После него появится проект: решите задачу и получите монеты и знания.</p><h3>3. Помогите новеньким</h3><p>Нажмите «?» над ребёнком или откройте ресепшен. В режиме сопровождения ведите ребёнка стрелками к лифту, поднимите ↑/↓ до нужного этажа и выведите → в квантум.</p><h3>4. Поднимайтесь выше</h3><p>Нажмите табличку на крыше, чтобы построить новый квантум. Улучшайте комнаты, обучайте преподавателей, собирайте команды.</p><h3>5. Развивайте центр</h3><p>Шесть глав ждут в кабинете директора. После финальной главы можно продолжать свободную игру.</p><p class="micro">Колесо / перетаскивание — обзор башни. Esc — закрыть комнату или отменить сопровождение. Tab — выбрать комнату с клавиатуры. В сопровождении используйте экранные стрелки или клавиши ← ↑ ↓ →; в задаче — стрелки добавляют команды роботу.</p><p class="micro">Ошибки в заданиях не отнимают награду. Пауза и сохранение — в ресепшене. До двух часов отсутствия засчитываются автоматически.</p>`,
         reset,
       );
       return;
@@ -3128,13 +3466,13 @@ window.QuantumTasks = {
   function renderVisitors(reset) {
     setBody(
       "Пассажиры лифта",
-      `<p>Новенькие пока не знают здание. Помогите им добраться до занятия.</p><p class="micro">После посадки нажмите номер нужного этажа в шахте слева. Нажатие на саму кабину отменит поездку.</p><div class="cards">${
+      `<p>Новенькие пока не знают здание. Помогите им добраться до занятия.</p><p class="micro">После выбора пассажира появятся стрелки. ←/→ ведут ребёнка к лифту, ↑/↓ двигают кабину между этажами, а → на нужном этаже выводит ребёнка в квантум. Кнопки можно удерживать.</p><div class="cards">${
         state.newbies
           .map((n) => {
             const f = state.floors.find((f) => f.id === n.target),
               available =
                 f && !f.ready && f.lesson === 0 && f.students < E.capacity(f);
-            return `<article class="card"><h3>${esc(n.name)}</h3><p>Этаж ${floorIndex(n.target)} · ${E.lab(n.target).name}</p>${button(available ? "Подвезти на лифте →" : "Группа занята — подождём", "escort", { id: n.id }, "", !available)}<p class="micro">За помощь: 25 ● и 10 ◆.</p></article>`;
+            return `<article class="card"><h3>${esc(n.name)}</h3><p>Этаж ${floorIndex(n.target)} · ${E.lab(n.target).name}</p>${button(available ? "Сопроводить к лифту →" : "Группа занята — подождём", "escort", { id: n.id }, "", !available)}<p class="micro">За помощь: 25 ● и 10 ◆.</p></article>`;
           })
           .join("") ||
         '<p class="empty">Сейчас все знают дорогу. Новые гости появятся чуть позже.</p>'
@@ -3474,7 +3812,7 @@ window.QuantumTasks = {
     renderGame();
   }
 
-  // The lift belongs to the building, not to an external navigation panel.
+  // Guided elevator mini-game: walk to the lift, move between floors, exit into the classroom.
   function startEscort(id) {
     const n = state.newbies.find((x) => x.id === id),
       f = n && state.floors.find((x) => x.id === n.target);
@@ -3483,32 +3821,44 @@ window.QuantumTasks = {
       return;
     }
     if (phasesBusy()) return;
+    const npc = people.get(n.id);
     closeRoom();
     lift.passenger = { ...n };
-    lift.phase = "pickup";
+    lift.phase = "escort-walk";
     lift.target = 0;
     lift.wait = 0;
+    lift.held = null;
+    lift.escortX = Math.max(28, Math.min(178, npc?.x ?? 132));
+    lift.guideX = Math.min(190, lift.escortX + 17);
     focusFloor(0);
-    tell("Лифт едет за пассажиром.", 0);
+    syncPeople();
+    updateEscortControls();
+    tell("Проведите ребёнка к лифту стрелками ← и →.", 0);
     sound();
   }
   function cancelEscort() {
-    const delivered = lift.phase === "exiting";
+    const delivered = lift.phase === "escort-exiting";
     lift.passenger = null;
     lift.phase = "idle";
     lift.target = lift.level;
     lift.autoTimer = 0;
+    lift.held = null;
+    escortControls.hidden = true;
     syncPeople();
     tell(
       delivered
         ? "Пассажир уже на занятии."
         : "Новенький подождёт на ресепшене.",
-      0,
+      Math.max(0, Math.round(lift.level)),
     );
     save();
   }
   function callLift(index) {
     if (index < 0 || index >= state.floors.length + 2) return;
+    if (escortPhases.has(lift.phase)) {
+      tell("Во время сопровождения используйте стрелки внизу экрана.", Math.round(lift.level));
+      return;
+    }
     if (
       lift.phase === "pickup" ||
       lift.phase === "boarding" ||
@@ -3528,8 +3878,139 @@ window.QuantumTasks = {
     }
     sound();
   }
+  function escortDestination() {
+    return lift.passenger ? floorIndex(lift.passenger.target) : 0;
+  }
+  function beginEscortExit() {
+    if (!lift.passenger || lift.phase !== "escort-lift") return;
+    const dest = escortDestination();
+    if (Math.abs(lift.level - dest) > 0.13) {
+      tell(`Нужен этаж ${dest}. Сейчас кабина между этажами.`, Math.round(lift.level), true);
+      return;
+    }
+    lift.level = dest;
+    lift.target = dest;
+    lift.phase = "escort-exiting";
+    lift.wait = 0.75;
+    const f = state.floors.find((x) => x.id === lift.passenger.target);
+    lift.deliveredKey = f ? `student:${f.id}:${f.projects}:${f.students}` : null;
+    updateEscortControls();
+  }
+  function applyEscortInput(dir, dt = 0.12) {
+    if (!lift.passenger || !escortPhases.has(lift.phase)) return;
+    if (lift.phase === "escort-walk") {
+      if (dir !== "left" && dir !== "right") return;
+      const sign = dir === "left" ? -1 : 1;
+      lift.escortX = Math.max(3, Math.min(188, lift.escortX + sign * 52 * dt));
+      lift.guideX = Math.max(12, Math.min(196, lift.escortX + (sign < 0 ? 17 : -17)));
+      if (lift.escortX <= 7) {
+        if (Math.abs(lift.level) <= 0.04) {
+          lift.level = 0;
+          lift.target = 0;
+          lift.phase = "escort-boarding";
+          lift.wait = 0.65;
+          lift.held = null;
+          tell("Заходим в лифт.", 0);
+          updateEscortControls();
+        } else {
+          tell("Лифт уже едет на ресепшен — подождите у двери.", 0);
+        }
+      }
+      return;
+    }
+    if (lift.phase === "escort-lift") {
+      if (dir === "up" || dir === "down") {
+        const sign = dir === "up" ? 1 : -1;
+        lift.level = Math.max(
+          0,
+          Math.min(state.floors.length + 1, lift.level + sign * 1.05 * dt),
+        );
+        lift.target = lift.level;
+      } else if (dir === "right") {
+        beginEscortExit();
+      }
+    }
+  }
+  function updateEscortControls() {
+    if (!escortControls) return;
+    const active = !!lift.passenger && escortPhases.has(lift.phase);
+    escortControls.hidden = !active;
+    if (!active) return;
+    const dest = escortDestination();
+    if (lift.phase === "escort-walk") {
+      escortStatus.textContent =
+        `Сопровождающий и ${lift.passenger.name}: ведите к лифту стрелками ← / →.`;
+    } else if (lift.phase === "escort-boarding") {
+      escortStatus.textContent = "Заходим в лифт…";
+    } else if (lift.phase === "escort-lift") {
+      escortStatus.textContent =
+        `Нужен этаж ${dest} — ${E.lab(lift.passenger.target).name}. ↑/↓ двигают лифт, → выводит ребёнка. Сейчас: ${lift.level.toFixed(1)}.`;
+    } else {
+      escortStatus.textContent = `Выходим на этаж ${dest} и идём в ${E.lab(lift.passenger.target).name}.`;
+    }
+    escortControls.querySelectorAll("[data-escort-dir]").forEach((b) => {
+      const dir = b.dataset.escortDir;
+      b.classList.toggle("active", lift.held === dir);
+      if (lift.phase === "escort-walk")
+        b.disabled = !["left", "right"].includes(dir);
+      else if (lift.phase === "escort-lift")
+        b.disabled = dir === "left";
+      else b.disabled = true;
+    });
+  }
   function updateLift(dt) {
-    if (["pickup", "ride", "auto", "manual"].includes(lift.phase)) {
+    if (lift.phase === "escort-walk") {
+      const d = -lift.level;
+      if (Math.abs(d) > 0.005)
+        lift.level += Math.sign(d) * Math.min(Math.abs(d), dt * 1.35);
+      else lift.level = 0;
+      if (lift.held) applyEscortInput(lift.held, dt);
+    } else if (lift.phase === "escort-boarding") {
+      lift.wait -= dt;
+      if (lift.wait <= 0) {
+        lift.phase = "escort-lift";
+        lift.wait = 0;
+        lift.level = 0;
+        lift.target = 0;
+        tell(`Поднимите лифт на этаж ${escortDestination()} стрелкой ↑.`, 0);
+        updateEscortControls();
+      }
+    } else if (lift.phase === "escort-lift") {
+      if (lift.held) applyEscortInput(lift.held, dt);
+      const py = levelBottom(lift.level) + origin() - 35;
+      if (py < 74) targetCam = Math.min(maxCam(), targetCam + (74 - py));
+      if (py > H - 120) targetCam = Math.max(0, targetCam - (py - (H - 120)));
+    } else if (lift.phase === "escort-exiting") {
+      lift.wait -= dt;
+      if (lift.wait <= 0) {
+        const passenger = { ...lift.passenger };
+        const dest = escortDestination();
+        const res = perform(
+          "escort",
+          { id: passenger.id, floor: passenger.target },
+          false,
+        );
+        if (res.ok) {
+          lift.passenger = null;
+          lift.phase = "idle";
+          lift.autoTimer = 0;
+          lift.held = null;
+          escortControls.hidden = true;
+          syncPeople();
+          const p = people.get(lift.deliveredKey);
+          if (p) p.x = 12;
+          tell("Готово! +25 монет, +10 знаний.", dest);
+          burst(dest);
+          sound(true);
+          save();
+        } else {
+          lift.phase = "escort-lift";
+          lift.wait = 0;
+          tell(res.error, dest, true);
+        }
+        updateEscortControls();
+      }
+    } else if (["pickup", "ride", "auto", "manual"].includes(lift.phase)) {
       const d = lift.target - lift.level;
       if (Math.abs(d) > 0.005) {
         lift.level += Math.sign(d) * Math.min(Math.abs(d), dt * 1.3);
@@ -3636,11 +4117,14 @@ window.QuantumTasks = {
     lift.phase = "idle";
     lift.level = 0;
     lift.target = 0;
+    lift.held = null;
     people.clear();
     fresh = false;
     selected = null;
     view = "home";
     panel.hidden = true;
+    modalBackdrop.hidden = true;
+    escortControls.hidden = true;
     cam = targetCam = 0;
     save();
     makeLayouts();
@@ -3899,6 +4383,36 @@ window.QuantumTasks = {
   }
   body.addEventListener("click", handleAction);
   document.getElementById("close").addEventListener("click", closeRoom);
+  modalBackdrop.addEventListener("click", closeRoom);
+  document.getElementById("escort-cancel").addEventListener("click", cancelEscort);
+  for (const b of escortControls.querySelectorAll("[data-escort-dir]")) {
+    const press = (e) => {
+      if (b.disabled) return;
+      e.preventDefault();
+      lift.held = b.dataset.escortDir;
+      applyEscortInput(lift.held, 0.11);
+      updateEscortControls();
+    };
+    b.addEventListener("pointerdown", press);
+    b.addEventListener("contextmenu", (e) => e.preventDefault());
+  }
+  const releaseEscortControl = () => {
+    if (!lift.held) return;
+    if (
+      lift.phase === "escort-lift" &&
+      (lift.held === "up" || lift.held === "down")
+    ) {
+      const nearest = Math.round(lift.level);
+      if (Math.abs(lift.level - nearest) < 0.18) {
+        lift.level = nearest;
+        lift.target = nearest;
+      }
+    }
+    lift.held = null;
+    updateEscortControls();
+  };
+  window.addEventListener("pointerup", releaseEscortControl);
+  window.addEventListener("pointercancel", releaseEscortControl);
   document.getElementById("back").addEventListener("click", () => {
     game = null;
     confirmAction = null;
@@ -3976,7 +4490,7 @@ window.QuantumTasks = {
     if (l) openRoom(l.index);
   }
   world.addEventListener("pointerdown", (e) => {
-    if (e.target.closest("#room-panel") || e.button > 0 || dragging) return;
+    if (e.target.closest(".ui-overlay") || e.button > 0 || dragging) return;
     const p = point(e);
     dragging = { id: e.pointerId, y: p.y, startCam: cam, p, max: 0 };
     world.setPointerCapture(e.pointerId);
@@ -4009,7 +4523,7 @@ window.QuantumTasks = {
   world.addEventListener(
     "wheel",
     (e) => {
-      if (e.target.closest("#room-panel")) return;
+      if (e.target.closest(".ui-overlay")) return;
       e.preventDefault();
       targetCam = Math.max(0, Math.min(maxCam(), targetCam - e.deltaY / scale));
     },
@@ -4042,6 +4556,12 @@ window.QuantumTasks = {
       return;
     }
     if (selected !== null) return;
+    if (escortPhases.has(lift.phase) && directions[e.key]) {
+      e.preventDefault();
+      applyEscortInput(directions[e.key], 0.13);
+      updateEscortControls();
+      return;
+    }
     if (
       (lift.phase === "await" || lift.phase === "wrong") &&
       /^\d$/.test(e.key)
@@ -4051,21 +4571,10 @@ window.QuantumTasks = {
     }
     if (e.key === "ArrowUp" || e.key === "ArrowDown") {
       e.preventDefault();
-      if (lift.passenger)
-        callLift(
-          Math.max(
-            0,
-            Math.min(
-              state.floors.length + 1,
-              Math.round(lift.target) + (e.key === "ArrowUp" ? 1 : -1),
-            ),
-          ),
-        );
-      else
-        targetCam = Math.max(
-          0,
-          Math.min(maxCam(), targetCam + (e.key === "ArrowUp" ? 65 : -65)),
-        );
+      targetCam = Math.max(
+        0,
+        Math.min(maxCam(), targetCam + (e.key === "ArrowUp" ? 65 : -65)),
+      );
     }
   });
   window.addEventListener("resize", resize);
