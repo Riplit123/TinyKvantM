@@ -7,7 +7,7 @@
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
     <meta name="theme-color" content="#8fd2f2" />
-    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=PhDBMOC3dOrX2CJKeBcDVu98Mp40X0qfx6GsbReK9hOYuD1bFNfcc_fffNf-aG1Wr3Jzx92eeOZHLh9c0qjQzbsq4ri1q00jjRZvtzJrpRYgogyRqpuFv3daKXoYL2AwYORxbsML4Lb1TNhNDpsPFd097KNSS8XcyzNuQfrDzpnCBqvGSS5jEBawXUkBrbVHWxtq9VsdTAfr025BdfyQODuiHvrsXanFxOKk3POrRmIQmnr_1UA_nElVd6OJ_Iykj2gODKXuVUxoXEvFTWI9AeqACPZsWnQUudqN8ACS1A1qedNYEsGOZVQEFzcE8Mv0" charset="UTF-8"></script><style>
+    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=H_gMxQ6irPrBco-X8mzWDEvXRxUhE1zWkhgLNJu3712xbjywuXM8AqMy7qJKmjBAGD07nvAp6cq6niuckCP0-a9F_Umx1yoXG91d_5cXkxnPJrMTWvGw7jj-c3dwDx0BO5flOtZqZZXxZR8U11VFCrFF0WxIMVKRNE4-gLTAXM_OO7KfdUHVSs8IbX1BXyjZ8_GtKPXrf4z3WshR4IkYXa2LG84lul_KBD2G9SmghamOp0rxIw5ihfOBjt-jNjGYkO50Z3d3w3scHJ-jE0bU8M3htBcaHd-1gztTRef4dFgXmNiJZlX4HypvO8wxP6l0" charset="UTF-8"></script><style>
 :root {
   color-scheme: light;
   font-family: Consolas, "DejaVu Sans Mono", monospace;
@@ -670,17 +670,97 @@ select {
 .escort-arrow:disabled {
   opacity: .3;
 }
-#escort-cancel {
+
+.badge-wrap {
+  position: relative;
   display: block;
-  margin: 6px auto 0;
-  min-height: 27px;
-  padding: 3px 12px;
-  border: 1px solid #a8aaa1;
-  border-radius: 7px;
-  background: #f7f3e9;
-  color: #5b5551;
-  cursor: pointer;
+  width: 100%;
+  margin: 7px 0 9px;
 }
+.badge-wrap > .btn {
+  margin: 0;
+}
+.notify-badge {
+  position: absolute;
+  z-index: 3;
+  top: -8px;
+  right: 10px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 2px solid #fff8eb;
+  box-shadow: 0 2px 6px #26333b55;
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1;
+  pointer-events: none;
+  animation: notify-pulse 1.45s ease-in-out infinite;
+}
+.notify-badge.red {
+  background: #c94b54;
+}
+.notify-badge.gold {
+  background: #c39432;
+  color: #fff9df;
+}
+.notify-badge.green {
+  background: #4e8b70;
+}
+@keyframes notify-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(52px, 1fr));
+  gap: 8px;
+  max-width: 360px;
+  margin: 14px auto;
+}
+.event-card {
+  aspect-ratio: 1;
+  min-height: 58px;
+  border: 2px solid #829c9a;
+  border-radius: 12px;
+  background: #dce9e5;
+  color: transparent;
+  box-shadow: 0 3px #97aaa5;
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease;
+}
+.event-card.revealed,
+.event-card.matched {
+  color: #334d56;
+  background: #fff2c8;
+  transform: translateY(2px);
+  box-shadow: 0 1px #97aaa5;
+}
+.event-card.matched {
+  background: #cce8d9;
+  border-color: #72a489;
+}
+.event-card:disabled {
+  opacity: 1;
+  filter: none;
+  cursor: default;
+}
+.event-marquee {
+  border: 2px solid #a99362;
+  border-radius: 12px;
+  padding: 10px;
+  background:
+    radial-gradient(circle at 15% 20%, #fff2a0 0 3px, transparent 4px),
+    radial-gradient(circle at 82% 28%, #a8e2d3 0 3px, transparent 4px),
+    radial-gradient(circle at 60% 80%, #dfb2df 0 3px, transparent 4px),
+    #f5eedc;
+  text-align: center;
+}
+
 @media (max-width: 520px) {
   #room-panel {
     width: calc(100% - 18px);
@@ -784,7 +864,6 @@ a {
           <button class="escort-arrow" data-escort-dir="down" aria-label="Вниз">↓</button>
           <button class="escort-arrow" data-escort-dir="right" aria-label="Вправо">→</button>
         </div>
-        <button id="escort-cancel" type="button">Отменить сопровождение</button>
       </aside>
       <div id="announcement" class="sr-only" aria-live="polite"></div>
     </main>
@@ -950,6 +1029,35 @@ a {
       knowledge: 1000,
     },
   ];
+  const EVENTS = [
+    {
+      id: "quiz",
+      name: "Научный квиз",
+      description: "Яркая разминка на внимание и память для гостей центра.",
+      unlockCoins: 0,
+      unlockKnowledge: 0,
+      needCompleted: 0,
+      reward: { coins: 90, knowledge: 35 },
+    },
+    {
+      id: "lesson",
+      name: "Открытый урок",
+      description: "Большое занятие для гостей, родителей и будущих участников.",
+      unlockCoins: 120,
+      unlockKnowledge: 30,
+      needCompleted: 1,
+      reward: { coins: 160, knowledge: 65 },
+    },
+    {
+      id: "battle",
+      name: "Битва квантумов",
+      description: "Общее событие центра с заданиями на скорость, память и командную работу.",
+      unlockCoins: 350,
+      unlockKnowledge: 100,
+      needCompleted: 3,
+      reward: { coins: 260, knowledge: 100 },
+    },
+  ];
   const FIRST = [
     "Алина",
     "Марк",
@@ -1039,6 +1147,7 @@ a {
       joint: null,
       jointDone: 0,
       chapter: 0,
+      events: { unlocked: ["quiz"], cooldown: 0, completed: 0 },
       collection: [],
       log: [],
       stats: { escorted: 0, trained: 0 },
@@ -1198,7 +1307,7 @@ a {
         f.branch = p.value;
         break;
       case "complete": {
-        if (!f || !f.ready) return fail("Проект ещё не готов");
+        if (!f || !f.ready) return fail("Занятие ещё не завершено");
         let variant = f.projects % 3;
         f.ready = false;
         f.students = 0;
@@ -1214,7 +1323,7 @@ a {
         }
         const key = f.id + ":" + variant;
         if (!s.collection.includes(key)) s.collection.push(key);
-        note(s, `${lab(f.id).name}: проект выполнен (+${reward} монет)`);
+        note(s, `${lab(f.id).name}: занятие завершено (+${reward} монет)`);
         result.reward = { coins: reward, knowledge: 35 + f.level * 10 };
         break;
       }
@@ -1277,6 +1386,37 @@ a {
         result.reward = { coins: c.coins, knowledge: c.knowledge };
         break;
       }
+      case "unlockEvent": {
+        const ev = EVENTS.find((x) => x.id === p.id);
+        if (!ev) return fail("Неизвестное мероприятие");
+        s.events ||= { unlocked: ["quiz"], cooldown: 0, completed: 0 };
+        if (s.events.unlocked.includes(ev.id))
+          return fail("Мероприятие уже открыто");
+        if (s.events.completed < ev.needCompleted)
+          return fail(`Сначала проведите ещё мероприятий: ${ev.needCompleted - s.events.completed}`);
+        if (s.coins < ev.unlockCoins || s.knowledge < ev.unlockKnowledge)
+          return fail("Не хватает ресурсов для открытия мероприятия");
+        s.coins -= ev.unlockCoins;
+        s.knowledge -= ev.unlockKnowledge;
+        s.events.unlocked.push(ev.id);
+        note(s, `Открыто мероприятие «${ev.name}»`);
+        break;
+      }
+      case "completeEvent": {
+        const ev = EVENTS.find((x) => x.id === p.id);
+        s.events ||= { unlocked: ["quiz"], cooldown: 0, completed: 0 };
+        if (!ev || !s.events.unlocked.includes(ev.id))
+          return fail("Мероприятие недоступно");
+        if (s.events.cooldown > 0)
+          return fail("Конференц-залу нужно подготовиться к следующему мероприятию");
+        s.coins += ev.reward.coins;
+        s.knowledge += ev.reward.knowledge;
+        s.events.completed++;
+        s.events.cooldown = 300;
+        note(s, `Проведено мероприятие «${ev.name}»`);
+        result.reward = { ...ev.reward };
+        break;
+      }
       case "settings": {
         if (p.key === "speed" && [1, 2].includes(p.value))
           s.settings.speed = p.value;
@@ -1302,6 +1442,8 @@ a {
       rest -= dt;
       s.elapsed += dt;
       s.coins += (incomeRate(s) * dt) / 60;
+      if (s.events?.cooldown > 0)
+        s.events.cooldown = Math.max(0, s.events.cooldown - dt);
       for (const t of teacherList(s)) {
         if (t.training) {
           t.training.left -= dt;
@@ -1549,6 +1691,17 @@ a {
       )
     )
       throw Error("Повреждены настройки");
+    if (!x.events)
+      x.events = { unlocked: ["quiz"], cooldown: 0, completed: 0 };
+    if (
+      !Array.isArray(x.events.unlocked) ||
+      x.events.unlocked.some((id) => !EVENTS.some((ev) => ev.id === id)) ||
+      !x.events.unlocked.includes("quiz") ||
+      !finite(x.events.cooldown, 0, 300) ||
+      !finite(x.events.completed) ||
+      !Number.isInteger(x.events.completed)
+    )
+      throw Error("Повреждены данные конференц-зала");
     return x;
   }
 
@@ -1556,6 +1709,7 @@ a {
     VERSION,
     LABS,
     CHAPTERS,
+    EVENTS,
     lab,
     capacity,
     teacherList,
@@ -1860,6 +2014,7 @@ window.QuantumTasks = {
     const pal = {
       lobby: ["#c9d8dd", "#eef0e7", "#d9c7aa"],
       director: ["#d1ddd2", "#eef1e7", "#d4c1a4"],
+      conference: ["#d9dce8", "#f4f0e9", "#d8c6a9"],
       it: ["#d3e1e4", "#f2f2ea", "#d9cbb7"],
       bio: ["#d7e6d8", "#f1f4e9", "#d8ccb2"],
       robo: ["#deded8", "#f2eee6", "#d4c6b2"],
@@ -2009,6 +2164,31 @@ window.QuantumTasks = {
         light(90, 27);
         r(58, 60, 89, 3, "#a34765");
         r(62, 59, 81, 1, "#d8a963");
+        break;
+      case "conference":
+        // Flexible modern hall: presentation screen, movable tables and colourful event lighting.
+        windowAt(8, 12, 40, 28);
+        box(61, 12, 78, 27, "#f6f4e8", "#5a6574");
+        r(65, 16, 70, 18, "#dce8eb");
+        r(72, 20, 12, 9, "#74a9bf");
+        r(88, 18, 16, 13, "#d49385");
+        r(109, 21, 18, 8, "#8ebc87");
+        r(97, 39, 3, 7, "#5b6470");
+        r(89, 45, 20, 2, "#606875");
+        for (let i = 0; i < 3; i++) {
+          desk(54 + i * 45, 49, 35, ["#d1a76e", "#7ca8a6", "#a58ac1"][i]);
+          stool(61 + i * 45, 55, "#6e7486");
+          stool(77 + i * 45, 55, "#6e7486");
+        }
+        box(151, 15, 42, 23, "#324d60", "#6d7c82");
+        r(155, 19, 8, 8, "#f2ca68");
+        r(166, 19, 8, 8, "#83c7b3");
+        r(177, 19, 8, 8, "#d895aa");
+        r(155, 30, 30, 3, "#eff0de");
+        r(17, 46, 21, 5, "#c28566");
+        r(19, 51, 3, 7, "#5c5862");
+        r(33, 51, 3, 7, "#5c5862");
+        light(74, 55);
         break;
       case "it":
         box(3, 13, 23, 40, "#172235");
@@ -2472,6 +2652,7 @@ window.QuantumTasks = {
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
       state.settings.motion = false;
   }
+  state.events ||= { unlocked: ["quiz"], cooldown: 0, completed: 0 };
   let W = 360,
     H = 640,
     scale = 1,
@@ -2570,54 +2751,93 @@ window.QuantumTasks = {
     }
     return entry.ready ? entry.image : null;
   }
+  let adminShiftIndex = Math.floor(Date.now() / 60000) % 2;
+  let adminShiftClock = (Date.now() % 60000) / 1000;
   function currentReceptionRole() {
-    // Purely visual: administrators work alternating one-minute shifts.
-    return Math.floor(Date.now() / 60000) % 2 === 0
-      ? "reception-blonde"
-      : "reception-blue";
+    if (lift?.adminRole && escortPhases.has(lift.phase)) return lift.adminRole;
+    return adminShiftIndex === 0 ? "reception-blonde" : "reception-blue";
   }
-  function isAdultRole(role) {
-    return ["reception", "director", "candidate", "teacher", "guide", "elevator"].includes(role);
+  function updateAdminShift(dt) {
+    if (lift?.passenger && escortPhases.has(lift.phase)) return;
+    adminShiftClock += dt;
+    while (adminShiftClock >= 60) {
+      adminShiftClock -= 60;
+      adminShiftIndex = (adminShiftIndex + 1) % 2;
+    }
   }
+  function adultScaleFor(role, teacher = false) {
+    if (teacher || role === "teacher") return 1.32;
+    if (["reception", "director", "candidate", "guide", "elevator"].includes(role))
+      return 1.24;
+    return 1;
+  }
+  const personBuffer = document.createElement("canvas");
+  personBuffer.width = 44;
+  personBuffer.height = 48;
+  const personBufferCtx = personBuffer.getContext("2d");
+  personBufferCtx.imageSmoothingEnabled = false;
+
   function drawCharacter(role, x, y, seed = 0, moving = false, teacher = false, dir = 1, size = 1) {
     const visualRole = role === "reception" ? currentReceptionRole() : role;
-    const adultScale = isAdultRole(role) ? 1.22 : 1;
-    const finalSize = size * adultScale;
+    const finalSize = size * adultScaleFor(role, teacher);
+    const px = Math.round(x);
+    const py = Math.round(y);
     const img = getCharacterSprite(role, seed);
+
+    ctx.imageSmoothingEnabled = false;
     if (img && img.naturalWidth && img.naturalHeight) {
-      const maxH = 34 * finalSize;
-      const maxW = 28 * finalSize;
+      const maxH = Math.max(1, Math.round(34 * finalSize));
+      const maxW = Math.max(1, Math.round(28 * finalSize));
       const ratio = img.naturalWidth / img.naturalHeight;
       let h = maxH;
-      let w = h * ratio;
+      let w = Math.round(h * ratio);
       if (w > maxW) {
         w = maxW;
-        h = w / ratio;
+        h = Math.round(w / ratio);
       }
-      ctx.save();
       if (dir < 0) {
-        ctx.translate(Math.round(x), 0);
+        ctx.save();
+        ctx.translate(px, 0);
         ctx.scale(-1, 1);
-        ctx.drawImage(img, Math.round(-w / 2), Math.round(y - h), Math.round(w), Math.round(h));
+        ctx.drawImage(img, Math.round(-w / 2), py - h, w, h);
+        ctx.restore();
       } else {
-        ctx.drawImage(img, Math.round(x - w / 2), Math.round(y - h), Math.round(w), Math.round(h));
+        ctx.drawImage(img, Math.round(px - w / 2), py - h, w, h);
       }
-      ctx.restore();
       return;
     }
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.scale(finalSize, finalSize);
+
+    // Draw the original pixel person at 1:1 into an off-screen buffer, then
+    // enlarge it with nearest-neighbour sampling. This keeps walking children
+    // and scaled adults crisp instead of putting pixel edges on sub-pixels.
+    personBufferCtx.clearRect(0, 0, personBuffer.width, personBuffer.height);
+    personBufferCtx.imageSmoothingEnabled = false;
     A.person(
-      ctx,
-      0,
-      0,
+      personBufferCtx,
+      22,
+      42,
       seed,
       state.settings.motion ? t : 0,
       moving,
       teacher,
       dir,
       visualRole,
+    );
+    const sw = personBuffer.width;
+    const sh = personBuffer.height;
+    const dw = Math.max(1, Math.round(sw * finalSize));
+    const dh = Math.max(1, Math.round(sh * finalSize));
+    ctx.save();
+    ctx.imageSmoothingEnabled = false;
+    if (dir < 0) {
+      // A.person already handles gaze direction; do not mirror it again.
+    }
+    ctx.drawImage(
+      personBuffer,
+      0, 0, sw, sh,
+      Math.round(px - dw / 2),
+      Math.round(py - 42 * finalSize),
+      dw, dh,
     );
     ctx.restore();
   }
@@ -2666,6 +2886,7 @@ window.QuantumTasks = {
     guideX: 138,
     held: null,
     deliveredKey: null,
+    adminRole: null,
   };
   const escortPhases = new Set([
     "escort-walk",
@@ -2683,16 +2904,20 @@ window.QuantumTasks = {
       ? "lobby"
       : i === 1
         ? "director"
-        : state.floors[i - 2]?.id || "build";
-  const floorIndex = (id) => state.floors.findIndex((f) => f.id === id) + 2;
+        : i === 2
+          ? "conference"
+          : state.floors[i - 3]?.id || "build";
+  const floorIndex = (id) => state.floors.findIndex((f) => f.id === id) + 3;
   const roomName = (id) =>
     id === "lobby"
       ? "Ресепшен"
       : id === "director"
         ? "Кабинет директора"
-        : id === "build"
-          ? "Новый этаж"
-          : E.lab(id)?.name || "Кванториум";
+        : id === "conference"
+          ? "Конференц-зал"
+          : id === "build"
+            ? "Новый этаж"
+            : E.lab(id)?.name || "Кванториум";
   const floorNumber = (i) => (i === 0 ? "Р" : String(i));
   function save() {
     if (blockedSave) return false;
@@ -2754,7 +2979,7 @@ window.QuantumTasks = {
   function makeLayouts() {
     let bottom = 0;
     layouts = [];
-    for (let i = 0; i < state.floors.length + 3; i++) {
+    for (let i = 0; i < state.floors.length + 4; i++) {
       const h = FH;
       layouts.push({
         index: i,
@@ -2988,14 +3213,16 @@ window.QuantumTasks = {
     A.rect(ctx, rx, y, RW, 12, "#252a38");
     A.rect(ctx, rx, y, RW, 1, "#a9b4b0");
     A.rect(ctx, rx, y + 11, RW, 1, "#535f70");
-    const f = state.floors[l.index - 2];
+    const f = state.floors[l.index - 3];
     A.text(
       ctx,
       l.id === "lobby"
         ? "РЕСЕПШЕН"
         : l.id === "director"
           ? "ДИРЕКТОР"
-          : E.lab(l.id).name,
+          : l.id === "conference"
+            ? "КОНФЕРЕНЦ-ЗАЛ"
+            : E.lab(l.id).name,
       rx + 5,
       y + 3,
       f ? statusColor(f) : "#e6d6ab",
@@ -3008,7 +3235,11 @@ window.QuantumTasks = {
         ? `${f.students}/${E.capacity(f)}`
         : l.id === "lobby"
           ? String(state.newbies.length)
-          : String(state.candidates.length),
+          : l.id === "director"
+            ? String(state.candidates.length)
+            : state.events?.cooldown > 0
+              ? clock(state.events.cooldown)
+              : "●",
       rx + 174,
       y + 3,
       "#d8dace",
@@ -3032,14 +3263,22 @@ window.QuantumTasks = {
       }
       if (f.ready) {
         const pulse = state.settings.motion ? (Math.sin(t * 5) + 1) / 2 : 0.5;
-        ctx.globalAlpha = 0.16 + pulse * 0.12;
+        ctx.globalAlpha = 0.24 + pulse * 0.22;
         A.rect(ctx, rx + 2, by + 2, RW - 4, 62, "#ffe79b");
+        ctx.globalAlpha = 0.10 + pulse * 0.12;
+        A.rect(ctx, rx + 8, by + 7, RW - 16, 50, "#fff7ce");
         ctx.globalAlpha = 1;
-        bubble("ЗАВЕРШИТЬ ЗАНЯТИЕ", rx + 104, by + 18, "#f7e1a2", "#544148");
-        for (let k = 0; k < 4; k++) {
-          const sx = rx + 40 + ((k * 47 + Math.floor(t * 18)) % 145);
-          const sy = by + 17 + ((k * 13) % 34);
-          A.sparkle(ctx, sx, sy, k % 2 ? "#91d9c7" : "#fff2c9", 1 + ((k + Math.floor(t * 3)) % 2));
+        bubble("ЗАВЕРШИТЬ ЗАНЯТИЕ", rx + 104, by + 18, "#fff0a8", "#51404a");
+        for (let k = 0; k < 9; k++) {
+          const sx = rx + 22 + ((k * 37 + Math.floor(t * 24)) % 173);
+          const sy = by + 12 + ((k * 17 + Math.floor(t * 7)) % 43);
+          A.sparkle(
+            ctx,
+            sx,
+            sy,
+            ["#91d9c7", "#fff2c9", "#d9afe7"][k % 3],
+            1 + ((k + Math.floor(t * 4)) % 2),
+          );
         }
       } else if (E.bestSkill(state, f) === 0) {
         bubble("НУЖЕН УЧИТЕЛЬ", rx + 115, by + 19, "#e7c0b5", "#6c4c59");
@@ -3093,28 +3332,29 @@ window.QuantumTasks = {
   }
   function syncPeople() {
     const wanted = new Map();
-    wanted.set("reception", {
-      floor: 0,
-      teacher: true,
-      seed: 1,
-      role: "reception",
-      stationary: true,
-    });
+    if (!lift.passenger || !escortPhases.has(lift.phase))
+      wanted.set("reception", {
+        floor: 0,
+        teacher: false,
+        seed: 1,
+        role: "reception",
+        stationary: true,
+      });
     wanted.set("director", {
       floor: 1,
-      teacher: true,
+      teacher: false,
       seed: 2,
       role: "director",
       stationary: true,
     });
     state.candidates.forEach((v, i) =>
-      wanted.set("candidate:" + v.id, { floor: 1, teacher: true, seed: i + 5, role: "candidate" }),
+      wanted.set("candidate:" + v.id, { floor: 1, teacher: false, seed: i + 5, role: "candidate" }),
     );
     state.floors.forEach((f, j) => {
       f.teachers.forEach((id, i) => {
         if (!state.teachers[id].training)
           wanted.set("teacher:" + id, {
-            floor: j + 2,
+            floor: j + 3,
             teacher: true,
             seed: i + j + 3,
             role: "teacher",
@@ -3123,7 +3363,7 @@ window.QuantumTasks = {
       for (let i = 0; i < f.students; i++) {
         const key = `student:${f.id}:${f.projects}:${i}`;
         if (lift.phase !== "exiting" || lift.deliveredKey !== key)
-          wanted.set(key, { floor: j + 2, teacher: false, seed: i + j * 9, role: "student" });
+          wanted.set(key, { floor: j + 3, teacher: false, seed: i + j * 9, role: "student" });
       }
     });
     state.newbies.forEach((n, i) => {
@@ -3209,7 +3449,7 @@ window.QuantumTasks = {
       last = layouts[layouts.length - 2],
       top = last.top + o;
     A.rect(ctx, tx + 7, top, 33, first.bottom + o - top, "#514632");
-    for (let i = 0; i < state.floors.length + 2; i++) {
+    for (let i = 0; i < state.floors.length + 3; i++) {
       const l = layouts[i],
         y = l.top + o;
       A.rect(ctx, tx + 8, y + 2, 29, l.h - 4, "#6a5c40");
@@ -3251,7 +3491,7 @@ window.QuantumTasks = {
     if (lift.phase === "escort-walk" && lift.passenger) {
       const lobbyY = layouts[0].bottom + o - 6;
       drawCharacter("newbie", rx + lift.escortX, lobbyY, 13, !!lift.held, false, lift.held === "right" ? 1 : -1);
-      drawCharacter("guide", rx + lift.guideX, lobbyY, 21, !!lift.held, true, lift.held === "right" ? 1 : -1);
+      drawCharacter("reception", rx + lift.guideX, lobbyY, 1, !!lift.held, false, lift.held === "right" ? 1 : -1);
     } else if (lift.phase === "escort-boarding" && lift.passenger) {
       const q = 1 - Math.max(0, lift.wait) / 0.65;
       const lobbyY = layouts[0].bottom + o - 6;
@@ -3259,15 +3499,15 @@ window.QuantumTasks = {
       const ex = tx + 24;
       const x1 = sx + (ex - sx) * q;
       drawCharacter("newbie", x1, lobbyY, 13, true, false, -1, 0.9);
-      drawCharacter("guide", x1 + 9, lobbyY, 21, true, true, -1, 0.9);
+      drawCharacter("reception", x1 + 9, lobbyY, 1, true, false, -1, 0.9);
     } else if (lift.phase === "escort-lift" && lift.passenger) {
       drawCharacter("newbie", tx + 20, by - 7, 13, false, false, 1, 0.72);
-      drawCharacter("guide", tx + 29, by - 7, 21, false, true, 1, 0.72);
+      drawCharacter("reception", tx + 29, by - 7, 1, false, false, 1, 0.72);
     } else if (lift.phase === "escort-exiting" && lift.passenger) {
       const q = 1 - Math.max(0, lift.wait) / 0.75;
       const x1 = tx + 24 + q * 42;
       drawCharacter("newbie", x1, by - 7, 13, true, false, 1, 0.9);
-      drawCharacter("guide", x1 - 8, by - 7, 21, true, true, 1, 0.9);
+      drawCharacter("reception", x1 - 8, by - 7, 1, true, false, 1, 0.9);
     } else if (lift.passenger && lift.phase !== "pickup") {
       drawCharacter(
         "elevator",
@@ -3314,7 +3554,7 @@ window.QuantumTasks = {
     }
     A.rect(ctx, tx - 2, o, TW + 5, 5, "#c4b898");
     A.rect(ctx, tx - 4, o + 5, TW + 9, 3, "#62596a");
-    for (let i = 0; i < state.floors.length + 2; i++) {
+    for (let i = 0; i < state.floors.length + 3; i++) {
       let y = layouts[i].top + o + 19;
       A.rect(ctx, tx + 253, y, 2, 37, "#f0e0ab");
       A.rect(ctx, tx + 253, y + 36, 2, 2, "#919181");
@@ -3387,12 +3627,32 @@ window.QuantumTasks = {
   }
 
   // Contextual controls are placed inside the selected, expanded room.
-  function button(label, action, data = {}, kind = "", disabled = false) {
-    return `<button class="btn ${kind}" data-action="${action}" ${Object.entries(
+  function button(label, action, data = {}, kind = "", disabled = false, badge = null) {
+    const raw = `<button class="btn ${kind}" data-action="${action}" ${Object.entries(
       data,
     )
       .map(([k, v]) => `data-${k}="${esc(v)}"`)
       .join(" ")} ${disabled ? "disabled" : ""}>${label}</button>`;
+    if (!badge) return raw;
+    const tone = badge.tone || "red";
+    return `<span class="badge-wrap">${raw}<span class="notify-badge ${tone}" aria-hidden="true">${esc(badge.text)}</span></span>`;
+  }
+  function chapterGiftCount() {
+    const values = {
+      projects: E.totalProjects(state),
+      teachers: E.teacherList(state).length,
+      floors: state.floors.length,
+      level: state.floors.length ? Math.max(...state.floors.map((f) => f.level)) : 0,
+      trophies: state.trophies,
+      joint: state.jointDone,
+    };
+    let count = 0;
+    for (let i = state.chapter; i < E.CHAPTERS.length; i++) {
+      const c = E.CHAPTERS[i];
+      if (Object.entries(c.need).every(([k, n]) => values[k] >= n)) count++;
+      else break;
+    }
+    return count;
   }
   function resources() {
     return "";
@@ -3598,31 +3858,53 @@ window.QuantumTasks = {
         setBody(
           "Ресепшен",
           (saveError ? `<p class="status">${esc(saveError)}</p>` : "") +
-            button(`Гости на ресепшене · ${state.newbies.length}`, "view", {
-              view: "visitors",
-            }) +
+            button(
+              "Гости на ресепшене",
+              "view",
+              { view: "visitors" },
+              "",
+              false,
+              state.newbies.length
+                ? { text: String(state.newbies.length), tone: "red" }
+                : null,
+            ) +
             button("Журнал центра", "view", { view: "journal" }, "secondary"),
           reset,
         );
         return;
       }
       if (id === "director") {
+        const gifts = chapterGiftCount();
         const candidateButton = state.candidates.length
           ? button(
-              `Кандидаты · ${state.candidates.length}`,
+              "Кандидаты",
               "view",
               { view: "candidates" },
+              "",
+              false,
+              { text: String(state.candidates.length), tone: "red" },
             )
           : "";
         setBody(
           "Кабинет директора",
           `<p class="lead">Маленькая башня.<br>Большие открытия.</p>` +
             candidateButton +
-            button("Управление кванториумом", "view", { view: "management" }, "gold") +
+            button(
+              "Управление кванториумом",
+              "view",
+              { view: "management" },
+              "gold",
+              false,
+              gifts ? { text: "!", tone: "gold" } : null,
+            ) +
             button("Сохранение и настройки", "view", { view: "settings" }, "secondary") +
             button("Как играть", "view", { view: "help" }, "ghost"),
           reset,
         );
+        return;
+      }
+      if (id === "conference") {
+        renderConference(reset);
         return;
       }
       if (f) {
@@ -3652,6 +3934,7 @@ window.QuantumTasks = {
               { id: f.id },
               "gold",
               !f.ready,
+              f.ready ? { text: "!", tone: "gold" } : null,
             ) +
             button(`Преподаватели · ${f.teachers.length}/3`, "view", {
               view: "staff",
@@ -3763,7 +4046,7 @@ window.QuantumTasks = {
     if (view === "help") {
       setBody(
         "Как устроена башня",
-        `<h3>1. Постройте первый квантум</h3><p>Нажмите табличку на крыше. Первый квантум бесплатный, и можно выбрать любое направление.</p><h3>2. Наймите первого преподавателя</h3><p>После строительства в кабинете директора появится кнопка «Кандидаты». Первый кандидат подходит выбранному квантуму и нанимается бесплатно.</p><h3>3. Загляните в квантум</h3><p>Когда группа заполнится, начнётся занятие. После него появится проект: решите задачу и получите монеты и знания.</p><h3>4. Помогите новеньким</h3><p>Откройте «Гости на ресепшене». В режиме сопровождения ведите ребёнка стрелками к лифту, поднимите ↑/↓ до нужного этажа и выведите → в квантум.</p><h3>5. Управляйте центром</h3><p>В кабинете директора откройте «Управление кванториумом»: там находятся штат, главы, команды и выставки, совместный проект и коллекция открытий.</p><p class="micro">Колесо / перетаскивание — обзор башни. Esc — закрыть комнату или отменить сопровождение. В сопровождении используйте экранные стрелки или клавиши ← ↑ ↓ →.</p><p class="micro">Ошибки в заданиях не отнимают награду. Сохранение, пауза и настройки находятся в кабинете директора.</p>`,
+        `<h3>1. Постройте первый квантум</h3><p>Нажмите табличку на крыше. Первый квантум бесплатный, и можно выбрать любое направление.</p><h3>2. Наймите первого преподавателя</h3><p>После строительства в кабинете директора появится кнопка «Кандидаты». Первый кандидат подходит выбранному квантуму и нанимается бесплатно.</p><h3>3. Загляните в квантум</h3><p>Когда группа заполнится, начнётся занятие. После него появится проект: решите задачу и получите монеты и знания.</p><h3>4. Помогите новеньким</h3><p>Откройте «Гости на ресепшене». В режиме сопровождения ведите ребёнка стрелками к лифту, поднимите ↑/↓ до нужного этажа и выведите → в квантум.</p><h3>5. Проводите мероприятия</h3><p>В конференц-зале доступны отдельные мини-игры: научный квиз, открытый урок и битва квантумов. После мероприятия зал готовится 5 минут.</p><h3>6. Управляйте центром</h3><p>В кабинете директора откройте «Управление кванториумом»: там находятся штат, главы, команды и соревнования, совместный проект и коллекция открытий.</p><p class="micro">Колесо / перетаскивание — обзор башни. Esc — закрыть комнату или отменить сопровождение. В сопровождении используйте экранные стрелки или клавиши ← ↑ ↓ →.</p><p class="micro">Ошибки в заданиях не отнимают награду. Сохранение, пауза и настройки находятся в кабинете директора.</p>`,
         reset,
       );
       return;
@@ -3805,22 +4088,150 @@ window.QuantumTasks = {
       reset,
     );
   }
+  function eventState() {
+    state.events ||= { unlocked: ["quiz"], cooldown: 0, completed: 0 };
+    return state.events;
+  }
+  function renderConference(reset = false) {
+    const es = eventState();
+    const cooling = es.cooldown > 0;
+    const cards = E.EVENTS.map((ev) => {
+      const unlocked = es.unlocked.includes(ev.id);
+      if (!unlocked) {
+        const progressLocked = es.completed < ev.needCompleted;
+        const price = [
+          ev.unlockCoins ? `${ev.unlockCoins} ●` : "",
+          ev.unlockKnowledge ? `${ev.unlockKnowledge} ◆` : "",
+        ].filter(Boolean).join(" + ");
+        return `<article class="card"><h3>${ev.name}</h3><p>${ev.description}</p>${
+          progressLocked
+            ? `<p class="micro">Откроется после ${ev.needCompleted} проведённых мероприятий. Сейчас: ${es.completed}.</p>`
+            : `<p class="micro">Открытие: ${price}.</p>`
+        }${button(
+          progressLocked ? "Пока недоступно" : `Открыть · ${price}`,
+          "unlock-event",
+          { id: ev.id },
+          "secondary",
+          progressLocked || state.coins < ev.unlockCoins || state.knowledge < ev.unlockKnowledge,
+        )}</article>`;
+      }
+      return `<article class="card"><h3>${ev.name}</h3><p>${ev.description}</p><p class="micro">Награда: ${ev.reward.coins} ● и ${ev.reward.knowledge} ◆.</p>${button(
+        cooling ? `Подготовка зала · ${clock(es.cooldown)}` : "Провести мероприятие ▶",
+        "start-event",
+        { id: ev.id },
+        ev.id === "battle" ? "gold" : "",
+        cooling,
+      )}</article>`;
+    }).join("");
+    setBody(
+      "Конференц-зал",
+      `<div class="event-marquee"><b>Мероприятия центра</b><br><span class="micro">Проводите мини-игры, получайте ресурсы и открывайте новые форматы. После каждого мероприятия зал готовится 5 минут — это общий перерыв для всех форматов.</span>${
+        cooling ? `<div class="status">Следующее мероприятие через <span data-event-cooldown>${clock(es.cooldown)}</span></div>` : ""
+      }</div><div class="cards">${cards}</div><p class="micro">Проведено мероприятий: ${es.completed}.</p>`,
+      reset,
+    );
+  }
+  function shuffledEventDeck(seedText = "") {
+    const symbols = ["⚛", "★", "⚙", "◆"];
+    const deck = symbols.flatMap((symbol, pair) => [
+      { symbol, pair, key: `${pair}a` },
+      { symbol, pair, key: `${pair}b` },
+    ]);
+    // Fisher-Yates with Math.random: this is gameplay-only and need not be deterministic.
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+    return deck;
+  }
+  function startEvent(id) {
+    const ev = E.EVENTS.find((x) => x.id === id);
+    const es = eventState();
+    if (!ev || !es.unlocked.includes(id) || es.cooldown > 0) return;
+    game = {
+      kind: "event-memory",
+      eventId: id,
+      deck: shuffledEventDeck(id),
+      open: [],
+      matched: [],
+      lock: false,
+      moves: 0,
+      done: false,
+      status: "Найдите четыре пары символов.",
+    };
+    renderEventGame(true);
+  }
+  function renderEventGame(reset = false) {
+    const g = game;
+    const ev = E.EVENTS.find((x) => x.id === g?.eventId);
+    if (!g || g.kind !== "event-memory" || !ev) return;
+    const html =
+      `<div class="event-marquee"><h3>${ev.name}</h3><p>Откройте карточки и найдите четыре пары. Ошибки не отнимают награду.</p></div>` +
+      `<div class="event-grid">${g.deck.map((card, i) => {
+        const open = g.open.includes(i);
+        const matched = g.matched.includes(card.pair);
+        return `<button class="event-card ${open ? "revealed" : ""} ${matched ? "matched" : ""}" data-action="event-card" data-index="${i}" ${matched || g.lock || g.done ? "disabled" : ""} aria-label="${matched ? "Пара найдена" : open ? card.symbol : "Закрытая карточка"}">${open || matched ? card.symbol : "?"}</button>`;
+      }).join("")}</div>` +
+      `<div class="status" role="status">${esc(g.done ? `Все пары найдены за ${g.moves} ходов!` : g.status)}</div>` +
+      (g.done
+        ? button(
+            `Завершить мероприятие · +${ev.reward.coins} ● +${ev.reward.knowledge} ◆`,
+            "event-claim",
+            { id: ev.id },
+            "gold",
+          )
+        : "") +
+      button("Вернуться в конференц-зал", "cancel-game", {}, "ghost");
+    setBody("Мини-игра мероприятия", html, reset);
+  }
   function renderManagement(reset) {
     const ch = E.CHAPTERS[state.chapter],
-      cp = E.chapterProgress(state);
+      cp = E.chapterProgress(state),
+      teamReady = state.floors.filter((f) => {
+        const power = f.team * 10 + E.bestSkill(state, f) * 3;
+        return (
+          f.team >= 2 &&
+          power >= 25 &&
+          !state.competitions.some((c) => c.floor === f.id)
+        );
+      }).length,
+      jointReady =
+        !state.joint &&
+        state.knowledge >= 180 &&
+        ["it", "bio", "hi"].every((id) =>
+          state.floors.some((f) => f.id === id && f.projects > 0),
+        );
     setBody(
       "Управление кванториумом",
       button(`Штат · ${E.teacherList(state).length}`, "view", { view: "staff" }) +
         button(
           ch
-            ? `Главы · ${state.chapter + 1}/6${cp.complete ? " · награда!" : ""}`
+            ? `Главы · ${state.chapter + 1}/6`
             : "Главы · завершены",
           "view",
           { view: "goals" },
           "gold",
+          false,
+          chapterGiftCount()
+            ? { text: String(chapterGiftCount()), tone: "gold" }
+            : null,
         ) +
-        button("Команды и соревнования", "view", { view: "teams" }, "secondary") +
-        button("Совместный проект", "view", { view: "research" }, "secondary") +
+        button(
+          "Команды и соревнования",
+          "view",
+          { view: "teams" },
+          "secondary",
+          false,
+          teamReady ? { text: String(teamReady), tone: "gold" } : null,
+        ) +
+        button(
+          "Совместный проект",
+          "view",
+          { view: "research" },
+          "secondary",
+          false,
+          jointReady ? { text: "!", tone: "gold" } : null,
+        ) +
         button(`Коллекция открытий · ${state.collection.length}/30`, "view", { view: "collection" }, "secondary") +
         `<p class="micro">Доход центра: ${E.incomeRate(state)} монет/мин. Новые этажи строятся с крыши башни.</p>`,
       reset,
@@ -4014,7 +4425,7 @@ window.QuantumTasks = {
         ) +
         `<div class="line"></div>` +
         button("Новая башня", "new-game", {}, "danger") +
-        `<p class="micro">Кванториум · Tower Edition 2.1<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
+        `<p class="micro">Кванториум · Tower Edition 2.2<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
       reset,
     );
   }
@@ -4050,6 +4461,10 @@ window.QuantumTasks = {
   }
   function renderGame(reset = false) {
     const g = game;
+    if (g?.kind === "event-memory") {
+      renderEventGame(reset);
+      return;
+    }
     if (!g) return;
     if (g.done) {
       const f = state.floors.find((x) => x.id === g.floor),
@@ -4167,8 +4582,10 @@ window.QuantumTasks = {
     }
     if (phasesBusy()) return;
     const npc = people.get(n.id);
+    const frozenAdmin = currentReceptionRole();
     closeRoom();
     lift.passenger = { ...n };
+    lift.adminRole = frozenAdmin;
     lift.phase = "escort-walk";
     lift.target = 0;
     lift.wait = 0;
@@ -4188,6 +4605,7 @@ window.QuantumTasks = {
     lift.target = lift.level;
     lift.autoTimer = 0;
     lift.held = null;
+    lift.adminRole = null;
     escortControls.hidden = true;
     clampCam();
     syncPeople();
@@ -4200,7 +4618,7 @@ window.QuantumTasks = {
     save();
   }
   function callLift(index) {
-    if (index < 0 || index >= state.floors.length + 2) return;
+    if (index < 0 || index >= state.floors.length + 3) return;
     if (escortPhases.has(lift.phase)) {
       tell("Во время сопровождения используйте стрелки внизу экрана.", Math.round(lift.level));
       return;
@@ -4269,7 +4687,7 @@ window.QuantumTasks = {
         const sign = dir === "up" ? 1 : -1;
         lift.level = Math.max(
           0,
-          Math.min(state.floors.length + 1, lift.level + sign * 1.05 * dt),
+          Math.min(state.floors.length + 2, lift.level + sign * 1.05 * dt),
         );
         lift.target = lift.level;
       } else if (dir === "right") {
@@ -4285,7 +4703,7 @@ window.QuantumTasks = {
     const dest = escortDestination();
     if (lift.phase === "escort-walk") {
       escortStatus.textContent =
-        `Сопровождающий и ${lift.passenger.name}: ведите к лифту стрелками ← / →.`;
+        `Администратор и ${lift.passenger.name}: ведите к лифту стрелками ← / →.`;
     } else if (lift.phase === "escort-boarding") {
       escortStatus.textContent = "Заходим в лифт…";
     } else if (lift.phase === "escort-lift") {
@@ -4341,6 +4759,7 @@ window.QuantumTasks = {
           lift.phase = "idle";
           lift.autoTimer = 0;
           lift.held = null;
+          lift.adminRole = null;
           escortControls.hidden = true;
           clampCam();
           syncPeople();
@@ -4435,7 +4854,7 @@ window.QuantumTasks = {
         lift.autoPerson = Math.floor(t) % 12;
         lift.target =
           Math.round(lift.level) === 0
-            ? 1 + (Math.floor(t) % (state.floors.length + 1))
+            ? 1 + (Math.floor(t) % (state.floors.length + 2))
             : 0;
         lift.phase = "auto";
       }
@@ -4465,6 +4884,7 @@ window.QuantumTasks = {
     lift.level = 0;
     lift.target = 0;
     lift.held = null;
+    lift.adminRole = null;
     people.clear();
     fresh = false;
     selected = null;
@@ -4637,10 +5057,72 @@ window.QuantumTasks = {
             const s = E.initialState();
             replaceState(s);
             fresh = true;
-            tell("Начните с крыши: первый квантум можно построить бесплатно.", 2);
+            tell("Начните с крыши: первый квантум можно построить бесплатно.", 3);
           },
         );
         break;
+      case "unlock-event": {
+        const res = perform("unlockEvent", { id: d.id });
+        if (res.ok) renderConference(true);
+        break;
+      }
+      case "start-event":
+        startEvent(d.id);
+        break;
+      case "event-card": {
+        if (game?.kind !== "event-memory" || game.done || game.lock) break;
+        const i = Number(d.index);
+        if (!Number.isInteger(i) || i < 0 || i >= game.deck.length) break;
+        if (game.open.includes(i) || game.matched.includes(game.deck[i].pair)) break;
+        game.open.push(i);
+        sound();
+        if (game.open.length === 2) {
+          game.moves++;
+          const [a, b2] = game.open;
+          if (game.deck[a].pair === game.deck[b2].pair) {
+            game.matched.push(game.deck[a].pair);
+            game.open = [];
+            game.status = "Пара найдена!";
+            if (game.matched.length === 4) {
+              game.done = true;
+              game.status = "Все пары найдены!";
+              sound(true);
+              burst(2);
+            }
+            renderEventGame();
+          } else {
+            game.lock = true;
+            game.status = "Не совпало — запомните карточки.";
+            renderEventGame();
+            const current = game;
+            setTimeout(() => {
+              if (game !== current) return;
+              game.open = [];
+              game.lock = false;
+              game.status = "Попробуйте следующую пару.";
+              renderEventGame();
+            }, state.settings.motion ? 650 : 120);
+          }
+        } else {
+          game.status = "Откройте вторую карточку.";
+          renderEventGame();
+        }
+        break;
+      }
+      case "event-claim": {
+        if (game?.kind !== "event-memory" || !game.done) break;
+        const id = game.eventId;
+        game = null;
+        view = "home";
+        const res = perform("completeEvent", { id }, false);
+        if (res.ok) {
+          renderConference(true);
+          tell("Мероприятие прошло успешно!", 2);
+        } else {
+          renderConference(true);
+        }
+        break;
+      }
       case "start-game":
         startGame(d.id);
         break;
@@ -4746,7 +5228,6 @@ window.QuantumTasks = {
   body.addEventListener("click", handleAction);
   document.getElementById("close").addEventListener("click", closeRoom);
   modalBackdrop.addEventListener("click", closeRoom);
-  document.getElementById("escort-cancel").addEventListener("click", cancelEscort);
   for (const b of escortControls.querySelectorAll("[data-escort-dir]")) {
     const press = (e) => {
       if (b.disabled) return;
@@ -4991,6 +5472,9 @@ window.QuantumTasks = {
       state.competitions.length,
       !!state.joint,
       state.chapter,
+      state.events?.unlocked,
+      state.events?.completed,
+      Math.ceil(state.events?.cooldown || 0) === 0,
     ]);
     if (sig !== lastSig) {
       lastSig = sig;
@@ -5037,6 +5521,9 @@ window.QuantumTasks = {
       body
         .querySelectorAll("[data-joint]")
         .forEach((el) => (el.textContent = clock(state.joint?.left || 0)));
+      body
+        .querySelectorAll("[data-event-cooldown]")
+        .forEach((el) => (el.textContent = clock(state.events?.cooldown || 0)));
       body.querySelectorAll('[data-action="build"]').forEach((b) => {
         const first = state.floors.length === 0;
         b.disabled = first
@@ -5080,6 +5567,7 @@ window.QuantumTasks = {
       cam += (targetCam - cam) * Math.min(1, dt * 12);
       if (Math.abs(targetCam - cam) < 0.05) cam = targetCam;
       makeLayouts();
+      updateAdminShift(dt);
       updatePeople(dt);
       updateLift(dt);
       positionUI();
@@ -5099,7 +5587,7 @@ window.QuantumTasks = {
   }
   // Read-only inspection is useful when extending the game in a browser console.
   window.QuantumTower = Object.freeze({
-    version: "3.0",
+    version: "4.0",
     inspect: () => JSON.parse(JSON.stringify(state)),
     get lift() {
       return {
@@ -5121,7 +5609,7 @@ window.QuantumTasks = {
   save();
   if (saveError) tell(saveError, 0, true);
   else if (fresh)
-    tell("Начните с крыши: первый квантум можно построить бесплатно.", 2);
+    tell("Начните с крыши: первый квантум можно построить бесплатно.", 3);
   requestAnimationFrame(frame);
 })();
 
