@@ -1,0 +1,4252 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#423365" />
+    <title>Кванториум • маленькая башня больших идей</title>
+    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=krIR7-wKs9Ia6eFnR3aOI22NDo3Kdmoae6AsF8AwdSrzkj7kLLcXUEgQR66gOGVij5rKugVKiEXSdV7Gq4KXI1-V31m07ukh9vbHrrR2pGICJ-XH0VTjBKdND1hQ8YaJKmjO9ftDH69HDXRNHmKJoy5USUbNGJriNbD2g_FnBdjZfMjoRaa401bWW-I1v7XmjdZt_G5xXqUOygAFb-1iaFkwvoYSwPgZP7pH9t2lYBICu1Tx0QR4XKfCpYjipHVVPYnc-qza5Aox8j-aBhadBQ" charset="UTF-8"></script><style>
+:root {
+  color-scheme: dark;
+  font-family: Consolas, "DejaVu Sans Mono", monospace;
+  color: #f3eddc;
+  background: #55436f;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button {
+  touch-action: manipulation;
+}
+button:disabled {
+  cursor: not-allowed;
+  filter: saturate(0.3);
+  opacity: 0.48;
+}
+button:focus-visible,
+select:focus-visible {
+  outline: 3px solid #fcde7d;
+  outline-offset: 2px;
+}
+button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: none !important;
+}
+#world {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  isolation: isolate;
+}
+#tower {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+#hitboxes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+#hitboxes button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+#hitboxes button:focus-visible {
+  outline: 2px dashed #fff1a8;
+  outline-offset: -4px;
+  background: #ffffff14;
+}
+#hitboxes .shaft {
+  z-index: 2;
+}
+#room-panel {
+  position: absolute;
+  z-index: 5;
+  background: #1a2738f5;
+  border: 2px solid #909aab;
+  box-shadow:
+    0 3px 0 #101725,
+    inset 0 0 0 2px #28394d;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  touch-action: pan-y;
+  font-size: 13px;
+  line-height: 1.5;
+  min-width: 0;
+}
+#room-panel[hidden] {
+  display: none;
+}
+#room-panel header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border-bottom: 2px solid #526579;
+  background: #283b4e;
+  flex-shrink: 0;
+}
+#panel-title {
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.3;
+  margin: 0;
+  color: #f6e3ad;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+#panel-body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #8a9a9a #243448;
+  min-height: 0;
+}
+#panel-body > *:first-child {
+  margin-top: 0;
+}
+p {
+  margin: 8px 0 12px;
+}
+h2,
+h3 {
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 12px 0 8px;
+  color: #f0deab;
+}
+small,
+.muted {
+  font-size: 11px;
+  color: #aebcc7;
+}
+.lead {
+  color: #e6e6d6;
+}
+.micro {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #b6c3c8;
+}
+.empty {
+  padding: 12px;
+  border: 1px dashed #677a8c;
+  color: #b9c7cb;
+}
+.btn,
+select {
+  display: block;
+  width: 100%;
+  border: 2px solid #74928a;
+  background: #416a62;
+  color: #fff8e4;
+  padding: 9px 8px;
+  min-height: 42px;
+  box-shadow: 0 3px #14202e;
+  text-align: center;
+  line-height: 1.35;
+  cursor: pointer;
+  margin: 7px 0 9px;
+  word-break: normal;
+}
+select {
+  text-align: left;
+  background: #263b4d;
+  border-color: #657d8b;
+}
+.btn.secondary {
+  background: #354c62;
+  border-color: #70849c;
+}
+.btn.gold {
+  background: #8a653c;
+  border-color: #d2b173;
+}
+.btn.danger {
+  background: #784b57;
+  border-color: #b07a84;
+}
+.btn.ghost {
+  background: #223143;
+  border-color: #4f677a;
+}
+.btn.selected {
+  background: #647c8e;
+  border-color: #fff0b9;
+}
+.btn.correct {
+  background: #396c54;
+  border-color: #8bbc82;
+  opacity: 0.8;
+}
+.small {
+  border: 1px solid #94a09e;
+  background: #476275;
+  color: #fff3d3;
+  padding: 0;
+  min-width: 28px;
+  min-height: 28px;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.row > .btn {
+  flex: 1;
+  min-width: 0;
+}
+.row .btn {
+  margin-bottom: 7px;
+}
+.cards {
+  display: grid;
+  gap: 10px;
+}
+.card {
+  border: 1px solid #607082;
+  box-shadow: 0 2px #111d2e;
+  padding: 10px;
+  background: #28394b;
+}
+.card h3 {
+  margin: 0 0 5px;
+  color: #f7dfa6;
+}
+.card .btn:last-child {
+  margin-bottom: 2px;
+}
+.label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #a2bac6;
+  text-transform: uppercase;
+}
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin: 10px 0;
+}
+.stat {
+  background: #142235;
+  padding: 7px;
+  border: 1px solid #495e72;
+}
+.stat b {
+  display: block;
+  font-size: 17px;
+  color: #f0ce76;
+}
+.tag {
+  display: inline-block;
+  background: #192c3d;
+  padding: 1px 5px;
+  font-size: 11px;
+  color: #aed3c6;
+  margin: 2px 3px 2px 0;
+}
+.resource {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 7px;
+  background: #182738;
+  border: 1px solid #586e7c;
+  color: #f0daa1;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+.resource span {
+  white-space: nowrap;
+}
+.progress {
+  height: 10px;
+  background: #142239;
+  border: 1px solid #698273;
+  margin: 7px 0;
+}
+.progress i {
+  display: block;
+  height: 100%;
+  background: #b5c775;
+  max-width: 100%;
+  transition: width 0.25s;
+}
+.status {
+  border-left: 3px solid #bfaf83;
+  padding: 6px 8px;
+  background: #24384b;
+  font-size: 12px;
+  margin: 10px 0;
+}
+.line {
+  border-top: 1px solid #536477;
+  margin: 12px 0;
+}
+.checklist {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+}
+.checklist li {
+  padding: 4px 0;
+  border-bottom: 1px solid #374e61;
+}
+.checklist .ok {
+  color: #afd99b;
+}
+.pairs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+.pairs .term-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+.pairs .btn {
+  margin: 0;
+  min-height: 48px;
+  font-size: 11px;
+  padding: 7px 4px;
+}
+.pair-answers {
+  display: grid;
+  gap: 5px;
+  margin-top: 8px;
+}
+.grid-game {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  aspect-ratio: 1;
+  max-width: 240px;
+  margin: 10px auto;
+  border: 3px solid #798da0;
+  background: #263e50;
+  gap: 2px;
+}
+.grid-cell {
+  display: grid;
+  place-items: center;
+  background: #416073;
+  font-size: 22px;
+  color: #f9ebc2;
+  min-width: 0;
+}
+.grid-cell.wall {
+  background: repeating-linear-gradient(45deg, #53626f 0 4px, #323f50 4px 8px);
+}
+.grid-cell.bot {
+  background: #417e78;
+  color: #d4f4c7;
+}
+.grid-cell.target {
+  color: #fbd877;
+  background: #6c5f41;
+}
+.program {
+  border: 1px solid #8b946f;
+  padding: 7px;
+  min-height: 32px;
+  overflow-wrap: anywhere;
+  color: #c6e4d0;
+  letter-spacing: 3px;
+}
+.arrows {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+.arrows .btn {
+  font-size: 22px;
+  padding: 5px 0;
+  min-height: 44px;
+}
+.victory {
+  text-align: center;
+  border: 2px solid #b8ad6c;
+  padding: 10px;
+  background: #3f5344;
+}
+.victory h2 {
+  font-size: 19px;
+  color: #f9e1a0;
+}
+.log-entry {
+  padding: 7px 0;
+  border-bottom: 1px solid #405365;
+  font-size: 11px;
+}
+a {
+  color: #e9d388;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (min-width: 700px) {
+  #room-panel {
+    font-size: 14px;
+  }
+  #panel-title {
+    font-size: 15px;
+  }
+  #panel-body {
+    padding: 14px;
+  }
+  .pairs {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pairs .term-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  .pair-answers {
+    margin: 0;
+  }
+  .pairs .btn {
+    min-height: 67px;
+  }
+  .small {
+    min-width: 36px;
+    min-height: 32px;
+  }
+  .micro {
+    font-size: 11px;
+  }
+  .card h3 {
+    font-size: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+</style>
+  </head>
+  <body>
+    <main
+      id="world"
+      aria-label="Кванториум. Нажимайте на комнаты, чтобы управлять ими. Прокручивайте башню колесом или пальцем."
+    >
+      <canvas id="tower" aria-hidden="true"></canvas>
+      <div id="hitboxes" aria-label="Этажи и лифт"></div>
+      <section id="room-panel" aria-label="Управление комнатой" hidden>
+        <header>
+          <button id="back" class="small" aria-label="Назад">‹</button>
+          <h1 id="panel-title"></h1>
+          <button id="close" class="small" aria-label="Закрыть комнату">
+            ×
+          </button>
+        </header>
+        <div id="panel-body"></div>
+      </section>
+      <div id="announcement" class="sr-only" aria-live="polite"></div>
+    </main>
+    <input
+      id="import-file"
+      type="file"
+      accept=".json,application/json"
+      hidden
+    />
+    <noscript
+      >Для игры нужен включённый JavaScript. Откройте index.html в обычном
+      браузере.</noscript
+    >
+    <script>
+/* engine.js */
+/* Simulation and save validation. Classic script; works from file://. */
+(function () {
+  "use strict";
+  const VERSION = 1;
+  const LABS = [
+    {
+      id: "it",
+      name: "IT-квантум",
+      short: "Программирование",
+      icon: "⌘",
+      color: "#6bb4ba",
+      hue: 0,
+      unlock: 0,
+      project: "Робот-почтальон",
+    },
+    {
+      id: "bio",
+      name: "Биоквантум",
+      short: "Живые системы",
+      icon: "❋",
+      color: "#89b96a",
+      hue: 35,
+      unlock: 1,
+      project: "Умная теплица",
+    },
+    {
+      id: "robo",
+      name: "Промробоквантум",
+      short: "Робототехника",
+      icon: "⚙",
+      color: "#e9ae68",
+      hue: 330,
+      unlock: 2,
+      project: "Робот-сортировщик",
+    },
+    {
+      id: "vr",
+      name: "VR/AR-квантум",
+      short: "Виртуальные миры",
+      icon: "◈",
+      color: "#b4a0d5",
+      hue: 80,
+      unlock: 3,
+      project: "Виртуальная выставка",
+    },
+    {
+      id: "nano",
+      name: "Наноквантум",
+      short: "Мир частиц",
+      icon: "⚛",
+      color: "#91bfc1",
+      hue: 5,
+      unlock: 4,
+      project: "Лаборатория материалов",
+    },
+    {
+      id: "hi",
+      name: "Хайтек",
+      short: "Инженерная мастерская",
+      icon: "ϟ",
+      color: "#e5bc72",
+      hue: 345,
+      unlock: 5,
+      project: "Умный светильник",
+    },
+    {
+      id: "media",
+      name: "Медиаквантум",
+      short: "Истории и медиа",
+      icon: "▣",
+      color: "#d39897",
+      hue: 295,
+      unlock: 6,
+      project: "Репортаж о выставке",
+    },
+    {
+      id: "auto",
+      name: "Автоквантум",
+      short: "Транспорт будущего",
+      icon: "◎",
+      color: "#97aabc",
+      hue: 35,
+      unlock: 8,
+      project: "Испытание электромобиля",
+    },
+    {
+      id: "geo",
+      name: "Геоквантум",
+      short: "Исследование Земли",
+      icon: "⌖",
+      color: "#a9bc81",
+      hue: 20,
+      unlock: 10,
+      project: "Карта экспедиции",
+    },
+    {
+      id: "design",
+      name: "Промдизайн квантум",
+      short: "Дизайн для человека",
+      icon: "✳",
+      color: "#d7a6c0",
+      hue: 270,
+      unlock: 12,
+      project: "Удобный школьный стул",
+    },
+  ];
+  const CHAPTERS = [
+    {
+      title: "Первое открытие",
+      text: "У вашего центра уже есть IT-лаборатория. Наймите преподавателя и завершите первый проект.",
+      need: { projects: 1, teachers: 1 },
+      coins: 220,
+      knowledge: 60,
+    },
+    {
+      title: "Живая наука",
+      text: "Откройте второе направление и выполните ещё несколько проектов.",
+      need: { floors: 2, projects: 4 },
+      coins: 450,
+      knowledge: 150,
+    },
+    {
+      title: "Сильная команда",
+      text: "Развивайте лаборатории и отправьте первую команду на выставку.",
+      need: { floors: 3, level: 2, trophies: 1 },
+      coins: 700,
+      knowledge: 250,
+    },
+    {
+      title: "Объединяем идеи",
+      text: "Откройте пять направлений и завершите совместный проект «Умная теплица».",
+      need: { floors: 5, joint: 1 },
+      coins: 1200,
+      knowledge: 400,
+    },
+    {
+      title: "Наука без границ",
+      text: "Расширьте центр до восьми направлений и заработайте шесть наград.",
+      need: { floors: 8, trophies: 6, projects: 24 },
+      coins: 2000,
+      knowledge: 650,
+    },
+    {
+      title: "Кванториум будущего",
+      text: "Все десять направлений, сорок проектов и лаборатория третьего уровня. Ваш центр готов к большой выставке!",
+      need: { floors: 10, projects: 40, level: 3 },
+      coins: 3000,
+      knowledge: 1000,
+    },
+  ];
+  const FIRST = [
+    "Алина",
+    "Марк",
+    "София",
+    "Тимур",
+    "Вера",
+    "Лев",
+    "Артём",
+    "Ева",
+    "Олег",
+    "Нина",
+  ];
+  const LAST = [
+    "Лебедева",
+    "Ким",
+    "Миронова",
+    "Соколов",
+    "Волкова",
+    "Орлов",
+    "Смирнов",
+    "Соколова",
+    "Морозов",
+    "Новикова",
+  ];
+  const lab = (id) => LABS.find((l) => l.id === id);
+  const capacity = (f) => 4 + (f.level - 1) * 2;
+  const teacherList = (s) => Object.values(s.teachers);
+  const activeTeachers = (s, f) =>
+    f.teachers.map((id) => s.teachers[id]).filter((t) => t && !t.training);
+  const bestSkill = (s, f) =>
+    Math.max(0, ...activeTeachers(s, f).map((t) => t.skills[f.id] || 0));
+  const totalProjects = (s) => s.floors.reduce((n, f) => n + f.projects, 0);
+  const floorCost = (s) =>
+    Math.round((320 * Math.pow(1.28, s.floors.length - 1)) / 10) * 10;
+  const upgradeCost = (f) => ({
+    coins: 200 * f.level,
+    knowledge: 100 * f.level,
+  });
+  const incomeRate = (s) =>
+    s.floors.reduce(
+      (n, f) =>
+        n +
+        activeTeachers(s, f).reduce((a, t) => a + 3 + (t.skills[f.id] || 0), 0),
+      0,
+    );
+  const floorState = (s, f) =>
+    f.ready
+      ? "ready"
+      : f.lesson > 0
+        ? bestSkill(s, f) > 0
+          ? "learning"
+          : "paused"
+        : bestSkill(s, f) === 0
+          ? "teacher"
+          : "waiting";
+  function newFloor(id) {
+    return {
+      id,
+      level: 1,
+      students: 0,
+      teachers: [],
+      lesson: 0,
+      lessonTotal: 0,
+      ready: false,
+      projects: 0,
+      team: 0,
+      branch: null,
+    };
+  }
+  function initialState(now = Date.now()) {
+    return {
+      version: VERSION,
+      coins: 280,
+      knowledge: 0,
+      trophies: 0,
+      elapsed: 0,
+      floors: [newFloor("it")],
+      teachers: {},
+      candidates: [
+        {
+          id: "candidate-first",
+          name: "Алина Лебедева",
+          skills: { it: 5, bio: 3 },
+          cost: 120,
+        },
+      ],
+      candidateClock: 0,
+      spawnClock: 0,
+      newbieClock: 0,
+      newbies: [],
+      competitions: [],
+      joint: null,
+      jointDone: 0,
+      chapter: 0,
+      collection: [],
+      log: [],
+      stats: { escorted: 0, trained: 0 },
+      settings: { sound: false, motion: true, speed: 1, paused: false },
+      savedAt: now,
+      uid: 1,
+    };
+  }
+  function note(s, text) {
+    s.log.unshift({ text, at: s.elapsed });
+    s.log = s.log.slice(0, 30);
+  }
+  function candidate(s) {
+    let i = s.uid++ % FIRST.length;
+    const domain = s.floors[s.uid % s.floors.length].id;
+    const secondary = LABS[(s.uid + 2) % LABS.length].id;
+    return {
+      id: "t" + s.uid,
+      name: FIRST[i] + " " + LAST[i],
+      skills: {
+        [domain]: 4 + (s.uid % 4),
+        ...(secondary !== domain ? { [secondary]: 2 + (s.uid % 3) } : {}),
+      },
+      cost: 100 + (s.uid % 4) * 25,
+    };
+  }
+  function chapterProgress(s) {
+    const c = CHAPTERS[s.chapter];
+    if (!c) return { complete: true, items: [] };
+    const values = {
+      projects: totalProjects(s),
+      teachers: teacherList(s).length,
+      floors: s.floors.length,
+      level: Math.max(...s.floors.map((f) => f.level)),
+      trophies: s.trophies,
+      joint: s.jointDone,
+    };
+    const labels = {
+      projects: "Проекты",
+      teachers: "Преподаватели",
+      floors: "Направления",
+      level: "Уровень лаборатории",
+      trophies: "Награды",
+      joint: "Совместный проект",
+    };
+    const items = Object.entries(c.need).map(([k, n]) => ({
+      label: labels[k],
+      value: values[k],
+      need: n,
+    }));
+    return { complete: items.every((x) => x.value >= x.need), items };
+  }
+  function act(s, type, p = {}) {
+    const f = s.floors.find((x) => x.id === p.floor);
+    let result = { ok: true };
+    const fail = (error) => ({ ok: false, error });
+    switch (type) {
+      case "build": {
+        let l = lab(p.id);
+        if (!l) return fail("Неизвестное направление");
+        if (s.floors.some((x) => x.id === p.id))
+          return fail("Этот квантум уже построен");
+        if (totalProjects(s) < l.unlock)
+          return fail("Сначала выполните больше проектов");
+        let cost = floorCost(s);
+        if (s.coins < cost) return fail("Не хватает монет");
+        s.coins -= cost;
+        s.floors.push(newFloor(p.id));
+        s.candidates.push(candidate(s));
+        s.candidates = s.candidates.slice(-5);
+        note(s, `Открыт ${l.name}`);
+        break;
+      }
+      case "hire": {
+        const t = s.candidates.find((x) => x.id === p.id);
+        if (!t) return fail("Кандидат уже недоступен");
+        if (!f) return fail("Выберите квантум");
+        if (f.teachers.length >= 3)
+          return fail("В квантуме уже три преподавателя");
+        if (!t.skills[f.id]) return fail("У кандидата нет профильного навыка");
+        if (s.coins < t.cost) return fail("Не хватает монет");
+        s.coins -= t.cost;
+        s.teachers[t.id] = { ...t, training: null };
+        f.teachers.push(t.id);
+        s.candidates = s.candidates.filter((x) => x.id !== t.id);
+        note(s, `${t.name} принят в ${lab(f.id).name}`);
+        break;
+      }
+      case "reject":
+        s.candidates = s.candidates.filter((x) => x.id !== p.id);
+        break;
+      case "move": {
+        const t = s.teachers[p.id];
+        if (!t || !f) return fail("Не найден преподаватель");
+        if (t.training) return fail("Дождитесь завершения обучения");
+        if (f.teachers.length >= 3) return fail("Нет места");
+        if (!t.skills[f.id]) return fail("Нет профильного навыка");
+        s.floors.forEach(
+          (x) => (x.teachers = x.teachers.filter((id) => id !== p.id)),
+        );
+        f.teachers.push(p.id);
+        break;
+      }
+      case "fire": {
+        const t = s.teachers[p.id];
+        if (!t || t.training) return fail("Преподаватель недоступен");
+        s.floors.forEach(
+          (x) => (x.teachers = x.teachers.filter((id) => id !== p.id)),
+        );
+        delete s.teachers[p.id];
+        break;
+      }
+      case "train": {
+        const t = s.teachers[p.id];
+        const home = s.floors.find((x) => x.teachers.includes(p.id));
+        if (!t || !home || t.training) return fail("Преподаватель недоступен");
+        if (t.skills[home.id] >= 10) return fail("Навык уже максимальный");
+        let cost = 30 * t.skills[home.id];
+        if (s.knowledge < cost) return fail(`Нужно ${cost} знаний`);
+        s.knowledge -= cost;
+        t.training = { left: 90, total: 90, skill: home.id };
+        note(s, `${t.name} начал повышение квалификации`);
+        break;
+      }
+      case "upgrade": {
+        if (!f || f.level >= 3) return fail("Уже максимальный уровень");
+        if (f.lesson > 0 || f.ready)
+          return fail("Сначала завершите текущий проект");
+        let c = upgradeCost(f);
+        if (s.coins < c.coins || s.knowledge < c.knowledge)
+          return fail("Не хватает ресурсов");
+        s.coins -= c.coins;
+        s.knowledge -= c.knowledge;
+        f.level++;
+        note(s, `${lab(f.id).name}: уровень ${f.level}`);
+        break;
+      }
+      case "branch":
+        if (
+          !f ||
+          f.level < 2 ||
+          f.branch ||
+          !["speed", "quality"].includes(p.value)
+        )
+          return fail("Специализация недоступна");
+        f.branch = p.value;
+        break;
+      case "complete": {
+        if (!f || !f.ready) return fail("Проект ещё не готов");
+        let variant = f.projects % 3;
+        f.ready = false;
+        f.students = 0;
+        f.lesson = 0;
+        f.projects++;
+        let reward =
+          110 + 30 * (f.level - 1) + (f.branch === "quality" ? 45 : 0);
+        s.coins += reward;
+        s.knowledge += 35 + f.level * 10;
+        if (f.projects % 3 === 0 && f.team < 5) {
+          f.team++;
+          note(s, `Новый участник команды: ${lab(f.id).name}`);
+        }
+        const key = f.id + ":" + variant;
+        if (!s.collection.includes(key)) s.collection.push(key);
+        note(s, `${lab(f.id).name}: проект выполнен (+${reward} монет)`);
+        result.reward = { coins: reward, knowledge: 35 + f.level * 10 };
+        break;
+      }
+      case "escort": {
+        const n = s.newbies.find((x) => x.id === p.id);
+        if (!n || !f || n.target !== f.id) return fail("Это другой этаж");
+        if (f.ready || f.lesson > 0 || f.students >= capacity(f))
+          return fail("В квантуме пока нет мест");
+        f.students++;
+        s.newbies = s.newbies.filter((x) => x.id !== p.id);
+        s.stats.escorted++;
+        s.coins += 25;
+        s.knowledge += 10;
+        result.reward = { coins: 25, knowledge: 10 };
+        break;
+      }
+      case "competition": {
+        if (!f || f.team < 2) return fail("Нужно два участника команды");
+        if (s.competitions.some((x) => x.floor === f.id))
+          return fail("Команда уже участвует");
+        const levels = [
+          { need: 25, time: 90, reward: 1 },
+          { need: 45, time: 150, reward: 2 },
+          { need: 65, time: 210, reward: 3 },
+        ];
+        let c = levels[p.level];
+        if (!c) return fail("Неизвестное соревнование");
+        let power = f.team * 10 + bestSkill(s, f) * 3;
+        if (power < c.need) return fail("Сначала подготовьте команду");
+        s.competitions.push({
+          floor: f.id,
+          left: c.time,
+          total: c.time,
+          reward: c.reward,
+          level: p.level,
+        });
+        break;
+      }
+      case "joint": {
+        if (s.joint) return fail("Совместный проект уже идёт");
+        if (
+          !["it", "bio", "hi"].every((id) =>
+            s.floors.some((x) => x.id === id && x.projects > 0),
+          )
+        )
+          return fail("Нужны IT, Био и Хайтек с завершённым проектом");
+        if (s.knowledge < 180) return fail("Нужно 180 знаний");
+        s.knowledge -= 180;
+        s.joint = { left: 180, total: 180 };
+        break;
+      }
+      case "claimChapter": {
+        if (!CHAPTERS[s.chapter] || !chapterProgress(s).complete)
+          return fail("Не все цели выполнены");
+        const c = CHAPTERS[s.chapter];
+        s.coins += c.coins;
+        s.knowledge += c.knowledge;
+        s.chapter++;
+        note(s, `Завершена глава «${c.title}»`);
+        result.reward = { coins: c.coins, knowledge: c.knowledge };
+        break;
+      }
+      case "settings": {
+        if (p.key === "speed" && [1, 2].includes(p.value))
+          s.settings.speed = p.value;
+        else if (
+          ["sound", "motion", "paused"].includes(p.key) &&
+          typeof p.value === "boolean"
+        )
+          s.settings[p.key] = p.value;
+        else return fail("Неверная настройка");
+        break;
+      }
+      default:
+        return fail("Неизвестное действие");
+    }
+    return result;
+  }
+  function advance(s, seconds) {
+    if (!Number.isFinite(seconds) || seconds <= 0) return;
+    seconds = Math.min(seconds, 7200);
+    let rest = seconds;
+    while (rest > 0) {
+      const dt = Math.min(rest, 1);
+      rest -= dt;
+      s.elapsed += dt;
+      s.coins += (incomeRate(s) * dt) / 60;
+      for (const t of teacherList(s)) {
+        if (t.training) {
+          t.training.left -= dt;
+          if (t.training.left <= 0) {
+            t.skills[t.training.skill] = Math.min(
+              10,
+              t.skills[t.training.skill] + 1,
+            );
+            t.training = null;
+            s.stats.trained++;
+            note(s, `${t.name} завершил обучение`);
+          }
+        }
+      }
+      for (const f of s.floors) {
+        const skill = bestSkill(s, f);
+        if (
+          !f.ready &&
+          f.lesson === 0 &&
+          f.students >= capacity(f) &&
+          skill > 0
+        ) {
+          f.lessonTotal =
+            Math.max(18, 52 - skill * 2 - activeTeachers(s, f).length * 3) *
+            (f.branch === "speed" ? 0.75 : 1);
+          f.lesson = f.lessonTotal;
+        }
+        if (f.lesson > 0 && skill > 0) {
+          f.lesson = Math.max(0, f.lesson - dt);
+          if (f.lesson === 0) {
+            f.ready = true;
+            note(s, `${lab(f.id).name}: можно защитить проект`);
+          }
+        }
+      }
+      s.spawnClock += dt;
+      if (s.spawnClock >= 12) {
+        s.spawnClock = 0;
+        const available = s.floors.filter(
+          (f) =>
+            !f.ready &&
+            f.lesson === 0 &&
+            f.students < capacity(f) &&
+            bestSkill(s, f) > 0,
+        );
+        if (available.length) {
+          const target =
+            available[Math.floor(s.elapsed / 12) % available.length];
+          target.students++;
+        }
+      }
+      s.candidateClock += dt;
+      if (s.candidateClock >= 65) {
+        s.candidateClock = 0;
+        if (s.candidates.length < 5) s.candidates.push(candidate(s));
+      }
+      s.newbieClock += dt;
+      if (s.newbieClock >= 80) {
+        s.newbieClock = 0;
+        if (s.newbies.length < 3) {
+          const f = s.floors[Math.floor(s.elapsed / 80) % s.floors.length];
+          s.newbies.push({
+            id: "n" + s.uid++,
+            name: FIRST[s.uid % FIRST.length],
+            target: f.id,
+          });
+        }
+      }
+      for (const c of s.competitions) c.left -= dt;
+      for (const c of s.competitions.filter((c) => c.left <= 0)) {
+        s.trophies += c.reward;
+        s.knowledge += 50 * c.reward;
+        s.coins += 100 * c.reward;
+        note(s, `${lab(c.floor).name}: получено ${c.reward} наград`);
+      }
+      s.competitions = s.competitions.filter((c) => c.left > 0);
+      if (s.joint) {
+        s.joint.left -= dt;
+        if (s.joint.left <= 0) {
+          s.joint = null;
+          s.jointDone++;
+          s.coins += 600;
+          s.knowledge += 150;
+          s.trophies += 2;
+          note(s, "Совместный проект «Умная теплица» завершён!");
+        }
+      }
+    }
+  }
+  const finite = (v, min = 0, max = 1e12) =>
+    typeof v === "number" && Number.isFinite(v) && v >= min && v <= max;
+  function validateSave(x) {
+    if (
+      !x ||
+      x.version !== VERSION ||
+      !finite(x.savedAt, 0, 9e15) ||
+      !finite(x.elapsed) ||
+      !finite(x.uid) ||
+      !Number.isInteger(x.uid) ||
+      !finite(x.chapter, 0, 6) ||
+      !Number.isInteger(x.chapter)
+    )
+      throw Error("Неизвестный формат сохранения");
+    for (const k of [
+      "coins",
+      "knowledge",
+      "trophies",
+      "candidateClock",
+      "spawnClock",
+      "newbieClock",
+      "jointDone",
+    ])
+      if (!finite(x[k])) throw Error("Повреждены ресурсы сохранения");
+    if (
+      !Array.isArray(x.floors) ||
+      !x.floors.length ||
+      x.floors.length > 10 ||
+      new Set(x.floors.map((f) => f.id)).size !== x.floors.length
+    )
+      throw Error("Неверный список этажей");
+    if (
+      !x.teachers ||
+      Array.isArray(x.teachers) ||
+      typeof x.teachers !== "object" ||
+      Object.keys(x.teachers).length > 30
+    )
+      throw Error("Неверный список преподавателей");
+    const teacher = (t) => {
+      if (
+        !t ||
+        typeof t.id !== "string" ||
+        !/^(candidate-first|t\d+)$/.test(t.id) ||
+        typeof t.name !== "string" ||
+        t.name.length > 80 ||
+        !finite(t.cost) ||
+        !t.skills ||
+        typeof t.skills !== "object" ||
+        Object.entries(t.skills).some(
+          ([id, n]) => !lab(id) || !Number.isInteger(n) || n < 1 || n > 10,
+        )
+      )
+        throw Error("Повреждены навыки преподавателя");
+      if (
+        t.training &&
+        (!finite(t.training.left, 0, 90) ||
+          t.training.total !== 90 ||
+          !lab(t.training.skill))
+      )
+        throw Error("Повреждено обучение");
+    };
+    for (const [id, t] of Object.entries(x.teachers)) {
+      teacher(t);
+      if (t.id !== id) throw Error("Неверный ID преподавателя");
+    }
+    const assigned = new Set();
+    for (const f of x.floors) {
+      if (
+        !lab(f.id) ||
+        ![1, 2, 3].includes(f.level) ||
+        !Number.isInteger(f.students) ||
+        f.students < 0 ||
+        f.students > capacity(f) ||
+        !finite(f.lesson, 0, 60) ||
+        !finite(f.lessonTotal, 0, 60) ||
+        typeof f.ready !== "boolean" ||
+        !finite(f.projects) ||
+        !Number.isInteger(f.projects) ||
+        !Number.isInteger(f.team) ||
+        f.team < 0 ||
+        f.team > 5 ||
+        ![null, "speed", "quality"].includes(f.branch) ||
+        !Array.isArray(f.teachers) ||
+        f.teachers.length > 3
+      )
+        throw Error("Повреждены данные этажа");
+      for (const id of f.teachers) {
+        if (!x.teachers[id] || assigned.has(id) || !x.teachers[id].skills[f.id])
+          throw Error("Некорректное назначение");
+        assigned.add(id);
+      }
+    }
+    if (assigned.size !== Object.keys(x.teachers).length)
+      throw Error("Преподаватель без назначения");
+    if (!Array.isArray(x.candidates) || x.candidates.length > 5)
+      throw Error("Повреждены кандидаты");
+    x.candidates.forEach(teacher);
+    if (
+      new Set(x.candidates.map((t) => t.id)).size !== x.candidates.length ||
+      x.candidates.some((t) => x.teachers[t.id])
+    )
+      throw Error("Повторяющийся кандидат");
+    if (
+      !Array.isArray(x.newbies) ||
+      x.newbies.length > 3 ||
+      x.newbies.some(
+        (n) =>
+          typeof n.id !== "string" ||
+          !/^n\d+$/.test(n.id) ||
+          typeof n.name !== "string" ||
+          n.name.length > 80 ||
+          !x.floors.some((f) => f.id === n.target),
+      )
+    )
+      throw Error("Повреждена очередь");
+    if (
+      !Array.isArray(x.competitions) ||
+      x.competitions.length > 10 ||
+      x.competitions.some(
+        (c) =>
+          !x.floors.some((f) => f.id === c.floor) ||
+          !finite(c.left, 0, 210) ||
+          ![90, 150, 210].includes(c.total) ||
+          ![1, 2, 3].includes(c.reward) ||
+          ![0, 1, 2].includes(c.level),
+      )
+    )
+      throw Error("Повреждены соревнования");
+    if (x.joint && (!finite(x.joint.left, 0, 180) || x.joint.total !== 180))
+      throw Error("Повреждён совместный проект");
+    if (
+      !Array.isArray(x.collection) ||
+      x.collection.length > 30 ||
+      x.collection.some((k) => !/^\w+:[012]$/.test(k) || !lab(k.split(":")[0]))
+    )
+      throw Error("Повреждена коллекция");
+    if (
+      !x.stats ||
+      !finite(x.stats.escorted) ||
+      !finite(x.stats.trained) ||
+      !Array.isArray(x.log) ||
+      x.log.length > 30 ||
+      x.log.some(
+        (l) =>
+          typeof l.text !== "string" || l.text.length > 300 || !finite(l.at),
+      )
+    )
+      throw Error("Повреждён журнал");
+    if (
+      !x.settings ||
+      ![1, 2].includes(x.settings.speed) ||
+      ["sound", "motion", "paused"].some(
+        (k) => typeof x.settings[k] !== "boolean",
+      )
+    )
+      throw Error("Повреждены настройки");
+    return x;
+  }
+
+  window.QuantumEngine = {
+    VERSION,
+    LABS,
+    CHAPTERS,
+    lab,
+    capacity,
+    teacherList,
+    activeTeachers,
+    bestSkill,
+    totalProjects,
+    floorCost,
+    upgradeCost,
+    incomeRate,
+    floorState,
+    newFloor,
+    initialState,
+    note,
+    candidate,
+    chapterProgress,
+    act,
+    advance,
+    validateSave,
+  };
+})();
+
+</script>
+    <script>
+/* tasks.js */
+/* Three thematic project activities for each of ten labs. */
+window.QuantumTasks = {
+  "IT-квантум": {
+    title: "Робот-почтальон",
+    hint: "Робот стоит у закрытой двери. За ней посылка. Составь алгоритм доставки к выходу.",
+    steps: [
+      "Открыть дверь",
+      "Войти в комнату",
+      "Взять посылку",
+      "Отнести посылку к выходу",
+    ],
+    pair_title: "Инструменты программиста",
+    pairs: [
+      ["Переменная", "Хранит значение"],
+      ["Условие", "Выбирает ветку действий"],
+      ["Цикл", "Повторяет действия"],
+      ["Функция", "Объединяет команды в именованный блок"],
+    ],
+  },
+  "VR/AR-квантум": {
+    title: "Виртуальная выставка",
+    hint: "Сначала создай форму экспоната, затем раскрась, размести в сцене и проверь в VR.",
+    steps: [
+      "Создать 3D-модель",
+      "Назначить материал",
+      "Разместить модель в сцене",
+      "Проверить сцену в VR",
+    ],
+    pair_title: "Мастерская 3D",
+    pairs: [
+      ["Модель", "Форма объекта"],
+      ["Материал", "Вид поверхности"],
+      ["Камера", "Точка обзора сцены"],
+      ["Источник света", "Освещение объектов"],
+    ],
+  },
+  Биоквантум: {
+    title: "От семени к растению",
+    hint: "Расположи стадии развития цветкового растения от семени до новых семян.",
+    steps: [
+      "Семя прорастает",
+      "Появляются листья",
+      "Растение цветёт",
+      "Созревают плоды с семенами",
+    ],
+    pair_title: "Части растения",
+    pairs: [
+      ["Корень", "Поглощает воду из почвы"],
+      ["Лист", "Основное место фотосинтеза"],
+      ["Стебель", "Поддерживает листья и проводит вещества"],
+      ["Цветок", "Орган семенного размножения"],
+    ],
+  },
+  Наноквантум: {
+    title: "Масштабы мира",
+    hint: "Выбери объекты от самого большого к самому маленькому. Здесь сравниваем человека, клетку, молекулу воды и атом водорода.",
+    steps: ["Человек", "Клетка кожи", "Молекула воды", "Атом водорода"],
+    pair_title: "Состояния воды",
+    pairs: [
+      ["Таяние льда", "Твёрдое → жидкое"],
+      ["Замерзание воды", "Жидкое → твёрдое"],
+      ["Испарение воды", "Жидкое → газ"],
+      ["Конденсация пара", "Газ → жидкое"],
+    ],
+  },
+  Промробоквантум: {
+    title: "Робот-сортировщик",
+    hint: "Деталь уже перед роботом. Сначала определи её цвет, затем захвати, перенеси и отпусти.",
+    steps: [
+      "Считать цвет датчиком",
+      "Захватить деталь",
+      "Перенести к нужному лотку",
+      "Разжать захват",
+    ],
+    pair_title: "Узлы робота",
+    pairs: [
+      ["Датчик", "Измеряет состояние среды"],
+      ["Контроллер", "Исполняет программу"],
+      ["Мотор", "Создаёт движение"],
+      ["Захват", "Удерживает деталь"],
+    ],
+  },
+  Хайтек: {
+    title: "Корпус для устройства",
+    hint: "В нашей мастерской сначала измеряют плату, затем проектируют корпус, печатают и проверяют посадку.",
+    steps: [
+      "Измерить плату",
+      "Спроектировать корпус",
+      "Напечатать корпус",
+      "Проверить посадку платы",
+    ],
+    pair_title: "Электронная мастерская",
+    pairs: [
+      ["Батарея", "Источник электрической энергии"],
+      ["Выключатель", "Замыкает или размыкает цепь"],
+      ["Светодиод", "Излучает свет при протекании тока"],
+      ["Резистор", "Ограничивает ток в цепи"],
+    ],
+  },
+  Медиаквантум: {
+    title: "Репортаж о выставке",
+    hint: "Сначала собери материал, проверь его, смонтируй сюжет и только затем публикуй.",
+    steps: [
+      "Снять интервью",
+      "Проверить факты",
+      "Смонтировать сюжет",
+      "Опубликовать репортаж",
+    ],
+    pair_title: "Команда редакции",
+    pairs: [
+      ["Корреспондент", "Собирает сведения и берёт интервью"],
+      ["Оператор", "Снимает видеоматериал"],
+      ["Монтажёр", "Собирает сюжет из фрагментов"],
+      ["Редактор", "Проверяет содержание перед публикацией"],
+    ],
+  },
+  Автоквантум: {
+    title: "Испытание модели автомобиля",
+    hint: "Сначала собери модель, проверь её на стенде, проведи заезд и оцени результат.",
+    steps: [
+      "Собрать модель",
+      "Проверить крепления на стенде",
+      "Провести пробный заезд",
+      "Сравнить результат с целью",
+    ],
+    pair_title: "Устройство автомобиля",
+    pairs: [
+      ["Двигатель", "Создаёт механическую мощность"],
+      ["Трансмиссия", "Передаёт мощность к ведущим колёсам"],
+      ["Тормоза", "Замедляют движение"],
+      ["Подвеска", "Смягчает воздействие неровностей"],
+    ],
+  },
+  Геоквантум: {
+    title: "От школы к планете",
+    hint: "Расширяй масштаб карты: от школьного двора до всей Земли.",
+    steps: ["Школьный двор", "Город", "Материк", "Планета Земля"],
+    pair_title: "Условные знаки карты",
+    pairs: [
+      ["Масштаб", "Связь расстояний на карте и местности"],
+      ["Легенда", "Объяснение условных знаков"],
+      ["Параллель", "Линия одинаковой широты"],
+      ["Меридиан", "Линия одинаковой долготы"],
+    ],
+  },
+  "Промдизайн квантум": {
+    title: "Удобный школьный стул",
+    hint: "Начни с потребностей ученика, затем предложи форму, сделай прототип и проверь удобство.",
+    steps: [
+      "Изучить потребности ученика",
+      "Нарисовать эскиз",
+      "Сделать прототип",
+      "Проверить удобство прототипа",
+    ],
+    pair_title: "Язык дизайнера",
+    pairs: [
+      ["Эргономика", "Удобство использования человеком"],
+      ["Эскиз", "Быстрый рисунок идеи"],
+      ["Прототип", "Модель для проверки решения"],
+      ["Тестирование", "Проверка решения на практике"],
+    ],
+  },
+};
+
+</script>
+    <script>
+/* art.js */
+/* Original pixel graphics. All rooms and people are drawn locally; no downloads. */
+(function () {
+  "use strict";
+  const glyphs = {
+    А: "01110/10001/10001/11111/10001/10001/10001",
+    Б: "11111/10000/10000/11110/10001/10001/11110",
+    В: "11110/10001/10001/11110/10001/10001/11110",
+    Г: "11111/10000/10000/10000/10000/10000/10000",
+    Д: "00110/01010/01010/01010/01010/11111/10001",
+    Е: "11111/10000/10000/11110/10000/10000/11111",
+    Ж: "10101/10101/01110/00100/01110/10101/10101",
+    З: "01110/10001/00001/00110/00001/10001/01110",
+    И: "10001/10011/10011/10101/11001/11001/10001",
+    Й: "01010/00100/10001/10011/10101/11001/10001",
+    К: "10001/10010/10100/11000/10100/10010/10001",
+    Л: "00111/01001/01001/01001/01001/01001/10001",
+    М: "10001/11011/10101/10101/10001/10001/10001",
+    Н: "10001/10001/10001/11111/10001/10001/10001",
+    О: "01110/10001/10001/10001/10001/10001/01110",
+    П: "11111/10001/10001/10001/10001/10001/10001",
+    Р: "11110/10001/10001/11110/10000/10000/10000",
+    С: "01111/10000/10000/10000/10000/10000/01111",
+    Т: "11111/00100/00100/00100/00100/00100/00100",
+    У: "10001/10001/10001/01111/00001/10001/01110",
+    Ф: "00100/01110/10101/10101/10101/01110/00100",
+    Х: "10001/10001/01010/00100/01010/10001/10001",
+    Ц: "10010/10010/10010/10010/10010/11111/00001",
+    Ч: "10001/10001/10001/01111/00001/00001/00001",
+    Ш: "10101/10101/10101/10101/10101/10101/11111",
+    Щ: "10101/10101/10101/10101/10101/11111/00001",
+    Ъ: "11000/01000/01000/01110/01001/01001/01110",
+    Ы: "10001/10001/10001/11101/10101/10101/11101",
+    Ь: "10000/10000/10000/11110/10001/10001/11110",
+    Э: "11110/00001/00001/01111/00001/00001/11110",
+    Ю: "10110/11001/11001/11101/11001/11001/10110",
+    Я: "01111/10001/10001/01111/00101/01001/10001",
+    0: "01110/10001/10011/10101/11001/10001/01110",
+    1: "00100/01100/00100/00100/00100/00100/01110",
+    2: "01110/10001/00001/00010/00100/01000/11111",
+    3: "11110/00001/00001/01110/00001/00001/11110",
+    4: "00010/00110/01010/10010/11111/00010/00010",
+    5: "11111/10000/10000/11110/00001/00001/11110",
+    6: "01110/10000/10000/11110/10001/10001/01110",
+    7: "11111/00001/00010/00100/01000/01000/01000",
+    8: "01110/10001/10001/01110/10001/10001/01110",
+    9: "01110/10001/10001/01111/00001/00001/01110",
+    A: "01110/10001/10001/11111/10001/10001/10001",
+    B: "11110/10001/10001/11110/10001/10001/11110",
+    C: "01111/10000/10000/10000/10000/10000/01111",
+    D: "11110/10001/10001/10001/10001/10001/11110",
+    E: "11111/10000/10000/11110/10000/10000/11111",
+    F: "11111/10000/10000/11110/10000/10000/10000",
+    G: "01111/10000/10000/10111/10001/10001/01110",
+    H: "10001/10001/10001/11111/10001/10001/10001",
+    I: "01110/00100/00100/00100/00100/00100/01110",
+    J: "00111/00010/00010/00010/00010/10010/01100",
+    K: "10001/10010/10100/11000/10100/10010/10001",
+    L: "10000/10000/10000/10000/10000/10000/11111",
+    M: "10001/11011/10101/10101/10001/10001/10001",
+    N: "10001/11001/11001/10101/10011/10011/10001",
+    O: "01110/10001/10001/10001/10001/10001/01110",
+    P: "11110/10001/10001/11110/10000/10000/10000",
+    Q: "01110/10001/10001/10001/10101/10010/01101",
+    R: "11110/10001/10001/11110/10100/10010/10001",
+    S: "01111/10000/10000/01110/00001/00001/11110",
+    T: "11111/00100/00100/00100/00100/00100/00100",
+    U: "10001/10001/10001/10001/10001/10001/01110",
+    V: "10001/10001/10001/10001/10001/01010/00100",
+    W: "10001/10001/10001/10101/10101/11011/10001",
+    X: "10001/10001/01010/00100/01010/10001/10001",
+    Y: "10001/10001/01010/00100/00100/00100/00100",
+    Z: "11111/00001/00010/00100/01000/10000/11111",
+    "-": "00000/00000/00000/11111/00000/00000/00000",
+    "+": "00000/00100/00100/11111/00100/00100/00000",
+    "/": "00001/00001/00010/00100/01000/10000/10000",
+    ":": "00000/00100/00100/00000/00100/00100/00000",
+    ".": "00000/00000/00000/00000/00000/00100/00100",
+    "!": "00100/00100/00100/00100/00100/00000/00100",
+    "?": "01110/10001/00001/00010/00100/00000/00100",
+    ">": "10000/01000/00100/00010/00100/01000/10000",
+    "<": "00001/00010/00100/01000/00100/00010/00001",
+    "=": "00000/00000/11111/00000/11111/00000/00000",
+    "*": "00000/10101/01110/11111/01110/10101/00000",
+    "%": "11001/11010/00010/00100/01000/01011/10011",
+  };
+  const font = Object.fromEntries(
+    Object.entries(glyphs).map(([k, v]) => [k, v.split("/")]),
+  );
+  function rect(c, x, y, w, h, color) {
+    c.fillStyle = color;
+    c.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
+  }
+  function text(c, txt, x, y, color = "#f9f4dc", scale = 1, max = Infinity) {
+    txt = String(txt).toUpperCase().replaceAll("Ё", "Е");
+    let dx = 0;
+    for (const char of txt) {
+      if (dx + 5 * scale > max) break;
+      const rows = font[char];
+      if (rows)
+        rows.forEach((row, j) => {
+          for (let i = 0; i < 5; i++)
+            if (row[i] === "1")
+              rect(c, x + dx + i * scale, y + j * scale, scale, scale, color);
+        });
+      dx += (char === " " ? 4 : 6) * scale;
+    }
+    return dx;
+  }
+  function room(c, id) {
+    const r = (x, y, w, h, col) => rect(c, x, y, w, h, col);
+    const pal = {
+      lobby: ["#31536d", "#748c9b", "#dcc8a3"],
+      director: ["#355142", "#708562", "#9e704d"],
+      it: ["#18283c", "#344963", "#556782"],
+      bio: ["#244947", "#648174", "#b9bda3"],
+      robo: ["#373948", "#7f6b55", "#877466"],
+      vr: ["#28203f", "#4c3e75", "#747493"],
+      nano: ["#163c4d", "#507b89", "#a3b9bb"],
+      hi: ["#413638", "#8b6c53", "#ad8760"],
+      media: ["#402a3a", "#89586c", "#9c797b"],
+      auto: ["#2e3c4b", "#5b7480", "#818b88"],
+      geo: ["#364b48", "#76886c", "#a3a785"],
+      design: ["#503947", "#ad8993", "#cdbca5"],
+    }[id] || ["#333", "#555", "#888"];
+    r(0, 0, 204, 68, pal[0]);
+    r(0, 8, 204, 44, pal[1]);
+    r(0, 50, 204, 18, pal[2]);
+    for (let x = 0; x < 204; x += 17) {
+      r(x, 8, 1, 43, pal[0]);
+      r(x + 1, 9, 1, 40, "#ffffff0b");
+    }
+    r(0, 1, 204, 3, "#e2dbbf");
+    r(0, 4, 204, 2, "#6a6c71");
+    r(0, 49, 204, 3, "#27293a");
+    for (let x = 0; x < 204; x += 24) {
+      r(x, 52, 1, 16, "#27293a25");
+      r(x + 1, 59, 23, 1, "#27293a30");
+    }
+    r(0, 66, 204, 2, "#1f2232");
+    function box(x, y, w, h, fill, border = "#253044") {
+      r(x - 1, y - 1, w + 2, h + 2, border);
+      r(x, y, w, h, fill);
+      r(x, y, w, 1, "#ffffff45");
+    }
+    function plant(x, y, big = false) {
+      const h = big ? 17 : 10;
+      r(x + 4, y - h, 2, h, "#45764e");
+      r(x - 1, y - h + 2, 7, 5, "#477c54");
+      r(x + 6, y - h - 3, 7, 7, "#539368");
+      r(x + 2, y - h - 5, 6, 5, "#78b170");
+      r(x, y, 12, 2, "#d5a887");
+      r(x + 2, y + 2, 8, 7, "#9e6952");
+      r(x + 3, y + 2, 2, 6, "#c28864");
+    }
+    function windowAt(x, y, w = 34, h = 26) {
+      box(x, y, w, h, "#8ebac6");
+      r(x + 2, y + 2, w - 4, h - 4, "#7383b3");
+      r(x + 3, y + h - 12, 7, 10, "#596789");
+      r(x + 13, y + h - 19, 10, 17, "#656e9b");
+      r(x + 26, y + h - 9, 5, 8, "#4c557f");
+      r(x + 2, y + 2, w - 4, 3, "#b3d9de");
+      r(x + w / 2, y, 2, h, "#ddd8c5");
+      r(x, y + h / 2, w, 2, "#d2d5c8");
+      r(x - 2, y + h, w + 4, 2, "#d9d4bb");
+    }
+    function shelf(x, y, w = 30) {
+      box(x, y, w, 34, "#34344a", "#181d2c");
+      r(x + 2, y + 2, w - 4, 30, "#626071");
+      for (let j = 0; j < 2; j++) {
+        for (let i = 0; i < Math.floor(w / 5) - 1; i++) {
+          const colors = [
+            "#c55d64",
+            "#e9c87a",
+            "#639999",
+            "#879769",
+            "#9874aa",
+          ];
+          r(x + 3 + i * 5, y + 4 + j * 15, 3, 10 + (i % 2), colors[i % 5]);
+          r(x + 3 + i * 5, y + 6 + j * 15, 3, 1, "#ffffff55");
+        }
+        r(x, y + 15 + j * 15, w, 2, "#b19a7b");
+      }
+    }
+    function desk(x, y, w = 46, col = "#b89871") {
+      r(x + 2, y + 4, 3, 17, "#302d38");
+      r(x + w - 5, y + 4, 3, 17, "#302d38");
+      box(x, y, w, 4, col);
+      r(x + 3, y + 5, w - 6, 3, "#77614f");
+    }
+    function pc(x, y, col = "#54dcbd") {
+      box(x, y, 22, 15, "#151f35");
+      r(x + 2, y + 2, 18, 10, "#0d343c");
+      r(x + 4, y + 4, 8, 1, col);
+      r(x + 4, y + 7, 13, 1, col);
+      r(x + 4, y + 9, 6, 1, col);
+      r(x + 10, y + 15, 2, 3, "#a3bac0");
+      r(x + 5, y + 18, 13, 2, "#657887");
+      r(x - 1, y + 21, 24, 2, "#c0c6bd");
+    }
+    function light(x, w = 30) {
+      r(x + w / 2, 5, 1, 4, "#afb4b1");
+      box(x, 9, w, 3, "#e9edce", "#546073");
+      r(x + 1, 12, w - 2, 1, "#fff8b5");
+    }
+    function frame(x, y, w, h, label, col = "#f0d698") {
+      box(x, y, w, h, "#baa57d", "#584335");
+      r(x + 2, y + 2, w - 4, h - 4, "#253a49");
+      text(c, label, x + 4, y + 5, col, 1, w - 6);
+    }
+    function stool(x, y, col = "#875f65") {
+      r(x, y, 13, 5, col);
+      r(x + 2, y + 5, 2, 8, "#30313a");
+      r(x + 9, y + 5, 2, 8, "#30313a");
+    }
+    function bottles(x, y) {
+      ["#71d6c3", "#8cb9df", "#cc8ed5"].forEach((col, i) => {
+        r(x + i * 9 + 2, y, 3, 3, "#d6e7dc");
+        box(x + i * 9, y + 3, 7, 10, col);
+        r(x + i * 9 + 1, y + 4, 2, 5, "#d6eff6");
+      });
+    }
+    switch (id) {
+      case "lobby":
+        r(0, 8, 204, 42, "#d2c7ac");
+        for (let x = 0; x < 204; x += 16) r(x, 8, 1, 41, "#b5ae99");
+        box(7, 20, 24, 32, "#55566f", "#957444");
+        r(9, 22, 20, 28, "#212735");
+        r(19, 22, 2, 28, "#9e885e");
+        r(11, 35, 2, 3, "#e8c77b");
+        box(42, 13, 85, 20, "#23374b", "#886940");
+        r(44, 15, 81, 2, "#516072");
+        windowAt(145, 13, 47, 30);
+        desk(74, 42, 56, "#b08850");
+        r(78, 48, 48, 8, "#766247");
+        r(82, 50, 40, 2, "#d5bf82");
+        pc(84, 24, "#d8bc76");
+        r(118, 39, 7, 3, "#e4bb54");
+        r(120, 35, 3, 4, "#e4bb54");
+        r(37, 44, 29, 9, "#9e5f72");
+        r(39, 53, 3, 4, "#403842");
+        r(61, 53, 3, 4, "#403842");
+        r(38, 38, 27, 6, "#b77583");
+        plant(179, 50, true);
+        plant(2, 47);
+        r(0, 62, 204, 3, "#8b6b65");
+        break;
+      case "director":
+        shelf(8, 17, 31);
+        windowAt(51, 13, 35, 27);
+        frame(100, 15, 31, 20, "01");
+        frame(142, 13, 48, 24, "ПЛАН", "#9fd58e");
+        desk(80, 43, 59, "#a2784a");
+        r(85, 48, 49, 10, "#705131");
+        r(88, 50, 16, 6, "#8d693c");
+        r(111, 50, 18, 6, "#8d693c");
+        r(103, 30, 17, 11, "#30313e");
+        pc(89, 25, "#b8d393");
+        r(119, 40, 14, 2, "#e5dbc2");
+        plant(171, 51, true);
+        light(90, 27);
+        r(58, 60, 89, 3, "#a34765");
+        r(62, 59, 81, 1, "#d8a963");
+        break;
+      case "it":
+        box(3, 13, 23, 40, "#172235");
+        for (let j = 0; j < 5; j++) {
+          r(6, 17 + j * 6, 17, 4, "#344356");
+          r(8, 18 + j * 6, 2, 1, "#6af0c6");
+          r(13, 18 + j * 6, 2, 1, "#dcba64");
+        }
+        for (let i = 0; i < 3; i++) {
+          desk(35 + i * 52, 42, 43, "#92aeb0");
+          pc(44 + i * 52, 20);
+          stool(51 + i * 52, 51, "#487b96");
+        }
+        frame(63, 6, 80, 13, "< CODE >", "#60efd1");
+        r(31, 16, 2, 31, "#355c67");
+        r(29, 16, 6, 1, "#4dcabc");
+        plant(187, 46);
+        break;
+      case "bio":
+        windowAt(61, 10, 61, 32);
+        r(54, 38, 78, 4, "#4e5349");
+        for (let i = 0; i < 4; i++) plant(58 + i * 18, 37, i % 2 === 0);
+        shelf(4, 18, 26);
+        desk(139, 44, 57, "#c6c8a6");
+        bottles(146, 29);
+        r(178, 28, 3, 15, "#1f3946");
+        r(177, 24, 7, 4, "#dee2cb");
+        r(174, 38, 9, 2, "#34465a");
+        r(176, 28, 2, 9, "#dae3d3");
+        r(42, 19, 2, 29, "#cbccbe");
+        r(39, 20, 8, 4, "#e0e5db");
+        plant(32, 51, true);
+        light(63, 63);
+        break;
+      case "robo":
+        r(0, 45, 204, 5, "#282a38");
+        for (let x = 0; x < 204; x += 12) {
+          r(x, 45, 7, 5, "#d5a83d");
+        }
+        shelf(5, 15, 24);
+        desk(44, 42, 113, "#888c8a");
+        r(61, 35, 22, 6, "#c1a557");
+        r(69, 20, 6, 19, "#dcb051");
+        r(70, 19, 25, 6, "#eac065");
+        r(91, 21, 5, 14, "#ad8544");
+        r(86, 33, 5, 6, "#c6c4b0");
+        r(97, 33, 5, 6, "#c6c4b0");
+        r(104, 42, 47, 5, "#28323e");
+        for (let x = 105; x < 150; x += 8) r(x, 42, 3, 4, "#8b9190");
+        r(112, 35, 8, 7, "#c05c61");
+        r(138, 34, 7, 8, "#559c9d");
+        pc(169, 24, "#e6ba62");
+        r(165, 46, 33, 8, "#b08151");
+        light(70, 63);
+        frame(35, 12, 25, 19, "R");
+        break;
+      case "vr":
+        r(0, 7, 204, 2, "#bd78c9");
+        r(0, 47, 204, 2, "#688ced");
+        for (let x = 0; x < 204; x += 15) r(x, 50, 1, 15, "#aea1ca");
+        box(8, 13, 54, 30, "#312450", "#8c7bd1");
+        r(12, 17, 45, 21, "#7059a1");
+        r(29, 19, 14, 15, "#b6a8dc");
+        r(25, 23, 4, 11, "#a18ccf");
+        r(33, 17, 10, 2, "#d4c0e7");
+        r(85, 20, 37, 2, "#7d72bf");
+        r(85, 20, 2, 30, "#8c80d4");
+        r(121, 20, 2, 30, "#8c80d4");
+        r(95, 52, 22, 3, "#ad88d6");
+        desk(146, 42, 50, "#807896");
+        pc(156, 20, "#b795f3");
+        box(82, 10, 42, 9, "#1f2340");
+        text(c, "VR / AR", 85, 11, "#baa9ed", 1);
+        light(146, 37);
+        break;
+      case "nano":
+        r(0, 45, 204, 4, "#78adbf");
+        for (let x = 0; x < 204; x += 16) r(x, 9, 1, 39, "#85a0a2");
+        desk(8, 43, 60, "#c3cfcc");
+        bottles(17, 29);
+        box(79, 16, 53, 35, "#c7d3cf");
+        r(85, 20, 31, 20, "#416978");
+        r(88, 23, 23, 13, "#55a8b7");
+        r(91, 26, 8, 7, "#ace8db");
+        r(120, 24, 4, 3, "#f0d570");
+        r(120, 31, 4, 3, "#73ac9a");
+        r(84, 44, 42, 2, "#819e9e");
+        desk(146, 42, 50, "#c5d2c8");
+        pc(155, 20, "#7ed7e5");
+        frame(8, 9, 44, 13, "NANO", "#84d9e0");
+        light(78, 55);
+        break;
+      case "hi":
+        shelf(3, 16, 29);
+        r(43, 13, 63, 25, "#665650");
+        for (let x = 48; x < 104; x += 7)
+          for (let y = 16; y < 37; y += 6) r(x, y, 1, 1, "#b39479");
+        [51, 65, 82, 96].forEach((x, i) => {
+          r(x, 19, 3, 13, "#c1c0b2");
+          r(x - 2, 16, 7, 6, i % 2 ? "#b56353" : "#c9a85a");
+        });
+        desk(43, 43, 62, "#c09e62");
+        r(69, 37, 23, 5, "#48675f");
+        r(75, 33, 9, 5, "#4aaf8d");
+        box(128, 15, 54, 38, "#3c4348", "#c39d6b");
+        r(132, 18, 46, 30, "#2a3c47");
+        r(136, 21, 2, 23, "#acb9ba");
+        r(171, 21, 2, 23, "#acb9ba");
+        r(136, 27, 38, 2, "#a5b6b8");
+        r(153, 28, 6, 7, "#d49b4c");
+        r(145, 40, 19, 5, "#52abbd");
+        r(132, 49, 45, 2, "#c09357");
+        light(46, 62);
+        break;
+      case "media":
+        r(8, 9, 58, 41, "#663c58");
+        for (let x = 10; x < 66; x += 5) {
+          r(x, 10, 2, 37, "#915a73");
+        }
+        r(6, 8, 64, 3, "#b8978b");
+        r(25, 34, 20, 10, "#c29177");
+        r(33, 27, 2, 7, "#25354b");
+        r(31, 25, 6, 4, "#e0bc7d");
+        r(48, 23, 16, 11, "#263140");
+        r(43, 27, 5, 6, "#c7bbb0");
+        r(55, 34, 2, 13, "#242d3c");
+        r(49, 46, 14, 2, "#242d3c");
+        desk(90, 43, 98, "#baa7a0");
+        pc(99, 21, "#cb8cbc");
+        pc(139, 21, "#a8d5e1");
+        r(177, 17, 7, 27, "#253344");
+        for (let y = 21; y < 43; y += 8) r(179, y, 3, 3, "#789797");
+        frame(87, 8, 58, 11, "ON AIR", "#e9ada9");
+        light(155, 30);
+        break;
+      case "auto":
+        box(6, 12, 45, 34, "#576574");
+        for (let y = 15; y < 44; y += 5) r(8, y, 41, 2, "#8b999b");
+        r(10, 37, 37, 4, "#2d3a4a");
+        r(64, 47, 97, 4, "#273143");
+        r(72, 35, 76, 13, "#49a29f");
+        r(83, 25, 47, 13, "#6dc5b4");
+        r(87, 28, 16, 10, "#b9dadd");
+        r(106, 28, 19, 10, "#86b9c7");
+        r(63, 40, 97, 6, "#39828b");
+        r(65, 42, 6, 3, "#f5e4a1");
+        r(153, 40, 6, 3, "#d57774");
+        [78, 135].forEach((x) => {
+          r(x, 45, 14, 10, "#192d3b");
+          r(x + 3, 47, 8, 6, "#879fa7");
+          r(x + 6, 49, 2, 2, "#d0d6be");
+        });
+        shelf(174, 14, 23);
+        light(64, 84);
+        r(55, 55, 114, 2, "#cfb369");
+        break;
+      case "geo":
+        box(15, 13, 75, 31, "#b8c49d", "#7f6852");
+        r(20, 17, 65, 23, "#82b2b4");
+        const land = [
+          [21, 20, 22, 9],
+          [38, 17, 15, 10],
+          [51, 26, 11, 13],
+          [68, 21, 12, 8],
+          [27, 29, 11, 8],
+        ];
+        land.forEach((a) => r(...a, "#d8cc86"));
+        r(48, 15, 1, 28, "#53586b");
+        r(19, 28, 68, 1, "#53586b");
+        desk(104, 44, 42, "#ae956a");
+        r(119, 36, 14, 7, "#778a77");
+        r(116, 24, 20, 12, "#7fbfc1");
+        r(120, 22, 12, 3, "#7fbfc1");
+        r(120, 27, 7, 8, "#bdd098");
+        r(117, 36, 16, 2, "#a3cdcb");
+        r(125, 38, 2, 5, "#d0b173");
+        shelf(164, 17, 27);
+        plant(3, 50, true);
+        r(43, 53, 20, 3, "#a9a182");
+        r(51, 48, 2, 6, "#333e40");
+        r(43, 48, 18, 2, "#4a5b4b");
+        light(18, 68);
+        break;
+      case "design":
+        windowAt(8, 11, 35, 29);
+        box(57, 12, 59, 24, "#ecdac5", "#936f73");
+        r(65, 18, 19, 1, "#897d87");
+        r(65, 19, 1, 9, "#897d87");
+        r(84, 19, 1, 9, "#897d87");
+        r(65, 28, 20, 1, "#897d87");
+        r(91, 17, 14, 3, "#b8849f");
+        r(92, 22, 7, 8, "#8da49f");
+        desk(53, 44, 68, "#d2b194");
+        r(61, 38, 28, 5, "#ece5ce");
+        r(65, 39, 17, 1, "#788f9c");
+        r(99, 36, 12, 6, "#a26991");
+        r(143, 27, 23, 4, "#d6a989");
+        r(143, 31, 3, 22, "#866763");
+        r(163, 31, 3, 22, "#866763");
+        r(146, 19, 17, 8, "#c48a7e");
+        r(145, 36, 21, 4, "#a98ba3");
+        shelf(175, 17, 24);
+        plant(25, 51, true);
+        light(55, 63);
+        break;
+    }
+    r(0, 6, 2, 60, "#00000020");
+    r(202, 6, 2, 60, "#00000025");
+  }
+  function person(
+    c,
+    x,
+    y,
+    seed = 0,
+    t = 0,
+    moving = false,
+    teacher = false,
+    dir = 1,
+  ) {
+    const r = (a, b, w, h, col) => rect(c, x + a, y + b, w, h, col);
+    seed = Math.abs(seed | 0);
+    const skins = ["#efbb94", "#cf976f", "#a06b51", "#f5cdb0", "#dbab89"];
+    const hair = ["#422f3c", "#684634", "#bc8749", "#2a3040", "#905951"];
+    const shirts = [
+      "#8471b8",
+      "#48a9a3",
+      "#df965d",
+      "#da6f8e",
+      "#9fac59",
+      "#6285bd",
+    ];
+    const skin = skins[seed % 5],
+      hcol = hair[(seed * 3) % 5],
+      shirt = teacher ? "#e5ddd1" : shirts[seed % 6];
+    const step = moving ? Math.floor(t * 8 + seed) % 4 : 0;
+    const bob = step % 2;
+    x = Math.round(x);
+    y = Math.round(y) - bob;
+    r(-6, -23, 11, 11, hcol);
+    r(-7, -21, 13, 7, hcol);
+    r(-5, -20, 9, 9, skin);
+    r(-6, -18, 1, 4, skin);
+    r(4, -18, 1, 4, skin);
+    r(-5, -23, 10, 3, hcol);
+    r(seed % 2 ? -5 : 3, -21, 2, 4, hcol);
+    r(-3 + (dir < 0 ? -1 : 0), -17, 1, 2, "#302e3d");
+    r(2 + (dir < 0 ? -1 : 0), -17, 1, 2, "#302e3d");
+    r(-1, -13, 2, 1, "#a57064");
+    if (teacher) {
+      r(-5, -18, 4, 3, "#526074");
+      r(1, -18, 4, 3, "#526074");
+      r(-4, -17, 2, 1, "#c1d9ce");
+      r(2, -17, 2, 1, "#c1d9ce");
+      r(-1, -17, 2, 1, "#526074");
+    }
+    r(-5, -11, 10, 8, shirt);
+    r(-7, -10, 2, 5, shirt);
+    r(5, -10, 2, 5, shirt);
+    r(-7, -5, 2, 2, skin);
+    r(5, -5, 2, 2, skin);
+    r(-1, -11, 2, 6, teacher ? "#65a7a4" : "#ffffff35");
+    r(-5, -4, 10, 2, "#435064");
+    r(-4 - (step === 1 ? 1 : 0), -2, 3, 2, "#3b364d");
+    r(1 + (step === 3 ? 1 : 0), -2, 3, 2, "#3b364d");
+    r(-5 - (step === 1 ? 1 : 0), 0, 4, 1, "#252737");
+    r(1 + (step === 3 ? 1 : 0), 0, 4, 1, "#252737");
+  }
+  function sparkle(c, x, y, col = "#ffffc8", n = 2) {
+    rect(c, x - n, y, 2 * n + 1, 1, col);
+    rect(c, x, y - n, 1, 2 * n + 1, col);
+  }
+  window.QuantumArt = { rect, text, room, person, sparkle };
+})();
+
+</script>
+    <script>
+/* game.js */
+/* K V A N T O R I U M — tower edition. No frameworks, server or build step. */
+(function () {
+  "use strict";
+  const E = window.QuantumEngine,
+    A = window.QuantumArt,
+    TASKS = window.QuantumTasks;
+  const canvas = document.getElementById("tower"),
+    ctx = canvas.getContext("2d");
+  const world = document.getElementById("world"),
+    hits = document.getElementById("hitboxes");
+  const panel = document.getElementById("room-panel"),
+    body = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title"),
+    announcer = document.getElementById("announcement");
+  const SAVE_KEY = "quantorium.pixel-tower.v2";
+  const FH = 82,
+    RW = 204,
+    TW = 258;
+  const esc = (s) =>
+    String(s).replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[c],
+    );
+  const num = (n) => Math.floor(n).toLocaleString("ru-RU");
+  const clock = (n) => {
+    const s = Math.ceil(Math.max(0, n));
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+  };
+  let state,
+    fresh = false,
+    saveError = "",
+    blockedSave = false,
+    storageOK = true;
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (raw) {
+      state = E.validateSave(JSON.parse(raw));
+      const gone = Math.min(
+        7200,
+        Math.max(0, (Date.now() - state.savedAt) / 1000),
+      );
+      if (!state.settings.paused) E.advance(state, gone);
+      if (gone > 60)
+        E.note(
+          state,
+          `Пока вас не было: ${Math.floor(gone / 60)} мин. работы центра.`,
+        );
+    }
+  } catch (err) {
+    if (err.name === "SecurityError" || err.name === "QuotaExceededError") {
+      storageOK = false;
+      saveError =
+        "Браузер запретил автосохранение. Скачайте сохранение в ресепшене.";
+    } else {
+      saveError =
+        "Сохранение не удалось прочитать. Оно не будет перезаписано. Откройте настройки в ресепшене.";
+      blockedSave = true;
+    }
+  }
+  if (!state) {
+    state = E.initialState();
+    state.floors[0].students = 2;
+    state.newbieClock = 65;
+    fresh = true;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
+      state.settings.motion = false;
+  }
+  let W = 360,
+    H = 640,
+    scale = 1,
+    tx = 50,
+    rx = 96,
+    cam = 0,
+    targetCam = 0;
+  let selected = null,
+    view = "home",
+    viewParam = null,
+    game = null,
+    confirmAction = null;
+  let layouts = [],
+    hitVersion = "",
+    t = 0,
+    msg = null,
+    lastFrame = performance.now(),
+    saveAcc = 0,
+    uiAcc = 0;
+  let dragging = null,
+    suppressClick = false,
+    buildFlash = null,
+    lastSig = "",
+    focusedBefore = null;
+  const people = new Map(),
+    particles = [],
+    textures = new Map();
+  const lift = {
+    level: 0,
+    target: 0,
+    phase: "idle",
+    passenger: null,
+    wait: 0,
+    autoTimer: 0,
+    autoPerson: 0,
+  };
+  const phasesBusy = () =>
+    ["pickup", "boarding", "await", "ride", "wrong", "exiting"].includes(
+      lift.phase,
+    );
+  const roomId = (i) =>
+    i === 0
+      ? "lobby"
+      : i === 1
+        ? "director"
+        : state.floors[i - 2]?.id || "build";
+  const floorIndex = (id) => state.floors.findIndex((f) => f.id === id) + 2;
+  const roomName = (id) =>
+    id === "lobby"
+      ? "Ресепшен"
+      : id === "director"
+        ? "Кабинет директора"
+        : id === "build"
+          ? "Новый этаж"
+          : E.lab(id)?.name || "Кванториум";
+  const floorNumber = (i) => (i === 0 ? "Р" : String(i));
+  function save() {
+    if (blockedSave) return false;
+    try {
+      state.savedAt = Date.now();
+      localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+      storageOK = true;
+      return true;
+    } catch (err) {
+      storageOK = false;
+      saveError =
+        "Браузер запретил автосохранение. Скачайте сохранение в ресепшене.";
+      return false;
+    }
+  }
+  function tell(message, index = selected ?? 1, error = false) {
+    msg = { text: message, index, until: t + 6, error };
+    announcer.textContent = message;
+  }
+  let audioContext;
+  function sound(win = false) {
+    if (!state.settings.sound) return;
+    try {
+      audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+      audioContext.resume();
+      [0, ...(win ? [0.1, 0.2] : [])].forEach((delay, i) => {
+        const o = audioContext.createOscillator(),
+          g = audioContext.createGain();
+        o.type = "sine";
+        o.frequency.value = [523, 659, 784][i];
+        g.gain.setValueAtTime(0.025, audioContext.currentTime + delay);
+        g.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioContext.currentTime + delay + 0.16,
+        );
+        o.connect(g);
+        g.connect(audioContext.destination);
+        o.start(audioContext.currentTime + delay);
+        o.stop(audioContext.currentTime + delay + 0.17);
+      });
+    } catch (err) {
+      /* Optional audio must never block play. */
+    }
+  }
+  function burst(index) {
+    if (!state.settings.motion) return;
+    const l = layouts[index];
+    if (!l) return;
+    for (let i = 0; i < 28; i++)
+      particles.push({
+        x: rx + 30 + Math.random() * 145,
+        y: l.bottom - 27,
+        vx: (Math.random() - 0.5) * 80,
+        vy: -25 - Math.random() * 65,
+        life: 1.4,
+        color: ["#ffe695", "#8ce1be", "#ce9cdd", "#93c3e7"][i % 4],
+      });
+  }
+  function makeLayouts() {
+    let bottom = 0;
+    layouts = [];
+    for (let i = 0; i < state.floors.length + 3; i++) {
+      const expanded =
+        selected === i ? Math.max(70, Math.min(420, H - 116)) : 0;
+      const h = FH + expanded;
+      layouts.push({
+        index: i,
+        id: roomId(i),
+        bottom,
+        top: bottom - h,
+        h,
+        extra: expanded,
+      });
+      bottom -= h;
+    }
+    return -bottom;
+  }
+  function maxCam() {
+    const n = makeLayouts();
+    return Math.max(0, n + 32 - H + 32);
+  }
+  function clampCam() {
+    targetCam = Math.max(0, Math.min(maxCam(), targetCam));
+    cam = Math.max(0, Math.min(maxCam(), cam));
+  }
+  function origin() {
+    return H - 24 + cam;
+  }
+  function resize() {
+    const bounds = world.getBoundingClientRect();
+    scale = Math.min(2, bounds.width / 360);
+    W = Math.round(bounds.width / scale);
+    H = Math.round(bounds.height / scale);
+    canvas.width = W;
+    canvas.height = H;
+    ctx.imageSmoothingEnabled = false;
+    tx = Math.round((W - TW) / 2);
+    rx = tx + 46;
+    makeLayouts();
+    if (selected !== null) focusFloor(selected, true);
+    else clampCam();
+    createHitboxes(true);
+    positionUI();
+  }
+  function focusFloor(i, instant = false) {
+    makeLayouts();
+    const l = layouts[i];
+    if (!l) return;
+    targetCam = Math.max(0, Math.min(maxCam(), 22 - (H - 24) - l.top));
+    if (instant || !state.settings.motion) cam = targetCam;
+  }
+  function createHitboxes(force = false) {
+    const ver = state.floors.map((f) => f.id).join(",");
+    if (!force && hitVersion === ver) return;
+    hitVersion = ver;
+    hits.innerHTML = layouts
+      .map(
+        (l) =>
+          `<button class="room-hit" data-floor="${l.index}" aria-label="${esc(roomName(l.id))}: открыть управление" title="${esc(roomName(l.id))}"></button>${l.id !== "build" ? `<button class="shaft" data-lift="${l.index}" aria-label="Лифт: ${l.index === 0 ? "ресепшен" : "этаж " + l.index}" title="Лифт → ${floorNumber(l.index)}"></button>` : ""}`,
+      )
+      .join("");
+    for (const b of hits.querySelectorAll("button")) {
+      b.addEventListener("click", (e) => {
+        if (e.detail !== 0) return;
+        if (b.dataset.floor !== undefined) openRoom(Number(b.dataset.floor));
+        else callLift(Number(b.dataset.lift));
+      });
+      b.addEventListener("focus", () => {
+        const i = Number(b.dataset.floor ?? b.dataset.lift);
+        if (selected === null) focusFloor(i);
+      });
+    }
+  }
+  function positionUI() {
+    const o = origin();
+    for (const b of hits.children) {
+      const i = Number(b.dataset.floor ?? b.dataset.lift),
+        l = layouts[i];
+      if (!l) continue;
+      const shaft = b.dataset.lift !== undefined;
+      Object.assign(b.style, {
+        left: (shaft ? tx + 8 : rx) * scale + "px",
+        top: (l.top + o + (shaft ? 15 : 0)) * scale + "px",
+        width: (shaft ? 30 : RW) * scale + "px",
+        height: (shaft ? Math.min(56, l.h - 15) : l.h) * scale + "px",
+      });
+      b.setAttribute("aria-expanded", String(!shaft && selected === i));
+    }
+    if (selected !== null) {
+      const l = layouts[selected];
+      if (!l) return;
+      Object.assign(panel.style, {
+        left: (rx + 3) * scale + "px",
+        top: (l.top + o + 14) * scale + "px",
+        width: (RW - 6) * scale + "px",
+        height: (l.extra - 4) * scale + "px",
+      });
+    }
+  }
+  function drawSky() {
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, "#49316d");
+    g.addColorStop(0.45, "#876caa");
+    g.addColorStop(0.8, "#b4a0ba");
+    g.addColorStop(1, "#d2b9bd");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 42; i++) {
+      const x = (i * 83 + 37) % W,
+        y = (i * 41 + 19 + Math.floor(cam * 0.08)) % Math.round(H * 0.7);
+      const shine = state.settings.motion
+        ? 0.4 + Math.sin(t * 0.6 + i) * 0.25
+        : 0.5;
+      ctx.globalAlpha = shine;
+      A.rect(ctx, x, y, 1, 1, "#fff5d0");
+      if (i % 11 === 0) A.sparkle(ctx, x, y, "#f8dceb", 3);
+    }
+    ctx.globalAlpha = 1;
+    A.rect(ctx, W - 58, 34, 14, 12, "#e0d8c3");
+    A.rect(ctx, W - 60, 37, 18, 6, "#e0d8c3");
+    A.rect(ctx, W - 48, 32, 10, 10, "#554075");
+    for (let layer = 0; layer < 3; layer++) {
+      const step = layer === 0 ? 27 : layer === 1 ? 38 : 53;
+      const base = H * 0.7 + layer * H * 0.13 + cam * (0.04 + layer * 0.03);
+      for (let i = -1; i <= Math.ceil(W / step); i++) {
+        const h = 28 + (((i + 17) * 47 + layer * 19) % 90);
+        const x = i * step + layer * 13;
+        A.rect(
+          ctx,
+          x,
+          base - h,
+          step - 3,
+          H,
+          ["#81728f", "#716380", "#625772"][layer],
+        );
+        A.rect(
+          ctx,
+          x + 5,
+          base - h - 6,
+          step - 13,
+          7,
+          ["#81728f", "#716380", "#625772"][layer],
+        );
+        if (i % 3 === 0)
+          A.rect(
+            ctx,
+            x + step / 2,
+            base - h - 20,
+            1,
+            16,
+            ["#81728f", "#716380", "#625772"][layer],
+          );
+        if (layer > 0)
+          for (let y = base - h + 8; y < H; y += 13)
+            for (let j = 0; j < 3; j++)
+              if ((i + j + Math.floor(y)) % 4 === 0)
+                A.rect(
+                  ctx,
+                  x + 6 + j * 10,
+                  y,
+                  3,
+                  5,
+                  layer === 2 ? "#e8c9a258" : "#dcb7ce44",
+                );
+      }
+    }
+    const street = origin() + 5;
+    A.rect(ctx, 0, street, W, 40, "#716d7c");
+    A.rect(ctx, 0, street, W, 2, "#b7a6a1");
+    for (let x = 0; x < W; x += 20)
+      A.rect(ctx, x, street + 8, 18, 1, "#555867");
+  }
+  function drawRoof(l, o) {
+    const y = l.bottom + o;
+    A.rect(ctx, tx + 4, y - 7, TW - 8, 7, "#434759");
+    A.rect(ctx, tx, y - 9, TW, 3, "#cbc4aa");
+    A.rect(ctx, rx + 9, y - 52, 182, 41, "#535262");
+    A.rect(ctx, rx + 11, y - 50, 178, 35, "#3b4254");
+    A.rect(ctx, rx + 9, y - 54, 182, 3, "#b4b6ab");
+    for (let x = rx + 13; x < rx + 188; x += 12) {
+      A.rect(ctx, x, y - 17, 6, 4, "#e2b963");
+      A.rect(ctx, x + 6, y - 17, 6, 4, "#272a3e");
+    }
+    A.text(
+      ctx,
+      state.floors.length === 10 ? "КВАНТОРИУМ" : "ПОСТРОИТЬ ЭТАЖ +",
+      rx + 22,
+      y - 42,
+      "#f4d885",
+      1,
+      176,
+    );
+    A.text(
+      ctx,
+      state.floors.length === 10
+        ? "ГОРОД БОЛЬШИХ ИДЕЙ"
+        : `${Math.floor(E.floorCost(state))} МОНЕТ`,
+      rx + 24,
+      y - 28,
+      "#bdc7c6",
+      1,
+      172,
+    );
+    A.rect(ctx, tx + 15, y - 34, 14, 25, "#bd984d");
+    A.rect(ctx, tx + 18, y - 36, 8, 3, "#dfb761");
+    A.rect(ctx, tx + 9, y - 13, 27, 4, "#6a5a41");
+    A.rect(ctx, rx + 157, y - 74, 2, 20, "#a8a5a7");
+    A.rect(ctx, rx + 159, y - 74, 18, 10, "#d59780");
+    A.rect(ctx, rx + 178, y - 73, 3, 8, "#d59780");
+    if (l.extra) {
+      A.rect(ctx, rx, l.top + o, RW, l.extra, "#2b3445");
+      A.text(ctx, "СТРОИТЕЛЬСТВО", rx + 7, l.top + o + 3, "#f5d798", 1);
+    }
+  }
+  function getTexture(id) {
+    if (!textures.has(id)) {
+      const c = document.createElement("canvas");
+      c.width = 204;
+      c.height = 68;
+      A.room(c.getContext("2d"), id);
+      textures.set(id, c);
+    }
+    return textures.get(id);
+  }
+  function statusColor(f) {
+    return f.ready
+      ? "#e9d785"
+      : E.bestSkill(state, f) === 0
+        ? "#c5a5ad"
+        : f.lesson > 0
+          ? "#97d8bd"
+          : "#b7c7d0";
+  }
+  function drawFloor(l, o) {
+    if (l.top + o > H || l.bottom + o < 0) return;
+    if (l.id === "build") {
+      drawRoof(l, o);
+      return;
+    }
+    const y = l.top + o,
+      by = l.bottom + o - 70;
+    A.rect(ctx, rx, y, RW, l.h, "#263546");
+    ctx.drawImage(getTexture(l.id), rx, Math.round(by));
+    A.rect(ctx, rx, y, RW, 12, "#252a38");
+    A.rect(ctx, rx, y, RW, 1, "#a9b4b0");
+    A.rect(ctx, rx, y + 11, RW, 1, "#535f70");
+    const f = state.floors[l.index - 2];
+    A.text(
+      ctx,
+      l.id === "lobby"
+        ? "РЕСЕПШЕН"
+        : l.id === "director"
+          ? "ДИРЕКТОР"
+          : E.lab(l.id).name,
+      rx + 5,
+      y + 3,
+      f ? statusColor(f) : "#e6d6ab",
+      1,
+      165,
+    );
+    A.text(
+      ctx,
+      f
+        ? `${f.students}/${E.capacity(f)}`
+        : l.id === "lobby"
+          ? String(state.newbies.length)
+          : String(state.candidates.length),
+      rx + 174,
+      y + 3,
+      "#d8dace",
+      1,
+      28,
+    );
+    if (f) {
+      if (f.lesson > 0) {
+        A.rect(
+          ctx,
+          rx + 2,
+          l.bottom + o - 3,
+          200 * (1 - f.lesson / f.lessonTotal),
+          2,
+          "#82c6a7",
+        );
+      }
+      if (f.level > 1) {
+        for (let k = 0; k < f.level; k++)
+          A.rect(ctx, rx + 188 + k * 4, by + 4, 2, 2, "#ecd579");
+      }
+      if (f.ready) {
+        bubble("ПРОЕКТ ГОТОВ!", rx + 110, by + 19, "#f7e1a2", "#544148");
+        A.sparkle(
+          ctx,
+          rx + 183,
+          by + 25,
+          "#fff2c9",
+          (Math.floor(t * 2) % 2) + 1,
+        );
+      } else if (E.bestSkill(state, f) === 0) {
+        bubble("НУЖЕН УЧИТЕЛЬ", rx + 115, by + 19, "#e7c0b5", "#6c4c59");
+      }
+    }
+    if (l.id === "lobby") {
+      A.text(
+        ctx,
+        `${Math.floor(state.coins)}`,
+        rx + 47,
+        by + 18,
+        "#f3d484",
+        1,
+        67,
+      );
+      A.text(
+        ctx,
+        `З ${Math.floor(state.knowledge)}  Н ${state.trophies}`,
+        rx + 47,
+        by + 27,
+        "#a1d4bc",
+        1,
+        74,
+      );
+      if (fresh && state.candidates.length && E.teacherList(state).length === 0)
+        bubble("УЧИТЕЛЬ ЖДЕТ ВЫШЕ", rx + 112, by + 48, "#f3dfab", "#51474c");
+    }
+    if (l.id === "director") {
+      if (E.chapterProgress(state).complete && state.chapter < 6)
+        bubble("НАГРАДА!", rx + 155, by + 20, "#f6dda0", "#685145");
+      else if (state.candidates.length)
+        bubble(
+          `${state.candidates.length} КАНДИДАТ${state.candidates.length === 1 ? "" : "А"}`,
+          rx + 157,
+          by + 20,
+          "#bddbbd",
+          "#3b6158",
+        );
+    }
+    if (state.settings.paused && l.id === "lobby")
+      bubble("ПАУЗА", rx + 156, by + 18, "#f0dbaf", "#614e65");
+    A.rect(ctx, rx, l.bottom + o - 2, RW, 2, "#767b88");
+  }
+  function bubble(txt, x, y, bg = "#eee2b6", fg = "#41344b") {
+    const w = Math.min(194, txt.length * 6 + 10);
+    x = Math.round(Math.min(rx + RW - w / 2 - 2, Math.max(rx + w / 2 + 2, x)));
+    A.rect(ctx, x - w / 2 - 1, y - 1, w + 2, 13, "#333146");
+    A.rect(ctx, x - w / 2, y, w, 11, bg);
+    A.rect(ctx, x - 2, y + 11, 4, 3, bg);
+    A.text(ctx, txt, x - w / 2 + 5, y + 2, fg, 1, w - 8);
+  }
+  function syncPeople() {
+    const wanted = new Map();
+    wanted.set("reception", {
+      floor: 0,
+      teacher: true,
+      seed: 1,
+      stationary: true,
+    });
+    wanted.set("director", {
+      floor: 1,
+      teacher: true,
+      seed: 2,
+      stationary: true,
+    });
+    state.candidates.forEach((v, i) =>
+      wanted.set("candidate:" + v.id, { floor: 1, teacher: true, seed: i + 5 }),
+    );
+    state.floors.forEach((f, j) => {
+      f.teachers.forEach((id, i) => {
+        if (!state.teachers[id].training)
+          wanted.set("teacher:" + id, {
+            floor: j + 2,
+            teacher: true,
+            seed: i + j + 3,
+          });
+      });
+      for (let i = 0; i < f.students; i++) {
+        const key = `student:${f.id}:${f.projects}:${i}`;
+        if (lift.phase !== "exiting" || lift.deliveredKey !== key)
+          wanted.set(key, { floor: j + 2, teacher: false, seed: i + j * 9 });
+      }
+    });
+    state.newbies.forEach((n, i) => {
+      if (lift.passenger?.id !== n.id || lift.phase === "pickup")
+        wanted.set(n.id, {
+          floor: 0,
+          teacher: false,
+          seed: i + 13,
+          newbie: n.id,
+        });
+    });
+    for (const [id, p] of people) if (!wanted.has(id)) people.delete(id);
+    for (const [id, info] of wanted) {
+      if (!people.has(id))
+        people.set(id, {
+          ...info,
+          x: info.stationary
+            ? info.floor === 0
+              ? 99
+              : 113
+            : 20 + ((info.seed * 37) % 160),
+          dir: 1,
+          wait: (info.seed % 4) * 0.4,
+          target: 50 + ((info.seed * 53) % 130),
+        });
+      else Object.assign(people.get(id), info);
+    }
+  }
+  function updatePeople(dt) {
+    for (const p of people.values()) {
+      if (p.stationary || !state.settings.motion) {
+        p.moving = false;
+        continue;
+      }
+      if (p.wait > 0) {
+        p.wait -= dt;
+        p.moving = false;
+        continue;
+      }
+      p.dir = p.target > p.x ? 1 : -1;
+      p.x += p.dir * 9 * dt;
+      p.moving = true;
+      if (Math.abs(p.x - p.target) < 1) {
+        p.target = 15 + Math.random() * 174;
+        p.wait = 0.8 + Math.random() * 3;
+        p.moving = false;
+      }
+    }
+  }
+  function drawPeople(o) {
+    for (const p of [...people.values()].sort((a, b) => a.x - b.x)) {
+      const l = layouts[p.floor];
+      if (!l) continue;
+      const y = l.bottom + o - 6;
+      if (y < 0 || y > H + 25) continue;
+      A.person(
+        ctx,
+        rx + p.x,
+        y,
+        p.seed,
+        state.settings.motion ? t : 0,
+        p.moving,
+        p.teacher,
+        p.dir,
+      );
+      if (p.newbie && lift.passenger?.id !== p.newbie) {
+        A.rect(ctx, rx + p.x - 5, y - 38, 11, 11, "#f7e7ae");
+        A.text(ctx, "?", rx + p.x - 2, y - 36, "#6d547a");
+        A.rect(ctx, rx + p.x - 1, y - 27, 3, 3, "#f7e7ae");
+      }
+    }
+  }
+  function levelBottom(level) {
+    const low = Math.floor(level),
+      hi = Math.ceil(level);
+    return (
+      (layouts[low]?.bottom || 0) * (1 - (level - low)) +
+      (layouts[hi]?.bottom || 0) * (level - low)
+    );
+  }
+  function drawShaft(o) {
+    const first = layouts[0],
+      last = layouts[layouts.length - 2],
+      top = last.top + o;
+    A.rect(ctx, tx + 7, top, 33, first.bottom + o - top, "#514632");
+    for (let i = 0; i < state.floors.length + 2; i++) {
+      const l = layouts[i],
+        y = l.top + o;
+      A.rect(ctx, tx + 8, y + 2, 29, l.h - 4, "#6a5c40");
+      A.rect(ctx, tx + 9, y + 3, 27, 10, "#9b8858");
+      A.rect(ctx, tx + 9, y + 14, 27, 1, "#3b3b35");
+      A.rect(ctx, tx + 9, y + l.h - 5, 27, 3, "#a58a4e");
+      const highlight =
+        lift.passenger && floorIndex(lift.passenger.target) === i;
+      if (highlight) {
+        A.rect(ctx, tx + 14, y + 30, 18, 18, "#8a9d69");
+        A.rect(ctx, tx + 15, y + 31, 16, 16, "#354d4a");
+      }
+      A.text(
+        ctx,
+        floorNumber(i),
+        tx + 21 - (String(i).length > 1 ? 3 : 0),
+        y + 35,
+        highlight ? "#f7e69b" : "#d4c6a3",
+      );
+    }
+    A.rect(ctx, tx + 9, top, 2, first.bottom + o - top, "#cbb471");
+    A.rect(ctx, tx + 35, top, 2, first.bottom + o - top, "#bca065");
+    const by = levelBottom(lift.level) + o - 3,
+      cy = by - 58;
+    A.rect(ctx, tx + 22, top, 1, Math.max(0, cy - top), "#33383c");
+    A.rect(ctx, tx + 8, cy, 31, 59, "#282c32");
+    A.rect(ctx, tx + 9, cy + 2, 29, 55, "#c5a15c");
+    A.rect(ctx, tx + 12, cy + 5, 23, 48, "#544a3a");
+    A.rect(ctx, tx + 13, cy + 6, 21, 12, "#807047");
+    A.rect(ctx, tx + 13, cy + 18, 21, 34, "#353638");
+    A.rect(ctx, tx + 13, cy + 49, 21, 3, "#ac925a");
+    A.text(
+      ctx,
+      floorNumber(Math.round(lift.level)),
+      tx + 20,
+      cy + 8,
+      "#fff2a0",
+    );
+    if (lift.passenger && lift.phase !== "pickup")
+      A.person(
+        ctx,
+        tx + 24 + (lift.phase === "exiting" ? (1 - lift.wait / 1.2) * 41 : 0),
+        by - 7,
+        13,
+        t,
+        lift.phase === "exiting",
+        false,
+      );
+    else if (lift.phase === "auto")
+      A.person(ctx, tx + 24, by - 7, lift.autoPerson, t, false, false);
+    if (["idle", "pickup", "auto"].includes(lift.phase) && !lift.passenger) {
+      A.rect(ctx, tx + 13, cy + 22, 9, 27, "#665338");
+      A.rect(ctx, tx + 24, cy + 22, 10, 27, "#776244");
+    }
+    A.rect(ctx, tx + 7, cy - 2, 33, 3, "#edcb80");
+    A.rect(ctx, tx + 7, by - 3, 33, 4, "#d7bc77");
+    if (lift.phase === "await" || lift.phase === "wrong") {
+      const n = floorIndex(lift.passenger.target);
+      A.rect(ctx, tx + 13, cy - 17, 24, 12, "#f3dfa0");
+      A.text(ctx, ">" + n, tx + 17, cy - 15, "#523e50");
+      A.rect(ctx, tx + 29, cy + 4, 8, 9, "#9f6265");
+      A.text(ctx, "X", tx + 30, cy + 5, "#f4dcc0");
+    }
+  }
+  function drawFacade(o) {
+    const top = layouts[layouts.length - 2].top + o,
+      bottom = o;
+    for (const x of [tx, tx + 40, tx + 250]) {
+      A.rect(ctx, x, top, 7, bottom - top, "#4e5061");
+      A.rect(ctx, x, top, 2, bottom - top, "#b5b5ad");
+      A.rect(ctx, x + 2, top, 2, bottom - top, "#8f929c");
+      A.rect(ctx, x + 6, top, 1, bottom - top, "#303445");
+      for (const l of layouts.slice(0, -1)) {
+        const y = l.bottom + o;
+        A.rect(ctx, x - 1, y - 5, 9, 3, "#747887");
+        A.rect(ctx, x, y - 5, 7, 1, "#bec2b5");
+      }
+    }
+    A.rect(ctx, tx - 2, o, TW + 5, 5, "#c4b898");
+    A.rect(ctx, tx - 4, o + 5, TW + 9, 3, "#62596a");
+    for (let i = 0; i < state.floors.length + 2; i++) {
+      let y = layouts[i].top + o + 19;
+      A.rect(ctx, tx + 253, y, 2, 37, "#f0e0ab");
+      A.rect(ctx, tx + 253, y + 36, 2, 2, "#919181");
+    }
+  }
+  function drawMessage() {
+    if (!msg || msg.until < t) return;
+    const l = layouts[msg.index] || layouts[0],
+      o = origin();
+    if (selected === msg.index) return;
+    const parts = [],
+      words = msg.text.toUpperCase().replaceAll("Ё", "Е").split(" ");
+    let line = "";
+    for (const w of words) {
+      if (line.length + w.length > 29) {
+        parts.push(line);
+        line = w;
+      } else line += (line ? " " : "") + w;
+    }
+    if (line) parts.push(line);
+    const y = Math.max(10, Math.min(H - 40, l.bottom + o - 56));
+    const x = rx + 5;
+    A.rect(
+      ctx,
+      x - 1,
+      y - 1,
+      195,
+      parts.slice(0, 3).length * 10 + 9,
+      "#3e3347",
+    );
+    A.rect(
+      ctx,
+      x,
+      y,
+      193,
+      parts.slice(0, 3).length * 10 + 7,
+      msg.error ? "#d8aba7" : "#f0deb1",
+    );
+    parts
+      .slice(0, 3)
+      .forEach((p, i) =>
+        A.text(ctx, p, x + 5, y + 4 + i * 10, "#4c3c51", 1, 183),
+      );
+  }
+  function draw(dt) {
+    drawSky();
+    const o = origin();
+    layouts.forEach((l) => drawFloor(l, o));
+    drawPeople(o);
+    drawShaft(o);
+    drawFacade(o);
+    if (buildFlash && t - buildFlash.at < 1 && state.settings.motion) {
+      const l = layouts[buildFlash.index];
+      ctx.globalAlpha = Math.max(0, 0.5 - (t - buildFlash.at) * 0.6);
+      A.rect(ctx, rx, l.top + o, RW, l.h, "#f8e8b3");
+      ctx.globalAlpha = 1;
+    }
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.life -= dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.vy += 80 * dt;
+      ctx.globalAlpha = Math.max(0, p.life / 1.4);
+      A.rect(ctx, p.x, p.y + o, 2, 2, p.color);
+      if (p.life <= 0) particles.splice(i, 1);
+    }
+    ctx.globalAlpha = 1;
+    drawMessage();
+  }
+
+  // Contextual controls are placed inside the selected, expanded room.
+  function button(label, action, data = {}, kind = "", disabled = false) {
+    return `<button class="btn ${kind}" data-action="${action}" ${Object.entries(
+      data,
+    )
+      .map(([k, v]) => `data-${k}="${esc(v)}"`)
+      .join(" ")} ${disabled ? "disabled" : ""}>${label}</button>`;
+  }
+  function resources() {
+    return `<div class="resource"><span>● <b data-count="coins">${num(state.coins)}</b></span><span>◆ <b data-count="knowledge">${num(state.knowledge)}</b></span><span>★ <b data-count="trophies">${num(state.trophies)}</b></span></div>`;
+  }
+  function progress(value, max) {
+    return `<div class="progress" role="progressbar" aria-valuenow="${value}" aria-valuemax="${max}"><i style="width:${Math.min(100, (value / max) * 100)}%"></i></div>`;
+  }
+  function setBody(label, html, reset = false) {
+    const pos = reset ? 0 : body.scrollTop;
+    title.textContent = label;
+    body.innerHTML = html;
+    body.scrollTop = pos;
+    const back = document.getElementById("back");
+    back.hidden = view === "home" && !game;
+    document
+      .getElementById("close")
+      .setAttribute("aria-label", "Закрыть " + roomName(roomId(selected)));
+    panel.setAttribute(
+      "aria-label",
+      roomName(roomId(selected)) + " — " + label,
+    );
+  }
+  function openRoom(i, subview = "home", param = null) {
+    if (i < 0 || i >= layouts.length) return;
+    if (phasesBusy()) {
+      tell(
+        "Сначала довезите пассажира. Нажмите номер его этажа.",
+        Math.round(lift.level),
+      );
+      return;
+    }
+    if (selected === i && view === "home" && subview === "home") {
+      closeRoom();
+      return;
+    }
+    selected = i;
+    view = subview;
+    viewParam = param;
+    game = null;
+    confirmAction = null;
+    panel.hidden = false;
+    focusedBefore = hits.querySelector(`[data-floor="${i}"]`);
+    makeLayouts();
+    focusFloor(i, true);
+    positionUI();
+    renderPanel(true);
+    document.getElementById("close").focus({ preventScroll: true });
+  }
+  function closeRoom() {
+    const old = selected;
+    selected = null;
+    view = "home";
+    game = null;
+    confirmAction = null;
+    panel.hidden = true;
+    makeLayouts();
+    if (old !== null) {
+      const l = layouts[Math.min(old, layouts.length - 1)];
+      targetCam = Math.max(0, Math.min(maxCam(), H * 0.38 - (H - 24) - l.top));
+      cam = targetCam;
+    }
+    positionUI();
+    if (focusedBefore?.isConnected)
+      focusedBefore.focus({ preventScroll: true });
+    save();
+  }
+  function go(next, param = null) {
+    view = next;
+    viewParam = param;
+    confirmAction = null;
+    renderPanel(true);
+  }
+  function ask(label, message, fn) {
+    confirmAction = fn;
+    view = "confirm";
+    setBody(
+      label,
+      `<p>${message}</p>${button("Да, продолжить", "confirm", {}, "gold")}${button("Отмена", "back", {}, "secondary")}`,
+      true,
+    );
+  }
+  function perform(type, p = {}, refresh = true) {
+    const res = E.act(state, type, p);
+    if (!res.ok) {
+      tell(res.error, selected ?? 1, true);
+      if (selected !== null) {
+        const n = document.createElement("p");
+        n.className = "status";
+        n.setAttribute("role", "alert");
+        n.textContent = res.error;
+        body.prepend(n);
+      }
+      return res;
+    }
+    if (res.reward) {
+      burst(selected ?? 1);
+      sound(true);
+    } else sound();
+    save();
+    syncPeople();
+    makeLayouts();
+    createHitboxes();
+    if (refresh && selected !== null) renderPanel();
+    return res;
+  }
+  function renderPanel(reset = false) {
+    if (selected === null) return;
+    if (game) {
+      renderGame(reset);
+      return;
+    }
+    if (view === "confirm") return;
+    const id = roomId(selected),
+      f = state.floors.find((x) => x.id === id);
+    if (view === "home") {
+      if (id === "build") {
+        renderBuild(reset);
+        return;
+      }
+      if (id === "lobby") {
+        setBody(
+          "Добро пожаловать",
+          resources() +
+            `<p class="micro">● Монеты · ◆ Знания · ★ Награды</p>` +
+            (saveError ? `<p class="status">${esc(saveError)}</p>` : "") +
+            `<p>Нажимайте на комнаты. Прокручивайте здание пальцем или колесом мыши.</p>` +
+            button(`Гости на ресепшене · ${state.newbies.length}`, "view", {
+              view: "visitors",
+            }) +
+            button("Журнал центра", "view", { view: "journal" }, "secondary") +
+            button(
+              "Сохранение и настройки",
+              "view",
+              { view: "settings" },
+              "secondary",
+            ) +
+            button("Как играть", "view", { view: "help" }, "ghost"),
+          reset,
+        );
+        return;
+      }
+      if (id === "director") {
+        const ch = E.CHAPTERS[state.chapter],
+          cp = E.chapterProgress(state);
+        setBody(
+          "Кабинет директора",
+          resources() +
+            `<p class="lead">Маленькая башня.<br>Большие открытия.</p>` +
+            button(
+              `Преподаватели · ${state.candidates.length} кандидат${state.candidates.length === 1 ? "" : "а"}`,
+              "view",
+              { view: "staff" },
+            ) +
+            button(
+              ch
+                ? `Глава ${state.chapter + 1}: ${esc(ch.title)}${cp.complete ? " · награда!" : ""}`
+                : "Кампания завершена!",
+              "view",
+              { view: "goals" },
+              "gold",
+            ) +
+            button(
+              "Команды и выставки",
+              "view",
+              { view: "teams" },
+              "secondary",
+            ) +
+            button(
+              "Совместный проект",
+              "view",
+              { view: "research" },
+              "secondary",
+            ) +
+            button(
+              `Коллекция открытий · ${state.collection.length}/30`,
+              "view",
+              { view: "collection" },
+              "secondary",
+            ) +
+            `<p class="micro">Доход: ${E.incomeRate(state)} монет/мин. Строительство — на крыше башни.</p>`,
+          reset,
+        );
+        return;
+      }
+      if (f) {
+        const status = E.floorState(state, f);
+        const labels = {
+          ready: "Проект готов к защите",
+          learning: "Идёт занятие",
+          paused: "Занятие ждёт преподавателя",
+          teacher: "Нужен профильный преподаватель",
+          waiting: "Собираем учеников",
+        };
+        setBody(
+          E.lab(f.id).name,
+          resources() +
+            `<div class="status">${labels[status]}${f.lesson > 0 ? ` · <span data-lesson="${f.id}">${clock(f.lesson)}</span>` : ""}</div>` +
+            `<div class="stats"><div class="stat"><b>${f.students}/${E.capacity(f)}</b>учеников</div><div class="stat"><b>${f.level}/3</b>уровень</div></div>` +
+            (f.lesson > 0
+              ? progress(f.lessonTotal - f.lesson, f.lessonTotal)
+              : "") +
+            button(
+              f.ready
+                ? "Защитить проект ▶"
+                : f.lesson > 0
+                  ? "Подготовка проекта…"
+                  : "Ожидаем полную группу",
+              "start-game",
+              { id: f.id },
+              "gold",
+              !f.ready,
+            ) +
+            button(`Преподаватели · ${f.teachers.length}/3`, "view", {
+              view: "staff",
+              floor: f.id,
+            }) +
+            button(
+              "Улучшить квантум",
+              "view",
+              { view: "upgrade" },
+              "secondary",
+            ) +
+            button(
+              `Команда · ${f.team}/5`,
+              "view",
+              { view: "teams", floor: f.id },
+              "secondary",
+            ) +
+            `<p class="micro">Проектов: ${f.projects}. Ученики приходят автоматически при наличии преподавателя. Новеньким можно помочь на лифте.</p>`,
+          reset,
+        );
+        return;
+      }
+    }
+    if (view === "staff") {
+      renderStaff(reset);
+      return;
+    }
+    if (view === "visitors") {
+      renderVisitors(reset);
+      return;
+    }
+    if (view === "goals") {
+      renderGoals(reset);
+      return;
+    }
+    if (view === "upgrade" && f) {
+      renderUpgrade(f, reset);
+      return;
+    }
+    if (view === "teams") {
+      renderTeams(reset);
+      return;
+    }
+    if (view === "research") {
+      const need = ["it", "bio", "hi"],
+        ready = need.every((id) =>
+          state.floors.some((f) => f.id === id && f.projects > 0),
+        );
+      setBody(
+        "Умная теплица",
+        resources() +
+          `<p>Объедините биологию, электронику и программирование в одном настоящем проекте.</p><ul class="checklist">${need
+            .map((id) => {
+              const done = state.floors.some(
+                (f) => f.id === id && f.projects > 0,
+              );
+              return `<li class="${done ? "ok" : ""}">${done ? "✓" : "□"} ${E.lab(id).name}: хотя бы 1 проект</li>`;
+            })
+            .join("")}</ul>` +
+          (state.joint
+            ? `<p class="status">Сборка теплицы: <span data-joint>${clock(state.joint.left)}</span></p>`
+            : button(
+                "Начать · 180 ◆ · 3 мин.",
+                "joint",
+                {},
+                "",
+                !ready || state.knowledge < 180,
+              )) +
+          `<p class="micro">Награда: 600 ●, 150 ◆ и 2 ★.<br>Завершено: ${state.jointDone}.</p>`,
+        reset,
+      );
+      return;
+    }
+    if (view === "collection") {
+      setBody(
+        "Альбом открытий",
+        `<p>${state.collection.length} из 30 заданий выполнено. В каждом направлении — алгоритм, понятия и маршрут.</p><div class="cards">${E.LABS.map((l) => `<article class="card"><h3>${l.name}</h3>${["Алгоритм", "Пары понятий", "Маршрут"].map((n, i) => `<span class="tag">${state.collection.includes(l.id + ":" + i) ? "✓" : "□"} ${n}</span>`).join("")}</article>`).join("")}</div>`,
+        reset,
+      );
+      return;
+    }
+    if (view === "journal") {
+      setBody(
+        "Журнал центра",
+        state.log.length
+          ? state.log
+              .map(
+                (n) =>
+                  `<div class="log-entry"><span class="muted">${clock(n.at)}</span><br>${esc(n.text)}</div>`,
+              )
+              .join("")
+          : "<p>Здесь появятся открытия и события вашего центра.</p>",
+        reset,
+      );
+      return;
+    }
+    if (view === "settings") {
+      renderSettings(reset);
+      return;
+    }
+    if (view === "help") {
+      setBody(
+        "Как устроена башня",
+        `<h3>1. Откройте кабинет директора</h3><p>Наймите преподавателя с навыком своего квантума. Он начнёт занятия и будет приносить доход.</p><h3>2. Загляните в квантум</h3><p>Когда группа заполнится, начнётся занятие. После него появится проект: решите задачу и получите монеты и знания.</p><h3>3. Помогите новеньким</h3><p>Нажмите «?» над ребёнком или откройте ресепшен. Посадите его в лифт и нажмите номер нужного этажа в шахте слева.</p><h3>4. Поднимайтесь выше</h3><p>Нажмите табличку на крыше, чтобы построить новый квантум. Улучшайте комнаты, обучайте преподавателей, собирайте команды.</p><h3>5. Развивайте центр</h3><p>Шесть глав ждут в кабинете директора. После финальной главы можно продолжать свободную игру.</p><p class="micro">Колесо / перетаскивание — обзор башни. Esc — закрыть комнату. Tab — выбрать комнату с клавиатуры. ↑ / ↓ — обзор; в лифте — соседний этаж; в задаче — команда роботу.</p><p class="micro">Ошибки в заданиях не отнимают награду. Пауза и сохранение — в ресепшене. До двух часов отсутствия засчитываются автоматически.</p>`,
+        reset,
+      );
+      return;
+    }
+    view = "home";
+    renderPanel(reset);
+  }
+  function renderBuild(reset) {
+    const cost = E.floorCost(state),
+      projects = E.totalProjects(state),
+      list = E.LABS.filter((l) => !state.floors.some((f) => f.id === l.id));
+    setBody(
+      "Строительство",
+      resources() +
+        `<p>Следующий этаж: <b>${num(cost)} ●</b>. Новые направления открываются по мере выполнения проектов.</p><div class="cards">${list.map((l) => `<article class="card"><h3 style="color:${l.color}">${l.name}</h3><p class="micro">${l.short}</p>${projects < l.unlock ? `<p>Нужно ${l.unlock} проектов. Выполнено: ${projects}.</p>` : ""}${button("Построить · " + num(cost) + " ●", "build", { id: l.id }, "", projects < l.unlock || state.coins < cost)}</article>`).join("") || '<div class="victory"><h2>Башня построена!</h2><p>Все десять направлений открыты.</p></div>'}</div>`,
+      reset,
+    );
+  }
+  function renderVisitors(reset) {
+    setBody(
+      "Пассажиры лифта",
+      `<p>Новенькие пока не знают здание. Помогите им добраться до занятия.</p><p class="micro">После посадки нажмите номер нужного этажа в шахте слева. Нажатие на саму кабину отменит поездку.</p><div class="cards">${
+        state.newbies
+          .map((n) => {
+            const f = state.floors.find((f) => f.id === n.target),
+              available =
+                f && !f.ready && f.lesson === 0 && f.students < E.capacity(f);
+            return `<article class="card"><h3>${esc(n.name)}</h3><p>Этаж ${floorIndex(n.target)} · ${E.lab(n.target).name}</p>${button(available ? "Подвезти на лифте →" : "Группа занята — подождём", "escort", { id: n.id }, "", !available)}<p class="micro">За помощь: 25 ● и 10 ◆.</p></article>`;
+          })
+          .join("") ||
+        '<p class="empty">Сейчас все знают дорогу. Новые гости появятся чуть позже.</p>'
+      }</div>`,
+      reset,
+    );
+  }
+  function renderStaff(reset) {
+    const filter =
+      roomId(selected) !== "director"
+        ? roomId(selected)
+        : viewParam?.floor || null;
+    const floors = filter
+      ? state.floors.filter((f) => f.id === filter)
+      : state.floors;
+    const allCandidates = state.candidates.filter(
+      (t) => !filter || t.skills[filter],
+    );
+    const candidateHTML = allCandidates
+      .map((t, i) => {
+        const choices = floors.filter(
+          (f) => t.skills[f.id] && f.teachers.length < 3,
+        );
+        return (
+          `<article class="card"><h3>${esc(t.name)}</h3><div>${Object.entries(
+            t.skills,
+          )
+            .map(
+              ([id, s]) => `<span class="tag">${E.lab(id).name} ${s}/10</span>`,
+            )
+            .join("")}</div>` +
+          (choices.length
+            ? `<label class="micro" for="hire-${t.id}">Назначение</label><select id="hire-${t.id}" aria-label="Назначение ${esc(t.name)}">${choices.map((f) => `<option value="${f.id}">${E.lab(f.id).name}</option>`).join("")}</select>${button(`Нанять · ${t.cost} ●`, "hire", { id: t.id }, "", state.coins < t.cost)}`
+            : '<p class="micro">Нет подходящей свободной вакансии.</p>') +
+          button("Отклонить", "reject", { id: t.id }, "ghost") +
+          "</article>"
+        );
+      })
+      .join("");
+    const staffHTML = floors
+      .map(
+        (f) =>
+          `<h3>${E.lab(f.id).name}</h3>` +
+          (f.teachers
+            .map((id) => {
+              const t = state.teachers[id],
+                others = state.floors.filter(
+                  (x) =>
+                    x.id !== f.id && x.teachers.length < 3 && t.skills[x.id],
+                );
+              return (
+                `<article class="card"><h3>${esc(t.name)}</h3><p>Навык: ${t.skills[f.id]}/10</p>` +
+                (t.training
+                  ? `<p class="status">Повышение квалификации: <span data-training="${id}">${clock(t.training.left)}</span></p>`
+                  : button(
+                      t.skills[f.id] < 10
+                        ? `Обучить · ${t.skills[f.id] * 30} ◆`
+                        : "Максимальный навык",
+                      "train",
+                      { id },
+                      "secondary",
+                      t.skills[f.id] >= 10 ||
+                        state.knowledge < t.skills[f.id] * 30,
+                    ) +
+                    (others.length
+                      ? `<select id="move-${id}" aria-label="Новый квантум для ${esc(t.name)}">${others.map((x) => `<option value="${x.id}">${E.lab(x.id).name}</option>`).join("")}</select>${button("Перевести", "move", { id }, "secondary")}`
+                      : "") +
+                    button("Уволить", "fire", { id }, "ghost")) +
+                "</article>"
+              );
+            })
+            .join("") || '<p class="empty">Преподавателей пока нет.</p>'),
+      )
+      .join("");
+    setBody(
+      "Преподаватели",
+      resources() +
+        `<h3>Кандидаты</h3><div class="cards">${candidateHTML || '<p class="empty">Подходящих кандидатов пока нет. Новые приходят каждые 65 секунд.</p>'}</div><div class="line"></div><div class="cards">${staffHTML}</div>`,
+      reset,
+    );
+  }
+  function renderGoals(reset) {
+    const c = E.CHAPTERS[state.chapter],
+      p = E.chapterProgress(state);
+    if (!c) {
+      setBody(
+        "Город больших идей",
+        `<div class="victory"><h2>Кванториум будущего!</h2><p>Все шесть глав завершены. Вы открыли научный центр, где каждый найдёт своё направление.</p></div><p>Продолжайте собирать открытия, учить преподавателей и участвовать в выставках. Можно сделать перерыв — башня сохранена.</p>`,
+        reset,
+      );
+      return;
+    }
+    setBody(
+      `Глава ${state.chapter + 1} / 6`,
+      resources() +
+        `<h2>${c.title}</h2><p>${c.text}</p><ul class="checklist">${p.items.map((v) => `<li class="${v.value >= v.need ? "ok" : ""}">${v.value >= v.need ? "✓" : "□"} ${v.label}: ${Math.min(v.value, v.need)}/${v.need}</li>`).join("")}</ul>${progress(p.items.filter((v) => v.value >= v.need).length, p.items.length)}<p>Награда: ${c.coins} ● и ${c.knowledge} ◆</p>${button("Получить награду", "chapter", {}, "gold", !p.complete)}`,
+      reset,
+    );
+  }
+  function renderUpgrade(f, reset) {
+    const cost = E.upgradeCost(f);
+    setBody(
+      "Развитие квантума",
+      resources() +
+        `<h3>Уровень ${f.level} / 3</h3><p>Вместимость: ${E.capacity(f)} учеников. Защита приносит ${110 + 30 * (f.level - 1) + (f.branch === "quality" ? 45 : 0)} монет и ${35 + 10 * f.level} знаний.</p>` +
+        (f.level < 3
+          ? `<p>Следующий уровень добавит 2 места и увеличит награды за проекты.</p>${button(`Улучшить · ${cost.coins} ● + ${cost.knowledge} ◆`, "upgrade", { floor: f.id }, "", state.coins < cost.coins || state.knowledge < cost.knowledge || f.ready || f.lesson > 0)}${f.ready || f.lesson > 0 ? '<p class="micro">Сначала завершите текущий проект.</p>' : ""}`
+          : '<p class="status">Максимальный уровень.</p>') +
+        (f.level >= 2
+          ? f.branch
+            ? `<h3>Специализация</h3><p>${f.branch === "speed" ? "Быстрая мастерская: занятия на 25% короче." : "Проектное бюро: +45 монет за защиту."}</p>`
+            : `<h3>Выберите специализацию</h3><p>Один выбор для этого квантума на всю игру.</p>${button("Быстрая мастерская · −25% времени", "branch", { floor: f.id, value: "speed" }, "secondary")}${button("Проектное бюро · +45 ● за проект", "branch", { floor: f.id, value: "quality" }, "secondary")}`
+          : ""),
+      reset,
+    );
+  }
+  function renderTeams(reset) {
+    const filter = roomId(selected) !== "director" ? roomId(selected) : null;
+    setBody(
+      "Команды и выставки",
+      resources() +
+        `<p>После каждых трёх проектов в команду приходит одарённый ученик. Для участия нужны два ученика. Сила команды зависит от её размера и навыка преподавателя.</p><div class="cards">${state.floors
+          .filter((f) => !filter || f.id === filter)
+          .map((f) => {
+            const c = state.competitions.find((c) => c.floor === f.id),
+              power = f.team * 10 + E.bestSkill(state, f) * 3;
+            return (
+              `<article class="card"><h3>${E.lab(f.id).name}</h3><p>Участники: ${f.team}/5 · Сила: ${power}</p>` +
+              (c
+                ? `<p class="status">Команда на выставке · <span data-competition="${f.id}">${clock(c.left)}</span></p>`
+                : [
+                    { name: "Городская", need: 25, reward: 1, time: 90 },
+                    { name: "Региональная", need: 45, reward: 2, time: 150 },
+                    { name: "Всероссийская", need: 65, reward: 3, time: 210 },
+                  ]
+                    .map((c, i) =>
+                      button(
+                        `${c.name}<br><small>Сила ${c.need} · ${clock(c.time)} · ${c.reward} ★</small>`,
+                        "competition",
+                        { floor: f.id, level: i },
+                        "secondary",
+                        f.team < 2 || power < c.need,
+                      ),
+                    )
+                    .join("")) +
+              "</article>"
+            );
+          })
+          .join(
+            "",
+          )}</div><p class="micro">Подготовленная команда получает награду гарантированно. Ещё: 100 ● и 50 ◆ за каждую ★.</p>`,
+      reset,
+    );
+  }
+  function renderSettings(reset) {
+    setBody(
+      "Сохранение и настройки",
+      `<p class="status">${blockedSave ? "Автосохранение остановлено." : storageOK ? "Прогресс автоматически сохраняется в этом браузере." : "Автосохранение недоступно. Скачайте файл ниже."}</p>` +
+        (saveError ? `<p>${esc(saveError)}</p>` : "") +
+        button("Скачать сохранение .json", "export", {}, "gold") +
+        button("Загрузить сохранение .json", "import", {}, "secondary") +
+        (blockedSave
+          ? button(
+              "Перечитать сохранение браузера",
+              "reload-save",
+              {},
+              "secondary",
+            )
+          : "") +
+        `<p class="micro">После смены браузера или перемещения папки автосохранение может оказаться недоступно. Файл .json переносит прогресс между устройствами.</p><div class="line"></div>` +
+        button(
+          state.settings.paused ? "Продолжить игру ▶" : "Пауза Ⅱ",
+          "setting",
+          { key: "paused", value: !state.settings.paused },
+          "secondary",
+        ) +
+        button(
+          `Звук: ${state.settings.sound ? "включён" : "выключен"}`,
+          "setting",
+          { key: "sound", value: !state.settings.sound },
+          "secondary",
+        ) +
+        button(
+          `Анимации: ${state.settings.motion ? "включены" : "сокращены"}`,
+          "setting",
+          { key: "motion", value: !state.settings.motion },
+          "secondary",
+        ) +
+        button(
+          `Скорость игры: ×${state.settings.speed}`,
+          "setting",
+          { key: "speed", value: state.settings.speed === 1 ? 2 : 1 },
+          "secondary",
+        ) +
+        `<div class="line"></div>` +
+        button("Новая башня", "new-game", {}, "danger") +
+        `<p class="micro">Кванториум · Tower Edition 2.0<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
+      reset,
+    );
+  }
+
+  // Thirty subject-specific activities share three interaction patterns.
+  function startGame(id) {
+    const f = state.floors.find((x) => x.id === id);
+    if (!f?.ready) return;
+    const variant = f.projects % 3,
+      task = TASKS[E.lab(id).name];
+    const order = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
+    if (order.join("") === "0123") order.reverse();
+    const odd = E.LABS.findIndex((l) => l.id === id) % 2;
+    game = {
+      kind: ["sequence", "pairs", "route"][variant],
+      floor: id,
+      task,
+      progress: 0,
+      order,
+      matched: [],
+      selected: null,
+      status: "Ошибки не уменьшают награду. Попробуйте!",
+      done: false,
+      program: [],
+      start: odd ? 24 : 20,
+      pos: odd ? 24 : 20,
+      target: odd ? 0 : 4,
+      walls: odd ? [6, 7, 8, 16, 17] : [7, 12, 17],
+      running: false,
+    };
+    view = "game";
+    renderGame(true);
+  }
+  function renderGame(reset = false) {
+    const g = game;
+    if (!g) return;
+    if (g.done) {
+      const f = state.floors.find((x) => x.id === g.floor),
+        coins = 110 + 30 * (f.level - 1) + (f.branch === "quality" ? 45 : 0),
+        knowledge = 35 + f.level * 10;
+      setBody(
+        "Открытие состоялось!",
+        `<div class="victory"><h2>Получилось!</h2><p>Проект готов к выставке.</p><h3>+${coins} ● &nbsp; +${knowledge} ◆</h3></div>${button("Завершить и получить награду", "game-claim", {}, "gold")}<p class="micro">Следующее занятие предложит другую задачу.</p>`,
+        reset,
+      );
+      return;
+    }
+    let html = "";
+    if (g.kind === "sequence") {
+      html =
+        `<h3>${g.task.title}</h3><p>${g.task.hint}</p><p class="micro">Нажимайте шаги по порядку.</p>${progress(g.progress, 4)}<div class="status" role="status">${esc(g.status)} · ${g.progress}/4</div>` +
+        g.order
+          .map((i) =>
+            button(
+              `${i < g.progress ? "✓ " : ""}${esc(g.task.steps[i])}`,
+              "sequence",
+              { index: i },
+              i < g.progress ? "correct" : "secondary",
+              i < g.progress,
+            ),
+          )
+          .join("");
+    } else if (g.kind === "pairs") {
+      html = `<h3>${g.task.pair_title}</h3><p>Выберите понятие, затем его описание.</p>${progress(g.matched.length, 4)}<div class="status" role="status">${esc(g.status)}</div><div class="pairs"><div class="term-grid">${g.task.pairs.map((p, i) => button(`${g.matched.includes(i) ? "✓ " : ""}${esc(p[0])}`, "pair-left", { index: i }, g.matched.includes(i) ? "correct" : g.selected === i ? "selected" : "secondary", g.matched.includes(i))).join("")}</div><div class="pair-answers">${g.order.map((i) => button(esc(g.task.pairs[i][1]), "pair-right", { index: i }, g.matched.includes(i) ? "correct" : "secondary", g.matched.includes(i))).join("")}</div></div>`;
+    } else {
+      const routeNames = {
+        it: "Программа робота",
+        bio: "Доставка образца",
+        robo: "Робот на складе",
+        vr: "Виртуальный лабиринт",
+        nano: "Доставка материала",
+        hi: "Логистика мастерской",
+        media: "Съёмочная экспедиция",
+        auto: "Автономный автомобиль",
+        geo: "Маршрут экспедиции",
+        design: "Путь пользователя",
+      };
+      html = `<h3>${routeNames[g.floor]}</h3><p class="micro">Проведите ◉ к ★. Добавляйте стрелки и запустите программу. Полосатые клетки — препятствия. До 16 команд.</p><div class="grid-game" role="img" aria-label="Поле 5 на 5. Робот: строка ${Math.floor(g.pos / 5) + 1}, столбец ${(g.pos % 5) + 1}. Цель: строка ${Math.floor(g.target / 5) + 1}, столбец ${(g.target % 5) + 1}.">${Array.from({ length: 25 }, (_, i) => `<div class="grid-cell ${g.walls.includes(i) ? "wall" : g.pos === i ? "bot" : g.target === i ? "target" : ""}">${g.pos === i ? "◉" : g.target === i ? "★" : ""}</div>`).join("")}</div><div class="program">${g.program.map((d) => ({ left: "←", up: "↑", down: "↓", right: "→" })[d]).join(" ") || "Ваша программа"}</div><div class="arrows">${[
+        ["left", "←"],
+        ["up", "↑"],
+        ["down", "↓"],
+        ["right", "→"],
+      ]
+        .map(([dir, icon]) =>
+          button(
+            icon,
+            "route-add",
+            { dir },
+            "secondary",
+            g.running || g.program.length >= 16,
+          ),
+        )
+        .join(
+          "",
+        )}</div><div class="status" role="status">${esc(g.status)}</div>${button(g.running ? "Выполняется…" : "Запустить ▶", "route-run", {}, "", g.running || !g.program.length)}<div class="row">${button("Убрать шаг", "route-undo", {}, "secondary", g.running || !g.program.length)}${button("Сначала", "route-reset", {}, "secondary", g.running)}</div>`;
+    }
+    setBody(
+      `Проект · ${["sequence", "pairs", "route"].indexOf(g.kind) + 1}/3`,
+      html + button("Вернуться позже", "cancel-game", {}, "ghost"),
+      reset,
+    );
+  }
+  async function runRoute() {
+    const g = game;
+    if (!g || g.kind !== "route" || g.running || !g.program.length || g.done)
+      return;
+    g.running = true;
+    g.pos = g.start;
+    g.status = "Программа выполняется…";
+    renderGame();
+    for (const dir of g.program) {
+      await new Promise((r) => setTimeout(r, state.settings.motion ? 220 : 30));
+      if (game !== g) return;
+      const next = g.pos + { left: -1, right: 1, up: -5, down: 5 }[dir];
+      if (
+        next < 0 ||
+        next > 24 ||
+        (dir === "left" && g.pos % 5 === 0) ||
+        (dir === "right" && g.pos % 5 === 4) ||
+        g.walls.includes(next)
+      ) {
+        g.pos = g.start;
+        g.running = false;
+        g.status = "Препятствие. Попробуйте изменить программу.";
+        renderGame();
+        return;
+      }
+      g.pos = next;
+      renderGame();
+    }
+    g.running = false;
+    g.done = g.pos === g.target;
+    g.status = g.done
+      ? "Маршрут пройден!"
+      : "Добавьте команды, чтобы дойти до звезды. Запуск снова начнётся со старта.";
+    if (g.done) {
+      sound(true);
+      burst(selected);
+    }
+    renderGame();
+  }
+
+  // The lift belongs to the building, not to an external navigation panel.
+  function startEscort(id) {
+    const n = state.newbies.find((x) => x.id === id),
+      f = n && state.floors.find((x) => x.id === n.target);
+    if (!n || !f || f.ready || f.lesson > 0 || f.students >= E.capacity(f)) {
+      tell("Сейчас в группе нет свободного места.", 0, true);
+      return;
+    }
+    if (phasesBusy()) return;
+    closeRoom();
+    lift.passenger = { ...n };
+    lift.phase = "pickup";
+    lift.target = 0;
+    lift.wait = 0;
+    focusFloor(0);
+    tell("Лифт едет за пассажиром.", 0);
+    sound();
+  }
+  function cancelEscort() {
+    const delivered = lift.phase === "exiting";
+    lift.passenger = null;
+    lift.phase = "idle";
+    lift.target = lift.level;
+    lift.autoTimer = 0;
+    syncPeople();
+    tell(
+      delivered
+        ? "Пассажир уже на занятии."
+        : "Новенький подождёт на ресепшене.",
+      0,
+    );
+    save();
+  }
+  function callLift(index) {
+    if (index < 0 || index >= state.floors.length + 2) return;
+    if (
+      lift.phase === "pickup" ||
+      lift.phase === "boarding" ||
+      lift.phase === "exiting"
+    ) {
+      tell("Подождите посадки пассажира.", Math.round(lift.level));
+      return;
+    }
+    if (selected !== null) closeRoom();
+    lift.target = index;
+    if (lift.passenger) {
+      lift.phase = "ride";
+      tell(`Едем на этаж ${floorNumber(index)}.`, index);
+    } else {
+      lift.phase = "manual";
+      lift.autoTimer = 0;
+    }
+    sound();
+  }
+  function updateLift(dt) {
+    if (["pickup", "ride", "auto", "manual"].includes(lift.phase)) {
+      const d = lift.target - lift.level;
+      if (Math.abs(d) > 0.005) {
+        lift.level += Math.sign(d) * Math.min(Math.abs(d), dt * 1.3);
+        if (lift.passenger) {
+          const py = levelBottom(lift.level) + origin() - 35;
+          if (py < 50) targetCam = Math.min(maxCam(), targetCam + (50 - py));
+          if (py > H - 70) targetCam = Math.max(0, targetCam - (py - (H - 70)));
+        }
+      } else {
+        lift.level = lift.target;
+        if (lift.phase === "pickup") {
+          lift.phase = "boarding";
+          lift.wait = 1;
+          syncPeople();
+        } else if (lift.phase === "ride") {
+          const dest = floorIndex(lift.passenger.target);
+          if (lift.target === dest) {
+            const f = state.floors.find((f) => f.id === lift.passenger.target);
+            lift.deliveredKey = `student:${f.id}:${f.projects}:${f.students}`;
+            const res = perform(
+              "escort",
+              { id: lift.passenger.id, floor: lift.passenger.target },
+              false,
+            );
+            if (res.ok) {
+              lift.phase = "exiting";
+              lift.wait = 1.2;
+              tell("Спасибо! +25 монет, +10 знаний.", dest);
+              burst(dest);
+            } else {
+              lift.phase = "await";
+              tell(res.error, dest, true);
+            }
+            syncPeople();
+          } else if (lift.target === 0) {
+            cancelEscort();
+          } else {
+            lift.phase = "wrong";
+            tell(
+              `Мне нужен этаж ${dest}: ${E.lab(lift.passenger.target).name}.`,
+              lift.target,
+            );
+          }
+        } else {
+          lift.phase = "idle";
+          lift.autoTimer = 0;
+        }
+      }
+    } else if (lift.phase === "boarding") {
+      lift.wait -= dt;
+      if (lift.wait <= 0) {
+        lift.phase = "await";
+        const dest = floorIndex(lift.passenger.target);
+        tell(`Нажмите ${dest} в шахте лифта слева.`, 0);
+        focusFloor(dest);
+      }
+    } else if (lift.phase === "exiting") {
+      lift.wait -= dt;
+      if (lift.wait <= 0) {
+        lift.passenger = null;
+        lift.phase = "idle";
+        lift.autoTimer = 0;
+        syncPeople();
+        const p = people.get(lift.deliveredKey);
+        if (p) p.x = 12;
+      }
+    } else if (
+      lift.phase === "idle" &&
+      selected === null &&
+      !state.settings.paused &&
+      state.settings.motion
+    ) {
+      lift.autoTimer += dt;
+      if (lift.autoTimer > 8) {
+        lift.autoPerson = Math.floor(t) % 12;
+        lift.target =
+          Math.round(lift.level) === 0
+            ? 1 + (Math.floor(t) % (state.floors.length + 1))
+            : 0;
+        lift.phase = "auto";
+      }
+    }
+  }
+  function downloadSave() {
+    const blob = new Blob(
+      [JSON.stringify({ ...state, savedAt: Date.now() }, null, 2)],
+      { type: "application/json" },
+    );
+    const url = URL.createObjectURL(blob),
+      a = document.createElement("a");
+    a.href = url;
+    a.download = "quantorium-save.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+  function replaceState(next) {
+    state = E.validateSave(next);
+    blockedSave = false;
+    saveError = "";
+    game = null;
+    lift.passenger = null;
+    lift.phase = "idle";
+    lift.level = 0;
+    lift.target = 0;
+    people.clear();
+    fresh = false;
+    selected = null;
+    view = "home";
+    panel.hidden = true;
+    cam = targetCam = 0;
+    save();
+    makeLayouts();
+    syncPeople();
+    createHitboxes(true);
+    positionUI();
+    tell("Сохранение загружено.", 0);
+  }
+  function handleAction(event) {
+    const b = event.target.closest("[data-action]");
+    if (!b || b.disabled) return;
+    const d = b.dataset,
+      index = Number(d.index),
+      action = d.action;
+    switch (action) {
+      case "view":
+        go(d.view, d.floor ? { floor: d.floor } : null);
+        break;
+      case "back":
+        game = null;
+        confirmAction = null;
+        view = "home";
+        renderPanel(true);
+        break;
+      case "confirm": {
+        const fn = confirmAction;
+        confirmAction = null;
+        if (fn) fn();
+        break;
+      }
+      case "build": {
+        const res = perform("build", { id: d.id }, false);
+        if (!res.ok) break;
+        closeRoom();
+        makeLayouts();
+        const i = floorIndex(d.id);
+        focusFloor(i);
+        buildFlash = { index: i, at: t };
+        burst(i);
+        tell(`${E.lab(d.id).name} открыт! Наймите преподавателя.`, i);
+        createHitboxes(true);
+        break;
+      }
+      case "hire": {
+        const sel = document.getElementById("hire-" + d.id);
+        if (!sel) return;
+        const floor = sel.value;
+        const res = perform("hire", { id: d.id, floor });
+        if (res.ok) {
+          fresh = false;
+          const p = people.get("teacher:" + d.id);
+          if (p) {
+            p.x = 10;
+            p.target = 110;
+            p.wait = 0;
+          }
+          tell("Преподаватель принят в штат.", selected);
+        }
+        break;
+      }
+      case "reject":
+        perform("reject", { id: d.id });
+        break;
+      case "train":
+        perform("train", { id: d.id });
+        break;
+      case "move": {
+        const sel = document.getElementById("move-" + d.id);
+        if (sel) perform("move", { id: d.id, floor: sel.value });
+        break;
+      }
+      case "fire":
+        ask(
+          "Уволить преподавателя?",
+          `Уволить ${esc(state.teachers[d.id]?.name || "преподавателя")}? Его профиль исчезнет из штата.`,
+          () => {
+            view = "staff";
+            perform("fire", { id: d.id });
+          },
+        );
+        break;
+      case "upgrade":
+        perform("upgrade", { floor: d.floor });
+        break;
+      case "branch":
+        ask(
+          "Выбрать специализацию?",
+          d.value === "speed"
+            ? "Занятия этого квантума будут на 25% короче. Сменить специализацию позднее нельзя."
+            : "Каждый проект будет приносить ещё 45 монет. Сменить специализацию позднее нельзя.",
+          () => {
+            view = "upgrade";
+            perform("branch", { floor: d.floor, value: d.value });
+          },
+        );
+        break;
+      case "competition":
+        perform("competition", { floor: d.floor, level: Number(d.level) });
+        break;
+      case "joint":
+        perform("joint");
+        break;
+      case "chapter":
+        perform("claimChapter");
+        break;
+      case "escort":
+        startEscort(d.id);
+        break;
+      case "setting":
+        perform("settings", {
+          key: d.key,
+          value: d.key === "speed" ? Number(d.value) : d.value === "true",
+        });
+        break;
+      case "export":
+        downloadSave();
+        break;
+      case "import":
+        document.getElementById("import-file").click();
+        break;
+      case "reload-save": {
+        try {
+          const next = E.validateSave(
+            JSON.parse(localStorage.getItem(SAVE_KEY)),
+          );
+          ask(
+            "Загрузить сохранение?",
+            "Текущая башня будет заменена версией из браузера. При необходимости сначала скачайте текущий прогресс.",
+            () => replaceState(next),
+          );
+        } catch (err) {
+          tell("Сохранение повреждено или не найдено.", 0, true);
+          setBody(
+            "Сохранение недоступно",
+            "<p>Файл в браузере не удалось прочитать. Можно импортировать резервный .json или начать новую башню.</p>" +
+              button("Назад", "back", {}, "secondary"),
+          );
+        }
+        break;
+      }
+      case "new-game":
+        ask(
+          "Начать заново?",
+          "Весь текущий прогресс будет заменён новой башней. Чтобы сохранить его, сначала скачайте файл .json.",
+          () => {
+            const s = E.initialState();
+            s.floors[0].students = 2;
+            s.newbieClock = 65;
+            replaceState(s);
+            fresh = true;
+            tell("Добро пожаловать! Учитель ждёт в кабинете директора.", 1);
+          },
+        );
+        break;
+      case "start-game":
+        startGame(d.id);
+        break;
+      case "cancel-game":
+        game = null;
+        view = "home";
+        renderPanel(true);
+        break;
+      case "sequence":
+        if (game?.kind === "sequence" && !game.done) {
+          if (index === game.progress) {
+            game.progress++;
+            game.status = "Верно! Что дальше?";
+            sound();
+            if (game.progress === 4) {
+              game.done = true;
+              sound(true);
+              burst(selected);
+            }
+          } else game.status = "Сначала: " + game.task.steps[game.progress];
+          renderGame();
+        }
+        break;
+      case "pair-left":
+        if (
+          game?.kind === "pairs" &&
+          !game.done &&
+          !game.matched.includes(index)
+        ) {
+          game.selected = index;
+          game.status = "Теперь выберите описание.";
+          renderGame();
+        }
+        break;
+      case "pair-right":
+        if (
+          game?.kind === "pairs" &&
+          !game.done &&
+          !game.matched.includes(index)
+        ) {
+          if (game.selected === null) game.status = "Сначала выберите понятие.";
+          else if (index === game.selected) {
+            game.matched.push(index);
+            game.selected = null;
+            game.status = "Пара найдена!";
+            sound();
+            if (game.matched.length === 4) {
+              game.done = true;
+              sound(true);
+              burst(selected);
+            }
+          } else
+            game.status = "Это описание другого понятия. Попробуйте ещё раз.";
+          renderGame();
+        }
+        break;
+      case "route-add":
+        if (
+          game?.kind === "route" &&
+          !game.done &&
+          !game.running &&
+          game.program.length < 16 &&
+          ["left", "right", "up", "down"].includes(d.dir)
+        ) {
+          game.program.push(d.dir);
+          renderGame();
+        }
+        break;
+      case "route-undo":
+        if (game?.kind === "route" && !game.running) {
+          game.program.pop();
+          renderGame();
+        }
+        break;
+      case "route-reset":
+        if (game?.kind === "route" && !game.running) {
+          game.program = [];
+          game.pos = game.start;
+          game.status = "Попробуйте новый маршрут.";
+          renderGame();
+        }
+        break;
+      case "route-run":
+        runRoute();
+        break;
+      case "game-claim":
+        if (game?.done) {
+          const id = game.floor;
+          game = null;
+          view = "home";
+          const res = perform("complete", { floor: id });
+          if (res.ok) {
+            setBody(
+              "Проект завершён",
+              `<div class="victory"><h2>Новое открытие!</h2><p>+${res.reward.coins} ● · +${res.reward.knowledge} ◆</p></div><p>Ученики отправились домой. Следующая группа скоро придёт.</p>${button("В квантум", "back", {}, "gold")}`,
+            );
+            view = "result";
+          }
+        }
+        break;
+    }
+  }
+  body.addEventListener("click", handleAction);
+  document.getElementById("close").addEventListener("click", closeRoom);
+  document.getElementById("back").addEventListener("click", () => {
+    game = null;
+    confirmAction = null;
+    view = "home";
+    renderPanel(true);
+  });
+  document
+    .getElementById("import-file")
+    .addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      try {
+        if (file.size > 1e6) throw Error("Файл слишком большой");
+        const next = E.validateSave(JSON.parse(await file.text()));
+        ask(
+          "Загрузить башню?",
+          `Заменить текущую башню сохранением из «${esc(file.name)}»? В файле ${next.floors.length} квантумов и ${E.totalProjects(next)} проектов.`,
+          () => replaceState(next),
+        );
+      } catch (err) {
+        if (selected === null) openRoom(0, "settings");
+        setBody(
+          "Не удалось загрузить",
+          `<p>${esc(err.message || "Повреждённый файл")}</p><p>Текущий прогресс сохранён.</p>${button("Назад", "back", {}, "secondary")}`,
+        );
+        view = "import-error";
+      }
+    });
+  function point(e) {
+    const b = canvas.getBoundingClientRect();
+    return { x: (e.clientX - b.left) / scale, y: (e.clientY - b.top) / scale };
+  }
+  function tap(p) {
+    if (p.x >= tx + 4 && p.x < rx) {
+      const cabY = levelBottom(lift.level) + origin();
+      if (
+        phasesBusy() &&
+        p.y > cabY - 60 &&
+        p.y < cabY &&
+        ["await", "wrong"].includes(lift.phase)
+      ) {
+        cancelEscort();
+        return;
+      }
+      const l = layouts.find(
+        (l) =>
+          l.id !== "build" &&
+          p.y >= l.top + origin() &&
+          p.y < l.bottom + origin(),
+      );
+      if (l) callLift(l.index);
+      return;
+    }
+    if (p.x < rx || p.x > rx + RW) {
+      if (selected !== null) closeRoom();
+      return;
+    }
+    if (selected === null && !phasesBusy())
+      for (const npc of people.values())
+        if (npc.newbie) {
+          const y = layouts[0].bottom + origin() - 6;
+          if (
+            Math.abs(p.x - (rx + npc.x)) < 12 &&
+            p.y > y - 42 &&
+            p.y < y + 3
+          ) {
+            openRoom(0, "visitors");
+            return;
+          }
+        }
+    const l = layouts.find(
+      (l) => p.y >= l.top + origin() && p.y < l.bottom + origin(),
+    );
+    if (l) openRoom(l.index);
+  }
+  world.addEventListener("pointerdown", (e) => {
+    if (e.target.closest("#room-panel") || e.button > 0 || dragging) return;
+    const p = point(e);
+    dragging = { id: e.pointerId, y: p.y, startCam: cam, p, max: 0 };
+    world.setPointerCapture(e.pointerId);
+  });
+  world.addEventListener("pointermove", (e) => {
+    if (!dragging || dragging.id !== e.pointerId) return;
+    const p = point(e),
+      delta = p.y - dragging.y;
+    dragging.max = Math.max(
+      dragging.max,
+      Math.hypot(delta, p.x - dragging.p.x),
+    );
+    if (dragging.max > 4) {
+      targetCam = Math.max(0, Math.min(maxCam(), dragging.startCam + delta));
+      cam = targetCam;
+      e.preventDefault();
+    }
+  });
+  world.addEventListener("pointerup", (e) => {
+    if (!dragging || dragging.id !== e.pointerId) return;
+    const was = dragging;
+    dragging = null;
+    if (world.hasPointerCapture(e.pointerId))
+      world.releasePointerCapture(e.pointerId);
+    if (was.max < 5) tap(point(e));
+  });
+  world.addEventListener("pointercancel", () => {
+    dragging = null;
+  });
+  world.addEventListener(
+    "wheel",
+    (e) => {
+      if (e.target.closest("#room-panel")) return;
+      e.preventDefault();
+      targetCam = Math.max(0, Math.min(maxCam(), targetCam - e.deltaY / scale));
+    },
+    { passive: false },
+  );
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (selected !== null) closeRoom();
+      else if (phasesBusy()) cancelEscort();
+      return;
+    }
+    if (/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+    const directions = {
+      ArrowUp: "up",
+      ArrowDown: "down",
+      ArrowLeft: "left",
+      ArrowRight: "right",
+    };
+    if (
+      game?.kind === "route" &&
+      !game.running &&
+      !game.done &&
+      directions[e.key]
+    ) {
+      e.preventDefault();
+      if (game.program.length < 16) {
+        game.program.push(directions[e.key]);
+        renderGame();
+      }
+      return;
+    }
+    if (selected !== null) return;
+    if (
+      (lift.phase === "await" || lift.phase === "wrong") &&
+      /^\d$/.test(e.key)
+    ) {
+      callLift(Number(e.key));
+      return;
+    }
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+      e.preventDefault();
+      if (lift.passenger)
+        callLift(
+          Math.max(
+            0,
+            Math.min(
+              state.floors.length + 1,
+              Math.round(lift.target) + (e.key === "ArrowUp" ? 1 : -1),
+            ),
+          ),
+        );
+      else
+        targetCam = Math.max(
+          0,
+          Math.min(maxCam(), targetCam + (e.key === "ArrowUp" ? 65 : -65)),
+        );
+    }
+  });
+  window.addEventListener("resize", resize);
+  window.addEventListener("pagehide", save);
+  window.addEventListener("storage", (e) => {
+    if (e.key !== SAVE_KEY || !e.newValue) return;
+    try {
+      const incoming = JSON.parse(e.newValue);
+      if (incoming.savedAt > state.savedAt) {
+        blockedSave = true;
+        state.settings.paused = true;
+        saveError =
+          "Башня открыта в другой вкладке. Чтобы не потерять изменения, продолжайте там или перечитайте сохранение здесь.";
+        tell(saveError, 0, true);
+        if (selected === 0 && view === "settings") renderSettings(false);
+      }
+    } catch (err) {
+      /* Ignore unrelated invalid browser data. */
+    }
+  });
+  let hiddenAt = 0,
+    hiddenPaused = false;
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      save();
+      hiddenAt = Date.now();
+      hiddenPaused = state.settings.paused || !!game || phasesBusy();
+    } else if (hiddenAt) {
+      if (!hiddenPaused && !blockedSave)
+        E.advance(state, Math.min(7200, (Date.now() - hiddenAt) / 1000));
+      hiddenAt = 0;
+      lastFrame = performance.now();
+      syncPeople();
+      if (selected !== null && view !== "confirm" && !game) renderPanel();
+    }
+  });
+  function tickUI() {
+    const sig = JSON.stringify([
+      state.floors.map((f) => [
+        f.id,
+        f.students,
+        f.ready,
+        E.floorState(state, f),
+      ]),
+      state.candidates.map((c) => c.id),
+      E.teacherList(state).map((t) => [t.id, !!t.training]),
+      state.newbies.map((n) => n.id),
+      state.competitions.length,
+      !!state.joint,
+      state.chapter,
+    ]);
+    if (sig !== lastSig) {
+      lastSig = sig;
+      syncPeople();
+      if (
+        selected !== null &&
+        !game &&
+        view !== "confirm" &&
+        view !== "result" &&
+        view !== "import-error" &&
+        document.activeElement?.tagName !== "SELECT"
+      )
+        renderPanel();
+    }
+    if (selected !== null) {
+      body
+        .querySelectorAll("[data-count]")
+        .forEach((el) => (el.textContent = num(state[el.dataset.count])));
+      body
+        .querySelectorAll("[data-lesson]")
+        .forEach(
+          (el) =>
+            (el.textContent = clock(
+              state.floors.find((f) => f.id === el.dataset.lesson)?.lesson || 0,
+            )),
+        );
+      body
+        .querySelectorAll("[data-training]")
+        .forEach(
+          (el) =>
+            (el.textContent = clock(
+              state.teachers[el.dataset.training]?.training?.left || 0,
+            )),
+        );
+      body
+        .querySelectorAll("[data-competition]")
+        .forEach(
+          (el) =>
+            (el.textContent = clock(
+              state.competitions.find((c) => c.floor === el.dataset.competition)
+                ?.left || 0,
+            )),
+        );
+      body
+        .querySelectorAll("[data-joint]")
+        .forEach((el) => (el.textContent = clock(state.joint?.left || 0)));
+      body.querySelectorAll('[data-action="build"]').forEach((b) => {
+        b.disabled =
+          state.coins < E.floorCost(state) ||
+          E.totalProjects(state) < E.lab(b.dataset.id).unlock;
+      });
+      body.querySelectorAll('[data-action="hire"]').forEach((b) => {
+        const c = state.candidates.find((c) => c.id === b.dataset.id);
+        b.disabled = !c || state.coins < c.cost;
+      });
+      body.querySelectorAll('[data-action="train"]').forEach((b) => {
+        const teacher = state.teachers[b.dataset.id],
+          f = state.floors.find((f) => f.teachers.includes(b.dataset.id));
+        b.disabled =
+          !teacher ||
+          !!teacher.training ||
+          !f ||
+          teacher.skills[f.id] >= 10 ||
+          state.knowledge < teacher.skills[f.id] * 30;
+      });
+      body.querySelectorAll('[data-action="upgrade"]').forEach((b) => {
+        const f = state.floors.find((f) => f.id === b.dataset.floor),
+          c = E.upgradeCost(f);
+        b.disabled =
+          f.level >= 3 ||
+          f.ready ||
+          f.lesson > 0 ||
+          state.coins < c.coins ||
+          state.knowledge < c.knowledge;
+      });
+    }
+  }
+  function frame(now) {
+    const dt = Math.min(0.1, Math.max(0, (now - lastFrame) / 1000));
+    lastFrame = now;
+    t += dt;
+    if (!document.hidden) {
+      if (!state.settings.paused && !game && !phasesBusy() && !blockedSave)
+        E.advance(state, dt * state.settings.speed);
+      cam += (targetCam - cam) * Math.min(1, dt * 12);
+      if (Math.abs(targetCam - cam) < 0.05) cam = targetCam;
+      makeLayouts();
+      updatePeople(dt);
+      updateLift(dt);
+      positionUI();
+      draw(dt);
+      saveAcc += dt;
+      uiAcc += dt;
+      if (uiAcc > 0.75) {
+        uiAcc = 0;
+        tickUI();
+      }
+      if (saveAcc > 5) {
+        saveAcc = 0;
+        save();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  // Read-only inspection is useful when extending the game in a browser console.
+  window.QuantumTower = Object.freeze({
+    version: "2.0",
+    inspect: () => JSON.parse(JSON.stringify(state)),
+    get lift() {
+      return {
+        level: lift.level,
+        target: lift.target,
+        phase: lift.phase,
+        passenger: lift.passenger ? { ...lift.passenger } : null,
+      };
+    },
+    get selectedRoom() {
+      return selected === null ? null : roomId(selected);
+    },
+  });
+  resize();
+  syncPeople();
+  createHitboxes(true);
+  positionUI();
+  save();
+  if (saveError) tell(saveError, 0, true);
+  else if (fresh)
+    tell("Учитель ждёт в кабинете директора. Нажмите на комнату.", 1);
+  requestAnimationFrame(frame);
+})();
+
+</script>
+  </body>
+</html>
