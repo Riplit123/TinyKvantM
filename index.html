@@ -7,7 +7,7 @@
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
     <meta name="theme-color" content="#8fd2f2" />
-    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=ClC5hYvfUOlwmoHC2DCUWta_v_4IYkCOHurTFUAGgwV_QPIDX9pn7Q524cdrSeE3xXovqz36FCtPz5PHDQfHDWg5supwxcQKT2HyRXAvsnc2TfqCTEpKYChzIy9D4lXXG2SPD61T1ip0lsAXvnRL4fDmlAJbiWqEX2w-G-6BLqrhOViB5_IXrFFtKcIdv4b9OZ9Y6iDIgPFdgjVjuMdo9Sp2JunIHeYEY1zp1cLy5rM6IbHP3pjLOvOthXq0Nqlr7tJJoQ1vjW3m2AX9M1olf6kI8Eb35ACEzO2mGvom0rCB23aFqJ-dYS2E7OT0at_u" charset="UTF-8"></script><style>
+    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=SKFQ6TvnbbWum2NMw_bMbWht5NGy88RWWaI_24w-tp8l3aWhzv2J63hM2TOJe5rEhwIg6fzt-t_k9975HCoSOqhFWrCdfcNlcpdWoC-rPpq-xJvzig74rnjmwxq0xDkRwrc5hPjZOV9krDzvr24obLFjn7TlRfe2TmVmECQPb9QOMVmXmcx1EPrqc9NPf3fjoRoxePpc_u7JxUAMfzjIcwexqikLAZwXd704Qzx578GtWjUmGTp_pe1ECxHbebTqXNUT4YQ7GPd3pBB94lXEEYQzV-SZ2pBi-hnucaPARNIofzw3ajG4yMCU6F90_Nr_" charset="UTF-8"></script><style>
 :root {
   color-scheme: light;
   font-family: Consolas, "DejaVu Sans Mono", monospace;
@@ -777,52 +777,46 @@ select {
   margin-bottom: 8px;
 }
 #room-panel.lesson-result {
-  width: min(90vw, 430px);
+  width: min(90vw, 420px);
   height: auto;
-  max-height: min(68vh, 430px);
+  max-height: min(62vh, 360px);
 }
 #room-panel.lesson-result #panel-body {
   padding: 14px;
+  overflow-y: auto;
 }
-#room-panel .lesson-victory {
-  border: 2px solid #76a89b;
-  border-radius: 12px;
-  padding: 16px 12px;
-  background: linear-gradient(180deg, #eff9f2 0%, #fff7dc 100%);
-  box-shadow: 0 3px 0 #b9c9bc;
-  color: #263d43;
+#room-panel .lesson-complete {
+  margin-bottom: 12px;
 }
-#room-panel .lesson-victory h2 {
-  margin: 0 0 8px;
-  color: #285e55;
-  font-size: 21px;
-  text-shadow: none;
+#room-panel .lesson-complete h2 {
+  margin: 0 0 7px;
+  color: #4c5e62;
+  font-size: 20px;
 }
-#room-panel .lesson-victory p {
-  color: #334b50;
-  font-weight: 700;
-  opacity: 1;
+#room-panel .lesson-complete p {
+  margin: 5px 0 8px;
+  color: #455860;
 }
-#room-panel .lesson-victory h3 {
-  margin: 10px 0 2px;
-  color: #8b6722;
-  font-size: 18px;
-  opacity: 1;
+.lesson-reward {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
 }
-
-/* Event arcade selector. */
-.event-choice {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin: 12px 0;
-}
-.event-choice .btn {
-  margin: 0;
-  min-height: 74px;
+.lesson-reward span {
+  display: inline-block;
+  min-width: 92px;
+  padding: 7px 10px;
+  border: 1px solid #b8b18b;
+  border-radius: 999px;
+  background: #fff9df;
+  color: #66552f;
+  font-weight: 800;
+  font-size: 14px;
 }
 
-/* 6x6 block arcade. */
+/* 6x6 colourful mosaic arcade. */
 .blockblast-head {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -948,9 +942,6 @@ select {
   font-weight: 800;
 }
 @media (max-width: 420px) {
-  .event-choice {
-    grid-template-columns: 1fr;
-  }
   .block-board {
     width: min(82vw, 286px);
   }
@@ -2714,7 +2705,7 @@ window.QuantumTasks = {
       hcol = "#725b50";
       shirt = "#487fa8";
       sleeves = "#487fa8";
-      glasses = true;
+      glasses = false;
     } else if (role === "director") {
       shirt = "#556d72";
       sleeves = "#d9d2c8";
@@ -2740,14 +2731,14 @@ window.QuantumTasks = {
       r(-8, -10, 3, 5, "#e1b867");
       r(4, -10, 3, 5, "#edc979");
     } else if (role === "reception-blue") {
-      // Short ombre hair: russet roots, desaturated middle, vivid blue ends.
-      r(-7, -24, 13, 4, "#725b50");
-      r(-7, -20, 13, 4, "#62616a");
-      r(-6, -17, 12, 4, "#416f93");
-      r(-6, -14, 5, 3, "#2e82b7");
-      r(2, -14, 4, 3, "#2e82b7");
-      r(-6, -25, 9, 3, "#725b50");
-      r(3, -21, 4, 5, "#4c748d");
+      // Long ombre hair: russet roots -> muted blue -> vivid blue tips.
+      r(-7, -24, 13, 5, "#725b50");
+      r(-7, -19, 13, 5, "#62616a");
+      r(-8, -16, 3, 6, "#4c748d");
+      r(4, -16, 3, 6, "#4c748d");
+      r(-8, -10, 3, 5, "#2e82b7");
+      r(4, -10, 3, 5, "#3c92c6");
+      r(-6, -25, 10, 3, "#725b50");
     } else if (feminine && role !== "teacher") {
       r(-7, -23, 13, 12, hcol);
       r(-7, -18, 3, 9, hcol);
@@ -2763,14 +2754,21 @@ window.QuantumTasks = {
     r(4, -18, 1, 4, skin);
     if (!["reception-blonde", "reception-blue"].includes(role))
       r(-5, -23, 10, 3, hcol);
-    if (!feminine && role !== "reception-blue")
+    if (!feminine && !["reception-blonde", "reception-blue"].includes(role))
       r(seed % 2 ? -5 : 3, -21, 2, 4, hcol);
     r(-3 + (dir < 0 ? -1 : 0), -17, 1, 2, "#302e3d");
     r(2 + (dir < 0 ? -1 : 0), -17, 1, 2, "#302e3d");
+    if (["reception-blonde", "reception-blue"].includes(role)) {
+      // Small lashes and blush make both reception sprites more feminine.
+      r(-4, -18, 1, 1, "#302e3d");
+      r(3, -18, 1, 1, "#302e3d");
+      r(-5, -15, 1, 1, "#d98f88");
+      r(4, -15, 1, 1, "#d98f88");
+    }
     r(-1, -13, 2, 1, "#a57064");
 
     if (glasses) {
-      const frameColor = role === "reception-blue" ? "#15181d" : "#526074";
+      const frameColor = "#526074";
       r(-5, -18, 4, 3, frameColor);
       r(1, -18, 4, 3, frameColor);
       r(-4, -17, 2, 1, "#d5e5e2");
@@ -3948,7 +3946,8 @@ window.QuantumTasks = {
         `${Math.max(0, items - 3) * 28}px`,
       );
     }
-    if (label === "Урок окончен!") panel.classList.add("lesson-result");
+    if (label === "Урок окончен!" || label === "Занятие завершено")
+      panel.classList.add("lesson-result");
 
     const back = document.getElementById("back");
     back.hidden = view === "home" && !game;
@@ -3970,7 +3969,8 @@ window.QuantumTasks = {
       return;
     }
     if (selected === i && view === "home" && subview === "home") {
-      closeRoom();
+      // Mobile browsers may emit a compatibility click after the pointer tap.
+      // A duplicate open is a no-op, never a close.
       return;
     }
     selected = i;
@@ -4402,7 +4402,7 @@ window.QuantumTasks = {
     }).join("");
     setBody(
       "Конференц-зал",
-      `<div class="event-marquee"><b>Мероприятия центра</b><br><span class="micro">Проводите мини-игры, получайте ресурсы и открывайте новые форматы. Для мероприятия можно выбрать игру на память или Block Blast 6×6. После каждого мероприятия зал готовится 5 минут — это общий перерыв для всех форматов.</span>${
+      `<div class="event-marquee"><b>Мероприятия центра</b><br><span class="micro">Проводите мероприятия, получайте ресурсы и открывайте новые форматы. После каждого мероприятия зал готовится 5 минут — это общий перерыв для всех форматов.</span>${
         cooling ? `<div class="status">Следующее мероприятие через <span data-event-cooldown>${clock(es.cooldown)}</span></div>` : ""
       }</div><div class="cards">${cards}</div><p class="micro">Проведено мероприятий: ${es.completed}.</p>`,
       reset,
@@ -4425,32 +4425,10 @@ window.QuantumTasks = {
     const ev = E.EVENTS.find((x) => x.id === id);
     const es = eventState();
     if (!ev || !es.unlocked.includes(id) || es.cooldown > 0) return;
-    game = { kind: "event-choice", eventId: id };
-    renderEventChoice(true);
-  }
-  function renderEventChoice(reset = false) {
-    const ev = E.EVENTS.find((x) => x.id === game?.eventId);
-    if (!ev || game?.kind !== "event-choice") return;
-    setBody(
-      ev.name,
-      `<div class="event-marquee"><h3>Выберите аркаду</h3><p>Обе игры проводят одно мероприятие. После успешного завершения включится общий перерыв конференц-зала.</p></div>` +
-        `<div class="event-choice">` +
-        button(
-          `Найти пары<br><small>спокойная игра на память · фиксированная награда</small>`,
-          "event-memory-start",
-          { id: ev.id },
-          "secondary",
-        ) +
-        button(
-          `Block Blast 6×6<br><small>60 секунд · награда зависит от очков</small>`,
-          "event-block-start",
-          { id: ev.id },
-          "gold",
-        ) +
-        `</div>` +
-        button("Вернуться в конференц-зал", "cancel-game", {}, "ghost"),
-      reset,
-    );
+
+    // Fixed activity for each event: no intermediate arcade-selection menu.
+    if (id === "quiz") startMemoryEvent(id);
+    else startBlockEvent(id);
   }
   function startMemoryEvent(id) {
     const ev = E.EVENTS.find((x) => x.id === id);
@@ -4626,9 +4604,9 @@ window.QuantumTasks = {
     const reward = blockReward(g);
     if (g.done) {
       setBody(
-        "Block Blast — результат",
+        "Мозаика идей — результат",
         `<div class="event-marquee"><h3>${ev.name}</h3><p>${esc(g.endReason || "Минута закончилась.")}</p></div>` +
-          `<div class="lesson-victory"><h2>${g.score} очков</h2><p>Очищено линий: ${g.lines}. Ходов: ${g.moves}.</p><h3>+${reward.coins} ● &nbsp; +${reward.knowledge} ◆</h3></div>` +
+          `<div class="event-marquee lesson-complete"><h2>${g.score} очков</h2><p>Очищено линий: ${g.lines}. Ходов: ${g.moves}.</p><div class="lesson-reward"><span>+${reward.coins} ●</span><span>+${reward.knowledge} ◆</span></div></div>` +
           button("Завершить мероприятие и получить награду", "event-claim", { id: ev.id }, "gold") +
           button("Вернуться без награды", "cancel-game", {}, "ghost"),
         reset,
@@ -4641,12 +4619,12 @@ window.QuantumTasks = {
         `<div class="blockblast-stat"><b>${g.score}</b>очки</div>` +
         `<div class="blockblast-stat"><b>${g.lines}</b>линии</div>` +
       `</div>` +
-      `<div class="block-board" data-block-board aria-label="Поле Block Blast 6 на 6">${g.board.map((filled, i) => `<div class="block-cell ${filled ? "filled" : ""}" data-block-cell="${i}"></div>`).join("")}</div>` +
+      `<div class="block-board" data-block-board aria-label="Поле «Мозаика идей» 6 на 6">${g.board.map((filled, i) => `<div class="block-cell ${filled ? "filled" : ""}" data-block-cell="${i}"></div>`).join("")}</div>` +
       `<div class="block-combo">${esc(g.lastCombo || "Перетащите фигуру на поле. Вращать нельзя.")}</div>` +
       `<div class="block-pieces">${g.pieces.map(renderBlockPiece).join("")}</div>` +
       `<p class="micro">Полный ряд или столбец исчезает. Несколько линий за один ход дают комбо. После трёх фигур появляются новые. 1 очко = 1 ●, каждые 4 очка = 1 ◆.</p>` +
       button("Закончить мероприятие сейчас", "block-finish", {}, "ghost");
-    setBody("Block Blast 6×6", html, reset);
+    setBody("Мозаика идей", html, reset);
   }
 
   function renderEventGame(reset = false) {
@@ -4949,10 +4927,6 @@ window.QuantumTasks = {
   }
   function renderGame(reset = false) {
     const g = game;
-    if (g?.kind === "event-choice") {
-      renderEventChoice(reset);
-      return;
-    }
     if (g?.kind === "event-memory") {
       renderEventGame(reset);
       return;
@@ -4968,7 +4942,7 @@ window.QuantumTasks = {
         knowledge = 35 + f.level * 10;
       setBody(
         "Урок окончен!",
-        `<div class="lesson-victory"><h2>Получилось!</h2><p>Занятие завершено — награда готова.</p><h3>+${coins} ● &nbsp; +${knowledge} ◆</h3></div>${button("Получить награду", "game-claim", {}, "gold")}<p class="micro">Следующее занятие предложит другую задачу.</p>`,
+        `<div class="event-marquee lesson-complete"><h2>Занятие завершено!</h2><p>Задание выполнено. Награда готова.</p><div class="lesson-reward"><span>+${coins} ●</span><span>+${knowledge} ◆</span></div></div>${button("Получить награду", "game-claim", {}, "gold")}<p class="micro">Следующее занятие предложит другую задачу.</p>`,
         reset,
       );
       return;
@@ -5397,7 +5371,7 @@ window.QuantumTasks = {
     tell("Сохранение загружено.", 0);
   }
   function handleAction(event) {
-    if (performance.now() - modalOpenedAt < 180 && event.detail !== 0) {
+    if (performance.now() - modalOpenedAt < 320 && event.detail !== 0) {
       event.preventDefault();
       event.stopPropagation();
       return;
@@ -5565,12 +5539,6 @@ window.QuantumTasks = {
       case "start-event":
         startEvent(d.id);
         break;
-      case "event-memory-start":
-        startMemoryEvent(d.id);
-        break;
-      case "event-block-start":
-        startBlockEvent(d.id);
-        break;
       case "block-finish":
         if (game?.kind === "event-block" && !game.done)
           finishBlockEvent("Мероприятие завершено досрочно.");
@@ -5734,7 +5702,7 @@ window.QuantumTasks = {
           if (res.ok) {
             setBody(
               "Занятие завершено",
-              `<div class="victory"><h2>Занятие завершено!</h2><p>+${res.reward.coins} ● · +${res.reward.knowledge} ◆</p></div><p>Ученики отправились домой. Следующая группа скоро придёт.</p>${button("В квантум", "back", {}, "gold")}`,
+              `<div class="event-marquee lesson-complete"><h2>Занятие завершено!</h2><p>Ученики отправились домой, а награда добавлена в ресурсы центра.</p><div class="lesson-reward"><span>+${res.reward.coins} ●</span><span>+${res.reward.knowledge} ◆</span></div></div>${button("Вернуться в квантум", "back", {}, "gold")}`,
             );
             view = "result";
           }
@@ -5836,7 +5804,16 @@ window.QuantumTasks = {
 
   body.addEventListener("click", handleAction);
   document.getElementById("close").addEventListener("click", closeRoom);
-  modalBackdrop.addEventListener("click", closeRoom);
+  modalBackdrop.addEventListener("click", (e) => {
+    // Ignore the synthetic/ghost click generated by the same phone tap that
+    // opened the modal; otherwise the director room can flash and close.
+    if (performance.now() - modalOpenedAt < 500) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    closeRoom();
+  });
   for (const b of escortControls.querySelectorAll("[data-escort-dir]")) {
     const press = (e) => {
       if (b.disabled) return;
@@ -5948,7 +5925,9 @@ window.QuantumTasks = {
     e.preventDefault();
     const p = point(e);
     dragging = { id: e.pointerId, y: p.y, startCam: cam, p, max: 0 };
-    world.setPointerCapture(e.pointerId);
+    try {
+      world.setPointerCapture(e.pointerId);
+    } catch (_) {}
   });
   world.addEventListener("pointermove", (e) => {
     if (!dragging || dragging.id !== e.pointerId) return;
