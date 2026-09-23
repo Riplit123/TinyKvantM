@@ -6,13 +6,13 @@
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <meta name="theme-color" content="#423365" />
-    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=JySt2jFm549mG8ShbWUBHIlog8azgy42HXV5ybbIWVWHUo_Z_V12CMmgS8MZoR-aqleR0Hhy3LFiJtZPAU_blMQnv4mLLl6pcf_KWLSOsxKewzNJIycj-Sg7CH_suEr3_8XikdDuc2RIjVT_H-P7UmpE0OB4POOOf9ONPPOgX1J8hEuFz3sc_O9NcknYJrTNAp1OVG6brRhYyfqa6stKqsXxPzQ0SEooT1Z-D2QeYAcPUUCDqYEe2GU4h2dG8ow1Z_6FXDuNf5p6hK3Bk9aiFgqaqdStdEEjXKpR8PWvisOpzPfu1vunzsQBfUe_F4HE" charset="UTF-8"></script><style>
+    <meta name="theme-color" content="#8fd2f2" />
+    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=2KZD8Q8Pfk97gE1h-NuAd2H0coPDxrr7KtLOCwSuV8glAh3Bf_fqpUxZReq250s-pHjQjql3IfUOAE3Co7oOpFmGKG1HZ25Pb1Z474smpMR10x3fC3qkLfoyN-64tAZNaBzAoaWvhOEy33eRnESSaIGPssfX25BiU0zme_pyut1nnlr3wUGzR0hvr0ZuMrfN8dZ4L117lHotWgakx6GI79_CXtf8r_uapG6mUXfKPa5wOEbZbhUXY-HcwT8UhWcS29AKcyqON4DxK0B9Ly9tgcSNoS07dWsGZbJK181x3flr-20KddzRbrnu7STHgMOc" charset="UTF-8"></script><style>
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   font-family: Consolas, "DejaVu Sans Mono", monospace;
-  color: #f3eddc;
-  background: #55436f;
+  color: #263846;
+  background: #9ed8f1;
   font-synthesis: none;
 }
 * {
@@ -104,11 +104,11 @@ button:active:not(:disabled) {
   position: absolute;
   z-index: 9;
   left: 50%;
-  top: 50%;
+  top: calc(50% + 24px);
   transform: translate(-50%, -50%);
   width: min(92vw, 620px);
-  height: min(82vh, 690px);
-  max-height: calc(100% - 28px);
+  height: min(78vh, 690px);
+  max-height: calc(100% - 70px);
   background: #fbf7ee;
   color: #253143;
   border: 2px solid #8ea3a3;
@@ -535,19 +535,47 @@ select {
   background: #f4f2e7;
   color: #37615a;
 }
+#resource-hud {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: 0;
+  min-height: 46px;
+  padding: calc(7px + env(safe-area-inset-top)) 12px 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 8vw, 56px);
+  background: #f8f4e9ee;
+  border-bottom: 2px solid #9cafaa;
+  box-shadow: 0 3px 0 #637c7d55;
+  color: #314955;
+  pointer-events: none;
+  font-size: 14px;
+}
+#resource-hud span {
+  white-space: nowrap;
+}
+#resource-hud b {
+  color: #263b48;
+  font-size: 15px;
+}
 #escort-controls {
   position: absolute;
   z-index: 7;
-  left: 50%;
-  bottom: max(12px, env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  width: min(94vw, 520px);
-  padding: 10px;
-  border: 2px solid #9bb1ad;
-  border-radius: 14px;
-  background: #f8f4e9f2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(132px + env(safe-area-inset-bottom));
+  padding: 7px 10px calc(7px + env(safe-area-inset-bottom));
+  border: 0;
+  border-top: 3px solid #94aaa5;
+  border-radius: 0;
+  background: #eef4eff8;
   color: #2b3b49;
-  box-shadow: 0 10px 30px #17202b55;
+  box-shadow: 0 -8px 24px #5b747344;
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
@@ -556,25 +584,27 @@ select {
   display: none;
 }
 #escort-status {
-  min-height: 34px;
-  margin: 0 0 8px;
+  min-height: 24px;
+  margin: 0 0 5px;
   text-align: center;
-  font-size: 12px;
-  line-height: 1.35;
+  font-size: 11px;
+  line-height: 1.25;
 }
 .escort-pad {
   display: grid;
-  grid-template-columns: repeat(4, minmax(58px, 1fr));
+  grid-template-columns: repeat(4, minmax(52px, 1fr));
   gap: 7px;
+  width: min(94vw, 520px);
+  margin: 0 auto;
 }
 .escort-arrow {
-  min-height: 54px;
+  min-height: 47px;
   border: 2px solid #859f9a;
-  border-radius: 10px;
+  border-radius: 9px;
   background: #dce9e2;
   color: #334b54;
   box-shadow: 0 3px #8b9b96;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: bold;
   cursor: pointer;
   touch-action: none;
@@ -588,27 +618,28 @@ select {
   opacity: .3;
 }
 #escort-cancel {
-  margin: 8px 0 0;
-  min-height: 34px;
-  padding: 5px 10px;
+  display: block;
+  margin: 6px auto 0;
+  min-height: 27px;
+  padding: 3px 12px;
   border: 1px solid #a8aaa1;
-  border-radius: 8px;
-  background: #eee9df;
+  border-radius: 7px;
+  background: #f7f3e9;
   color: #5b5551;
   cursor: pointer;
 }
 @media (max-width: 520px) {
   #room-panel {
     width: calc(100% - 18px);
-    height: min(86vh, 700px);
-    max-height: calc(100% - 18px);
+    height: min(80vh, 700px);
+    max-height: calc(100% - 66px);
   }
   .escort-pad {
     gap: 5px;
   }
   .escort-arrow {
     min-width: 0;
-    min-height: 50px;
+    min-height: 45px;
   }
 }
 a {
@@ -675,6 +706,11 @@ a {
     >
       <canvas id="tower" aria-hidden="true"></canvas>
       <div id="hitboxes" aria-label="Этажи и лифт"></div>
+      <div id="resource-hud" class="ui-overlay" aria-label="Ресурсы центра">
+        <span>● <b data-count="coins">0</b></span>
+        <span>◆ <b data-count="knowledge">0</b></span>
+        <span>★ <b data-count="trophies">0</b></span>
+      </div>
       <div id="modal-backdrop" class="ui-overlay" hidden></div>
       <section id="room-panel" class="ui-overlay" role="dialog" aria-modal="true" aria-label="Управление комнатой" hidden>
         <header>
@@ -893,7 +929,9 @@ a {
     Math.max(0, ...activeTeachers(s, f).map((t) => t.skills[f.id] || 0));
   const totalProjects = (s) => s.floors.reduce((n, f) => n + f.projects, 0);
   const floorCost = (s) =>
-    Math.round((320 * Math.pow(1.28, s.floors.length - 1)) / 10) * 10;
+    s.floors.length === 0
+      ? 0
+      : Math.round((320 * Math.pow(1.28, s.floors.length - 1)) / 10) * 10;
   const upgradeCost = (f) => ({
     coins: 200 * f.level,
     knowledge: 100 * f.level,
@@ -932,20 +970,13 @@ a {
   function initialState(now = Date.now()) {
     return {
       version: VERSION,
-      coins: 280,
+      coins: 0,
       knowledge: 0,
       trophies: 0,
       elapsed: 0,
-      floors: [newFloor("it")],
+      floors: [],
       teachers: {},
-      candidates: [
-        {
-          id: "candidate-first",
-          name: "Алина Лебедева",
-          skills: { it: 5, bio: 3 },
-          cost: 120,
-        },
-      ],
+      candidates: [],
       candidateClock: 0,
       spawnClock: 0,
       newbieClock: 0,
@@ -966,7 +997,16 @@ a {
     s.log.unshift({ text, at: s.elapsed });
     s.log = s.log.slice(0, 30);
   }
+  function firstCandidate(floorId) {
+    return {
+      id: "candidate-first",
+      name: "Алина Лебедева",
+      skills: { [floorId]: 5 },
+      cost: 0,
+    };
+  }
   function candidate(s) {
+    if (!s.floors.length) return null;
     let i = s.uid++ % FIRST.length;
     const domain = s.floors[s.uid % s.floors.length].id;
     const secondary = LABS[(s.uid + 2) % LABS.length].id;
@@ -987,7 +1027,7 @@ a {
       projects: totalProjects(s),
       teachers: teacherList(s).length,
       floors: s.floors.length,
-      level: Math.max(...s.floors.map((f) => f.level)),
+      level: s.floors.length ? Math.max(...s.floors.map((f) => f.level)) : 0,
       trophies: s.trophies,
       joint: s.jointDone,
     };
@@ -1016,15 +1056,17 @@ a {
         if (!l) return fail("Неизвестное направление");
         if (s.floors.some((x) => x.id === p.id))
           return fail("Этот квантум уже построен");
-        if (totalProjects(s) < l.unlock)
+        const first = s.floors.length === 0;
+        if (!first && totalProjects(s) < l.unlock)
           return fail("Сначала выполните больше проектов");
-        let cost = floorCost(s);
+        let cost = first ? 0 : floorCost(s);
         if (s.coins < cost) return fail("Не хватает монет");
         s.coins -= cost;
         s.floors.push(newFloor(p.id));
-        s.candidates.push(candidate(s));
+        const newcomer = first ? firstCandidate(p.id) : candidate(s);
+        if (newcomer) s.candidates.push(newcomer);
         s.candidates = s.candidates.slice(-5);
-        note(s, `Открыт ${l.name}`);
+        note(s, first ? `Открыт первый квантум: ${l.name}` : `Открыт ${l.name}`);
         break;
       }
       case "hire": {
@@ -1260,12 +1302,15 @@ a {
       s.candidateClock += dt;
       if (s.candidateClock >= 65) {
         s.candidateClock = 0;
-        if (s.candidates.length < 5) s.candidates.push(candidate(s));
+        if (s.floors.length && s.candidates.length < 5) {
+          const next = candidate(s);
+          if (next) s.candidates.push(next);
+        }
       }
       s.newbieClock += dt;
       if (s.newbieClock >= 80) {
         s.newbieClock = 0;
-        if (s.newbies.length < 3) {
+        if (s.floors.length && s.newbies.length < 3) {
           const f = s.floors[Math.floor(s.elapsed / 80) % s.floors.length];
           s.newbies.push({
             id: "n" + s.uid++,
@@ -1321,7 +1366,6 @@ a {
       if (!finite(x[k])) throw Error("Повреждены ресурсы сохранения");
     if (
       !Array.isArray(x.floors) ||
-      !x.floors.length ||
       x.floors.length > 10 ||
       new Set(x.floors.map((f) => f.id)).size !== x.floors.length
     )
@@ -2203,12 +2247,15 @@ window.QuantumTasks = {
     modalBackdrop = document.getElementById("modal-backdrop");
   const title = document.getElementById("panel-title"),
     announcer = document.getElementById("announcement"),
+    resourceHud = document.getElementById("resource-hud"),
     escortControls = document.getElementById("escort-controls"),
     escortStatus = document.getElementById("escort-status");
-  const SAVE_KEY = "quantorium.pixel-tower.v2";
+  const SAVE_KEY = "quantorium.pixel-tower.v3";
   const FH = 82,
     RW = 204,
-    TW = 258;
+    TW = 258,
+    HUD_PX = 46,
+    ESCORT_TRAY_PX = 132;
   const esc = (s) =>
     String(s).replace(
       /[&<>"']/g,
@@ -2253,14 +2300,12 @@ window.QuantumTasks = {
         "Браузер запретил автосохранение. Скачайте сохранение в ресепшене.";
     } else {
       saveError =
-        "Сохранение не удалось прочитать. Оно не будет перезаписано. Откройте настройки в ресепшене.";
+        "Сохранение не удалось прочитать. Оно не будет перезаписано. Откройте настройки в кабинете директора.";
       blockedSave = true;
     }
   }
   if (!state) {
     state = E.initialState();
-    state.floors[0].students = 2;
-    state.newbieClock = 65;
     fresh = true;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
       state.settings.motion = false;
@@ -2505,16 +2550,25 @@ window.QuantumTasks = {
     }
     return -bottom;
   }
+  function escortSpace() {
+    return lift.passenger && escortPhases.has(lift.phase)
+      ? Math.min(H * 0.32, ESCORT_TRAY_PX / Math.max(0.01, scale))
+      : 0;
+  }
+  function topSafe() {
+    return HUD_PX / Math.max(0.01, scale) + 8;
+  }
   function maxCam() {
     const n = makeLayouts();
-    return Math.max(0, n + 32 - H + 32);
+    const usableH = H - escortSpace();
+    return Math.max(0, n + 32 - usableH + topSafe());
   }
   function clampCam() {
     targetCam = Math.max(0, Math.min(maxCam(), targetCam));
     cam = Math.max(0, Math.min(maxCam(), cam));
   }
   function origin() {
-    return H - 24 + cam;
+    return H - 24 - escortSpace() + cam;
   }
   function resize() {
     const bounds = world.getBoundingClientRect();
@@ -2536,7 +2590,10 @@ window.QuantumTasks = {
     makeLayouts();
     const l = layouts[i];
     if (!l) return;
-    targetCam = Math.max(0, Math.min(maxCam(), 22 - (H - 24) - l.top));
+    targetCam = Math.max(
+      0,
+      Math.min(maxCam(), topSafe() - (H - 24 - escortSpace()) - l.top),
+    );
     if (instant || !state.settings.motion) cam = targetCam;
   }
   function createHitboxes(force = false) {
@@ -2580,76 +2637,58 @@ window.QuantumTasks = {
   }
   function drawSky() {
     const g = ctx.createLinearGradient(0, 0, 0, H);
-    g.addColorStop(0, "#49316d");
-    g.addColorStop(0.45, "#876caa");
-    g.addColorStop(0.8, "#b4a0ba");
-    g.addColorStop(1, "#d2b9bd");
+    g.addColorStop(0, "#72c6f0");
+    g.addColorStop(0.48, "#a9dcf3");
+    g.addColorStop(0.78, "#d7edf4");
+    g.addColorStop(1, "#eef0df");
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
-    for (let i = 0; i < 42; i++) {
-      const x = (i * 83 + 37) % W,
-        y = (i * 41 + 19 + Math.floor(cam * 0.08)) % Math.round(H * 0.7);
-      const shine = state.settings.motion
-        ? 0.4 + Math.sin(t * 0.6 + i) * 0.25
-        : 0.5;
-      ctx.globalAlpha = shine;
-      A.rect(ctx, x, y, 1, 1, "#fff5d0");
-      if (i % 11 === 0) A.sparkle(ctx, x, y, "#f8dceb", 3);
+
+    // Warm daytime sun.
+    A.rect(ctx, W - 55, 60, 22, 22, "#ffe18a");
+    A.rect(ctx, W - 51, 56, 14, 30, "#ffe18a");
+    A.rect(ctx, W - 59, 64, 30, 14, "#ffe18a");
+
+    // Slow pixel clouds.
+    const cloudShift = state.settings.motion ? Math.floor(t * 2) : 0;
+    for (let i = 0; i < 5; i++) {
+      const x = ((i * 97 + 24 + cloudShift) % (W + 90)) - 45;
+      const y = 78 + (i % 3) * 47;
+      A.rect(ctx, x, y, 44, 9, "#ffffffc7");
+      A.rect(ctx, x + 8, y - 6, 27, 8, "#ffffffd9");
+      A.rect(ctx, x + 16, y - 11, 14, 7, "#ffffffdf");
     }
-    ctx.globalAlpha = 1;
-    A.rect(ctx, W - 58, 34, 14, 12, "#e0d8c3");
-    A.rect(ctx, W - 60, 37, 18, 6, "#e0d8c3");
-    A.rect(ctx, W - 48, 32, 10, 10, "#554075");
+
+    // Light, quiet city skyline in the distance.
     for (let layer = 0; layer < 3; layer++) {
-      const step = layer === 0 ? 27 : layer === 1 ? 38 : 53;
-      const base = H * 0.7 + layer * H * 0.13 + cam * (0.04 + layer * 0.03);
+      const step = layer === 0 ? 29 : layer === 1 ? 41 : 55;
+      const base = H * 0.69 + layer * H * 0.12 + cam * (0.035 + layer * 0.025);
       for (let i = -1; i <= Math.ceil(W / step); i++) {
-        const h = 28 + (((i + 17) * 47 + layer * 19) % 90);
-        const x = i * step + layer * 13;
-        A.rect(
-          ctx,
-          x,
-          base - h,
-          step - 3,
-          H,
-          ["#81728f", "#716380", "#625772"][layer],
-        );
-        A.rect(
-          ctx,
-          x + 5,
-          base - h - 6,
-          step - 13,
-          7,
-          ["#81728f", "#716380", "#625772"][layer],
-        );
-        if (i % 3 === 0)
-          A.rect(
-            ctx,
-            x + step / 2,
-            base - h - 20,
-            1,
-            16,
-            ["#81728f", "#716380", "#625772"][layer],
-          );
+        const h = 25 + (((i + 17) * 43 + layer * 23) % 82);
+        const x = i * step + layer * 11;
+        const colors = ["#b6cbd0", "#a8bfc2", "#98b0b2"];
+        A.rect(ctx, x, base - h, step - 3, H, colors[layer]);
+        A.rect(ctx, x + 5, base - h - 5, step - 13, 6, colors[layer]);
         if (layer > 0)
-          for (let y = base - h + 8; y < H; y += 13)
+          for (let y = base - h + 9; y < Math.min(H, base + 30); y += 14)
             for (let j = 0; j < 3; j++)
-              if ((i + j + Math.floor(y)) % 4 === 0)
-                A.rect(
-                  ctx,
-                  x + 6 + j * 10,
-                  y,
-                  3,
-                  5,
-                  layer === 2 ? "#e8c9a258" : "#dcb7ce44",
-                );
+              if ((i + j + Math.floor(y)) % 3 === 0)
+                A.rect(ctx, x + 6 + j * 10, y, 3, 5, "#e8f2d9a8");
       }
     }
+
     const street = origin() + 5;
-    A.rect(ctx, 0, street, W, 40, "#716d7c");
-    A.rect(ctx, 0, street, W, 2, "#b7a6a1");
-    for (let x = 0; x < W; x += 20)
-      A.rect(ctx, x, street + 8, 18, 1, "#555867");
+    A.rect(ctx, 0, street, W, 40, "#a9aaa3");
+    A.rect(ctx, 0, street, W, 2, "#d7d5c8");
+    for (let x = 0; x < W; x += 22)
+      A.rect(ctx, x, street + 9, 18, 1, "#858b8b");
+
+    // During the escort mini-game this fixed zone is reserved for controls.
+    const tray = escortSpace();
+    if (tray > 0) {
+      A.rect(ctx, 0, H - tray, W, tray, "#eaf1ec");
+      A.rect(ctx, 0, H - tray, W, 2, "#91aaa4");
+    }
   }
   function drawRoof(l, o) {
     const y = l.bottom + o;
@@ -2675,7 +2714,9 @@ window.QuantumTasks = {
       ctx,
       state.floors.length === 10
         ? "ГОРОД БОЛЬШИХ ИДЕЙ"
-        : `${Math.floor(E.floorCost(state))} МОНЕТ`,
+        : state.floors.length === 0
+          ? "ПЕРВЫЙ КВАНТУМ БЕСПЛАТНО"
+          : `${Math.floor(E.floorCost(state))} МОНЕТ`,
       rx + 24,
       y - 28,
       "#bdc7c6",
@@ -3130,7 +3171,13 @@ window.QuantumTasks = {
       .join(" ")} ${disabled ? "disabled" : ""}>${label}</button>`;
   }
   function resources() {
-    return `<div class="resource"><span>● <b data-count="coins">${num(state.coins)}</b></span><span>◆ <b data-count="knowledge">${num(state.knowledge)}</b></span><span>★ <b data-count="trophies">${num(state.trophies)}</b></span></div>`;
+    return "";
+  }
+  function updateResourceHUD() {
+    if (!resourceHud) return;
+    resourceHud
+      .querySelectorAll("[data-count]")
+      .forEach((el) => (el.textContent = num(state[el.dataset.count])));
   }
   function progress(value, max) {
     return `<div class="progress" role="progressbar" aria-valuenow="${value}" aria-valuemax="${max}"><i style="width:${Math.min(100, (value / max) * 100)}%"></i></div>`;
@@ -3251,65 +3298,31 @@ window.QuantumTasks = {
       }
       if (id === "lobby") {
         setBody(
-          "Добро пожаловать",
-          resources() +
-            `<p class="micro">● Монеты · ◆ Знания · ★ Награды</p>` +
-            (saveError ? `<p class="status">${esc(saveError)}</p>` : "") +
-            `<p>Нажимайте на комнаты. Прокручивайте здание пальцем или колесом мыши.</p>` +
+          "Ресепшен",
+          (saveError ? `<p class="status">${esc(saveError)}</p>` : "") +
             button(`Гости на ресепшене · ${state.newbies.length}`, "view", {
               view: "visitors",
             }) +
-            button("Журнал центра", "view", { view: "journal" }, "secondary") +
-            button(
-              "Сохранение и настройки",
-              "view",
-              { view: "settings" },
-              "secondary",
-            ) +
-            button("Как играть", "view", { view: "help" }, "ghost"),
+            button("Журнал центра", "view", { view: "journal" }, "secondary"),
           reset,
         );
         return;
       }
       if (id === "director") {
-        const ch = E.CHAPTERS[state.chapter],
-          cp = E.chapterProgress(state);
+        const candidateButton = state.candidates.length
+          ? button(
+              `Кандидаты · ${state.candidates.length}`,
+              "view",
+              { view: "candidates" },
+            )
+          : "";
         setBody(
           "Кабинет директора",
-          resources() +
-            `<p class="lead">Маленькая башня.<br>Большие открытия.</p>` +
-            button(
-              `Преподаватели · ${state.candidates.length} кандидат${state.candidates.length === 1 ? "" : "а"}`,
-              "view",
-              { view: "staff" },
-            ) +
-            button(
-              ch
-                ? `Глава ${state.chapter + 1}: ${esc(ch.title)}${cp.complete ? " · награда!" : ""}`
-                : "Кампания завершена!",
-              "view",
-              { view: "goals" },
-              "gold",
-            ) +
-            button(
-              "Команды и выставки",
-              "view",
-              { view: "teams" },
-              "secondary",
-            ) +
-            button(
-              "Совместный проект",
-              "view",
-              { view: "research" },
-              "secondary",
-            ) +
-            button(
-              `Коллекция открытий · ${state.collection.length}/30`,
-              "view",
-              { view: "collection" },
-              "secondary",
-            ) +
-            `<p class="micro">Доход: ${E.incomeRate(state)} монет/мин. Строительство — на крыше башни.</p>`,
+          `<p class="lead">Маленькая башня.<br>Большие открытия.</p>` +
+            candidateButton +
+            button("Управление кванториумом", "view", { view: "management" }, "gold") +
+            button("Сохранение и настройки", "view", { view: "settings" }, "secondary") +
+            button("Как играть", "view", { view: "help" }, "ghost"),
           reset,
         );
         return;
@@ -3363,6 +3376,14 @@ window.QuantumTasks = {
         );
         return;
       }
+    }
+    if (view === "management") {
+      renderManagement(reset);
+      return;
+    }
+    if (view === "candidates") {
+      renderCandidates(reset);
+      return;
     }
     if (view === "staff") {
       renderStaff(reset);
@@ -3444,7 +3465,7 @@ window.QuantumTasks = {
     if (view === "help") {
       setBody(
         "Как устроена башня",
-        `<h3>1. Откройте кабинет директора</h3><p>Наймите преподавателя с навыком своего квантума. Он начнёт занятия и будет приносить доход.</p><h3>2. Загляните в квантум</h3><p>Когда группа заполнится, начнётся занятие. После него появится проект: решите задачу и получите монеты и знания.</p><h3>3. Помогите новеньким</h3><p>Нажмите «?» над ребёнком или откройте ресепшен. В режиме сопровождения ведите ребёнка стрелками к лифту, поднимите ↑/↓ до нужного этажа и выведите → в квантум.</p><h3>4. Поднимайтесь выше</h3><p>Нажмите табличку на крыше, чтобы построить новый квантум. Улучшайте комнаты, обучайте преподавателей, собирайте команды.</p><h3>5. Развивайте центр</h3><p>Шесть глав ждут в кабинете директора. После финальной главы можно продолжать свободную игру.</p><p class="micro">Колесо / перетаскивание — обзор башни. Esc — закрыть комнату или отменить сопровождение. Tab — выбрать комнату с клавиатуры. В сопровождении используйте экранные стрелки или клавиши ← ↑ ↓ →; в задаче — стрелки добавляют команды роботу.</p><p class="micro">Ошибки в заданиях не отнимают награду. Пауза и сохранение — в ресепшене. До двух часов отсутствия засчитываются автоматически.</p>`,
+        `<h3>1. Постройте первый квантум</h3><p>Нажмите табличку на крыше. Первый квантум бесплатный, и можно выбрать любое направление.</p><h3>2. Наймите первого преподавателя</h3><p>После строительства в кабинете директора появится кнопка «Кандидаты». Первый кандидат подходит выбранному квантуму и нанимается бесплатно.</p><h3>3. Загляните в квантум</h3><p>Когда группа заполнится, начнётся занятие. После него появится проект: решите задачу и получите монеты и знания.</p><h3>4. Помогите новеньким</h3><p>Откройте «Гости на ресепшене». В режиме сопровождения ведите ребёнка стрелками к лифту, поднимите ↑/↓ до нужного этажа и выведите → в квантум.</p><h3>5. Управляйте центром</h3><p>В кабинете директора откройте «Управление кванториумом»: там находятся штат, главы, команды и выставки, совместный проект и коллекция открытий.</p><p class="micro">Колесо / перетаскивание — обзор башни. Esc — закрыть комнату или отменить сопровождение. В сопровождении используйте экранные стрелки или клавиши ← ↑ ↓ →.</p><p class="micro">Ошибки в заданиях не отнимают награду. Сохранение, пауза и настройки находятся в кабинете директора.</p>`,
         reset,
       );
       return;
@@ -3453,19 +3474,25 @@ window.QuantumTasks = {
     renderPanel(reset);
   }
   function renderBuild(reset) {
-    const cost = E.floorCost(state),
+    const first = state.floors.length === 0,
+      cost = first ? 0 : E.floorCost(state),
       projects = E.totalProjects(state),
       list = E.LABS.filter((l) => !state.floors.some((f) => f.id === l.id));
     setBody(
-      "Строительство",
-      resources() +
-        `<p>Следующий этаж: <b>${num(cost)} ●</b>. Новые направления открываются по мере выполнения проектов.</p><div class="cards">${list.map((l) => `<article class="card"><h3 style="color:${l.color}">${l.name}</h3><p class="micro">${l.short}</p>${projects < l.unlock ? `<p>Нужно ${l.unlock} проектов. Выполнено: ${projects}.</p>` : ""}${button("Построить · " + num(cost) + " ●", "build", { id: l.id }, "", projects < l.unlock || state.coins < cost)}</article>`).join("") || '<div class="victory"><h2>Башня построена!</h2><p>Все десять направлений открыты.</p></div>'}</div>`,
+      first ? "Первый квантум" : "Строительство",
+      (first
+        ? `<p class="status">Выберите любое направление. Первый квантум строится бесплатно.</p>`
+        : `<p>Следующий этаж: <b>${num(cost)} ●</b>. Новые направления открываются по мере выполнения проектов.</p>`) +
+        `<div class="cards">${list.map((l) => {
+          const locked = !first && projects < l.unlock;
+          return `<article class="card"><h3 style="color:${l.color}">${l.name}</h3><p class="micro">${l.short}</p>${locked ? `<p>Нужно ${l.unlock} проектов. Выполнено: ${projects}.</p>` : ""}${button(first ? "Построить бесплатно" : "Построить · " + num(cost) + " ●", "build", { id: l.id }, first ? "gold" : "", locked || (!first && state.coins < cost))}</article>`;
+        }).join("") || '<div class="victory"><h2>Башня построена!</h2><p>Все десять направлений открыты.</p></div>'}</div>`,
       reset,
     );
   }
   function renderVisitors(reset) {
     setBody(
-      "Пассажиры лифта",
+      "Гости на ресепшене",
       `<p>Новенькие пока не знают здание. Помогите им добраться до занятия.</p><p class="micro">После выбора пассажира появятся стрелки. ←/→ ведут ребёнка к лифту, ↑/↓ двигают кабину между этажами, а → на нужном этаже выводит ребёнка в квантум. Кнопки можно удерживать.</p><div class="cards">${
         state.newbies
           .map((n) => {
@@ -3480,6 +3507,53 @@ window.QuantumTasks = {
       reset,
     );
   }
+  function renderManagement(reset) {
+    const ch = E.CHAPTERS[state.chapter],
+      cp = E.chapterProgress(state);
+    setBody(
+      "Управление кванториумом",
+      button(`Штат · ${E.teacherList(state).length}`, "view", { view: "staff" }) +
+        button(
+          ch
+            ? `Главы · ${state.chapter + 1}/6${cp.complete ? " · награда!" : ""}`
+            : "Главы · завершены",
+          "view",
+          { view: "goals" },
+          "gold",
+        ) +
+        button("Команды и выставки", "view", { view: "teams" }, "secondary") +
+        button("Совместный проект", "view", { view: "research" }, "secondary") +
+        button(`Коллекция открытий · ${state.collection.length}/30`, "view", { view: "collection" }, "secondary") +
+        `<p class="micro">Доход центра: ${E.incomeRate(state)} монет/мин. Новые этажи строятся с крыши башни.</p>`,
+      reset,
+    );
+  }
+  function renderCandidates(reset) {
+    const floors = state.floors;
+    const candidateHTML = state.candidates
+      .map((t) => {
+        const choices = floors.filter(
+          (f) => t.skills[f.id] && f.teachers.length < 3,
+        );
+        const hireLabel = t.cost > 0 ? `Нанять · ${t.cost} ●` : "Нанять бесплатно";
+        return (
+          `<article class="card"><h3>${esc(t.name)}</h3><div>${Object.entries(t.skills)
+            .map(([id, skill]) => `<span class="tag">${E.lab(id).name} ${skill}/10</span>`)
+            .join("")}</div>` +
+          (choices.length
+            ? `<label class="micro" for="hire-${t.id}">Назначение</label><select id="hire-${t.id}" aria-label="Назначение ${esc(t.name)}">${choices.map((f) => `<option value="${f.id}">${E.lab(f.id).name}</option>`).join("")}</select>${button(hireLabel, "hire", { id: t.id }, t.cost === 0 ? "gold" : "", state.coins < t.cost)}`
+            : '<p class="micro">Нет подходящей свободной вакансии.</p>') +
+          button("Отклонить", "reject", { id: t.id }, "ghost") +
+          "</article>"
+        );
+      })
+      .join("");
+    setBody(
+      "Кандидаты",
+      `<div class="cards">${candidateHTML || '<p class="empty">Сейчас в кабинете нет кандидатов.</p>'}</div>`,
+      reset,
+    );
+  }
   function renderStaff(reset) {
     const filter =
       roomId(selected) !== "director"
@@ -3488,71 +3562,44 @@ window.QuantumTasks = {
     const floors = filter
       ? state.floors.filter((f) => f.id === filter)
       : state.floors;
-    const allCandidates = state.candidates.filter(
-      (t) => !filter || t.skills[filter],
-    );
-    const candidateHTML = allCandidates
-      .map((t, i) => {
-        const choices = floors.filter(
-          (f) => t.skills[f.id] && f.teachers.length < 3,
-        );
-        return (
-          `<article class="card"><h3>${esc(t.name)}</h3><div>${Object.entries(
-            t.skills,
+    const staffHTML = floors.length
+      ? floors
+          .map(
+            (f) =>
+              `<h3>${E.lab(f.id).name}</h3>` +
+              (f.teachers
+                .map((id) => {
+                  const t = state.teachers[id],
+                    others = state.floors.filter(
+                      (x) =>
+                        x.id !== f.id && x.teachers.length < 3 && t.skills[x.id],
+                    );
+                  return (
+                    `<article class="card"><h3>${esc(t.name)}</h3><p>Навык: ${t.skills[f.id]}/10</p>` +
+                    (t.training
+                      ? `<p class="status">Повышение квалификации: <span data-training="${id}">${clock(t.training.left)}</span></p>`
+                      : button(
+                          t.skills[f.id] < 10
+                            ? `Обучить · ${t.skills[f.id] * 30} ◆`
+                            : "Максимальный навык",
+                          "train",
+                          { id },
+                          "secondary",
+                          t.skills[f.id] >= 10 ||
+                            state.knowledge < t.skills[f.id] * 30,
+                        ) +
+                        (others.length
+                          ? `<select id="move-${id}" aria-label="Новый квантум для ${esc(t.name)}">${others.map((x) => `<option value="${x.id}">${E.lab(x.id).name}</option>`).join("")}</select>${button("Перевести", "move", { id }, "secondary")}`
+                          : "") +
+                        button("Уволить", "fire", { id }, "ghost")) +
+                    "</article>"
+                  );
+                })
+                .join("") || '<p class="empty">Преподавателей пока нет.</p>'),
           )
-            .map(
-              ([id, s]) => `<span class="tag">${E.lab(id).name} ${s}/10</span>`,
-            )
-            .join("")}</div>` +
-          (choices.length
-            ? `<label class="micro" for="hire-${t.id}">Назначение</label><select id="hire-${t.id}" aria-label="Назначение ${esc(t.name)}">${choices.map((f) => `<option value="${f.id}">${E.lab(f.id).name}</option>`).join("")}</select>${button(`Нанять · ${t.cost} ●`, "hire", { id: t.id }, "", state.coins < t.cost)}`
-            : '<p class="micro">Нет подходящей свободной вакансии.</p>') +
-          button("Отклонить", "reject", { id: t.id }, "ghost") +
-          "</article>"
-        );
-      })
-      .join("");
-    const staffHTML = floors
-      .map(
-        (f) =>
-          `<h3>${E.lab(f.id).name}</h3>` +
-          (f.teachers
-            .map((id) => {
-              const t = state.teachers[id],
-                others = state.floors.filter(
-                  (x) =>
-                    x.id !== f.id && x.teachers.length < 3 && t.skills[x.id],
-                );
-              return (
-                `<article class="card"><h3>${esc(t.name)}</h3><p>Навык: ${t.skills[f.id]}/10</p>` +
-                (t.training
-                  ? `<p class="status">Повышение квалификации: <span data-training="${id}">${clock(t.training.left)}</span></p>`
-                  : button(
-                      t.skills[f.id] < 10
-                        ? `Обучить · ${t.skills[f.id] * 30} ◆`
-                        : "Максимальный навык",
-                      "train",
-                      { id },
-                      "secondary",
-                      t.skills[f.id] >= 10 ||
-                        state.knowledge < t.skills[f.id] * 30,
-                    ) +
-                    (others.length
-                      ? `<select id="move-${id}" aria-label="Новый квантум для ${esc(t.name)}">${others.map((x) => `<option value="${x.id}">${E.lab(x.id).name}</option>`).join("")}</select>${button("Перевести", "move", { id }, "secondary")}`
-                      : "") +
-                    button("Уволить", "fire", { id }, "ghost")) +
-                "</article>"
-              );
-            })
-            .join("") || '<p class="empty">Преподавателей пока нет.</p>'),
-      )
-      .join("");
-    setBody(
-      "Преподаватели",
-      resources() +
-        `<h3>Кандидаты</h3><div class="cards">${candidateHTML || '<p class="empty">Подходящих кандидатов пока нет. Новые приходят каждые 65 секунд.</p>'}</div><div class="line"></div><div class="cards">${staffHTML}</div>`,
-      reset,
-    );
+          .join("")
+      : '<p class="empty">Сначала постройте первый квантум и наймите преподавателя.</p>';
+    setBody("Штат", `<div class="cards">${staffHTML}</div>`, reset);
   }
   function renderGoals(reset) {
     const c = E.CHAPTERS[state.chapter],
@@ -3844,6 +3891,7 @@ window.QuantumTasks = {
     lift.autoTimer = 0;
     lift.held = null;
     escortControls.hidden = true;
+    clampCam();
     syncPeople();
     tell(
       delivered
@@ -3996,6 +4044,7 @@ window.QuantumTasks = {
           lift.autoTimer = 0;
           lift.held = null;
           escortControls.hidden = true;
+          clampCam();
           syncPeople();
           const p = people.get(lift.deliveredKey);
           if (p) p.x = 12;
@@ -4146,7 +4195,12 @@ window.QuantumTasks = {
       case "back":
         game = null;
         confirmAction = null;
-        view = "home";
+        if (
+          selected === 1 &&
+          ["staff", "goals", "teams", "research", "collection"].includes(view)
+        )
+          view = "management";
+        else view = "home";
         renderPanel(true);
         break;
       case "confirm": {
@@ -4156,16 +4210,23 @@ window.QuantumTasks = {
         break;
       }
       case "build": {
+        const wasFirst = state.floors.length === 0;
         const res = perform("build", { id: d.id }, false);
         if (!res.ok) break;
         closeRoom();
         makeLayouts();
         const i = floorIndex(d.id);
-        focusFloor(i);
         buildFlash = { index: i, at: t };
         burst(i);
-        tell(`${E.lab(d.id).name} открыт! Наймите преподавателя.`, i);
         createHitboxes(true);
+        if (wasFirst) {
+          focusFloor(1);
+          tell(`Первый квантум открыт! В кабинете директора появился кандидат.`, 1);
+          openRoom(1);
+        } else {
+          focusFloor(i);
+          tell(`${E.lab(d.id).name} открыт!`, i);
+        }
         break;
       }
       case "hire": {
@@ -4271,11 +4332,9 @@ window.QuantumTasks = {
           "Весь текущий прогресс будет заменён новой башней. Чтобы сохранить его, сначала скачайте файл .json.",
           () => {
             const s = E.initialState();
-            s.floors[0].students = 2;
-            s.newbieClock = 65;
             replaceState(s);
             fresh = true;
-            tell("Добро пожаловать! Учитель ждёт в кабинете директора.", 1);
+            tell("Начните с крыши: первый квантум можно построить бесплатно.", 2);
           },
         );
         break;
@@ -4612,6 +4671,7 @@ window.QuantumTasks = {
     }
   });
   function tickUI() {
+    updateResourceHUD();
     const sig = JSON.stringify([
       state.floors.map((f) => [
         f.id,
@@ -4672,9 +4732,11 @@ window.QuantumTasks = {
         .querySelectorAll("[data-joint]")
         .forEach((el) => (el.textContent = clock(state.joint?.left || 0)));
       body.querySelectorAll('[data-action="build"]').forEach((b) => {
-        b.disabled =
-          state.coins < E.floorCost(state) ||
-          E.totalProjects(state) < E.lab(b.dataset.id).unlock;
+        const first = state.floors.length === 0;
+        b.disabled = first
+          ? false
+          : state.coins < E.floorCost(state) ||
+            E.totalProjects(state) < E.lab(b.dataset.id).unlock;
       });
       body.querySelectorAll('[data-action="hire"]').forEach((b) => {
         const c = state.candidates.find((c) => c.id === b.dataset.id);
@@ -4731,7 +4793,7 @@ window.QuantumTasks = {
   }
   // Read-only inspection is useful when extending the game in a browser console.
   window.QuantumTower = Object.freeze({
-    version: "2.0",
+    version: "3.0",
     inspect: () => JSON.parse(JSON.stringify(state)),
     get lift() {
       return {
@@ -4749,10 +4811,11 @@ window.QuantumTasks = {
   syncPeople();
   createHitboxes(true);
   positionUI();
+  updateResourceHUD();
   save();
   if (saveError) tell(saveError, 0, true);
   else if (fresh)
-    tell("Учитель ждёт в кабинете директора. Нажмите на комнату.", 1);
+    tell("Начните с крыши: первый квантум можно построить бесплатно.", 2);
   requestAnimationFrame(frame);
 })();
 
