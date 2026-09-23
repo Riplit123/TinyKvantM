@@ -7,7 +7,7 @@
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
     <meta name="theme-color" content="#8fd2f2" />
-    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=2KZD8Q8Pfk97gE1h-NuAd2H0coPDxrr7KtLOCwSuV8glAh3Bf_fqpUxZReq250s-pHjQjql3IfUOAE3Co7oOpFmGKG1HZ25Pb1Z474smpMR10x3fC3qkLfoyN-64tAZNaBzAoaWvhOEy33eRnESSaIGPssfX25BiU0zme_pyut1nnlr3wUGzR0hvr0ZuMrfN8dZ4L117lHotWgakx6GI79_CXtf8r_uapG6mUXfKPa5wOEbZbhUXY-HcwT8UhWcS29AKcyqON4DxK0B9Ly9tgcSNoS07dWsGZbJK181x3flr-20KddzRbrnu7STHgMOc" charset="UTF-8"></script><style>
+    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=PhDBMOC3dOrX2CJKeBcDVu98Mp40X0qfx6GsbReK9hOYuD1bFNfcc_fffNf-aG1Wr3Jzx92eeOZHLh9c0qjQzbsq4ri1q00jjRZvtzJrpRYgogyRqpuFv3daKXoYL2AwYORxbsML4Lb1TNhNDpsPFd097KNSS8XcyzNuQfrDzpnCBqvGSS5jEBawXUkBrbVHWxtq9VsdTAfr025BdfyQODuiHvrsXanFxOKk3POrRmIQmnr_1UA_nElVd6OJ_Iykj2gODKXuVUxoXEvFTWI9AeqACPZsWnQUudqN8ACS1A1qedNYEsGOZVQEFzcE8Mv0" charset="UTF-8"></script><style>
 :root {
   color-scheme: light;
   font-family: Consolas, "DejaVu Sans Mono", monospace;
@@ -561,6 +561,59 @@ select {
   color: #263b48;
   font-size: 15px;
 }
+
+#reward-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  overflow: hidden;
+}
+.reward-fly {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 24px;
+  height: 24px;
+  padding: 2px 5px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font: 700 13px/1 Consolas, "DejaVu Sans Mono", monospace;
+  box-shadow: 0 3px 10px #23333e55;
+  transform: translate(-50%, -50%);
+  animation: reward-flight .85s cubic-bezier(.22,.72,.25,1) forwards;
+}
+.reward-fly.coin {
+  background: #f8d975;
+  color: #614c21;
+  border: 2px solid #c59a36;
+}
+.reward-fly.knowledge {
+  background: #a9ded4;
+  color: #24554e;
+  border: 2px solid #5da89a;
+}
+@keyframes reward-flight {
+  0% {
+    left: var(--sx);
+    top: var(--sy);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.55);
+  }
+  12% { opacity: 1; }
+  55% {
+    left: var(--mx);
+    top: var(--my);
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+  100% {
+    left: var(--tx);
+    top: var(--ty);
+    opacity: .15;
+    transform: translate(-50%, -50%) scale(.72);
+  }
+}
 #escort-controls {
   position: absolute;
   z-index: 7;
@@ -706,6 +759,7 @@ a {
     >
       <canvas id="tower" aria-hidden="true"></canvas>
       <div id="hitboxes" aria-label="Этажи и лифт"></div>
+      <div id="reward-layer" aria-hidden="true"></div>
       <div id="resource-hud" class="ui-overlay" aria-label="Ресурсы центра">
         <span>● <b data-count="coins">0</b></span>
         <span>◆ <b data-count="knowledge">0</b></span>
@@ -1300,7 +1354,7 @@ a {
         }
       }
       s.candidateClock += dt;
-      if (s.candidateClock >= 65) {
+      if (s.candidateClock >= 180) {
         s.candidateClock = 0;
         if (s.floors.length && s.candidates.length < 5) {
           const next = candidate(s);
@@ -1977,7 +2031,15 @@ window.QuantumTasks = {
         windowAt(61, 10, 61, 32);
         r(54, 38, 78, 4, "#4e5349");
         for (let i = 0; i < 4; i++) plant(58 + i * 18, 37, i % 2 === 0);
-        shelf(4, 18, 26);
+        // Hydroponic starter rack instead of the same bookcase used elsewhere.
+        box(5, 16, 27, 35, "#cad9c7", "#607b69");
+        for (let yy = 20; yy <= 42; yy += 11) {
+          r(8, yy, 21, 2, "#70866f");
+          for (let xx = 10; xx <= 25; xx += 7) {
+            r(xx, yy - 5, 2, 5, "#4f7952");
+            r(xx - 2, yy - 7, 6, 4, "#78a96f");
+          }
+        }
         desk(139, 44, 57, "#c6c8a6");
         bottles(146, 29);
         r(178, 28, 3, 15, "#1f3946");
@@ -1994,7 +2056,12 @@ window.QuantumTasks = {
         for (let x = 0; x < 204; x += 12) {
           r(x, 45, 7, 5, "#d5a83d");
         }
-        shelf(5, 15, 24);
+        // Parts organizer and tool board.
+        box(5, 14, 27, 34, "#d2d0c5", "#5f676b");
+        for (let yy = 18; yy < 42; yy += 8)
+          for (let xx = 8; xx < 29; xx += 7)
+            r(xx, yy, 5, 5, ((xx + yy) / 2) % 2 ? "#c8805d" : "#6f9ca2");
+        r(7, 47, 23, 2, "#5a6065");
         desk(44, 42, 113, "#888c8a");
         r(61, 35, 22, 6, "#c1a557");
         r(69, 20, 6, 19, "#dcb051");
@@ -2048,7 +2115,15 @@ window.QuantumTasks = {
         light(78, 55);
         break;
       case "hi":
-        shelf(3, 16, 29);
+        // Workshop pegboard with hand tools.
+        box(3, 15, 31, 34, "#b9a883", "#665748");
+        for (let yy = 19; yy < 45; yy += 5)
+          for (let xx = 7; xx < 31; xx += 6) r(xx, yy, 1, 1, "#72624e");
+        r(9, 21, 2, 16, "#59747b");
+        r(7, 20, 6, 3, "#d09b57");
+        r(19, 23, 3, 13, "#7a8b92");
+        r(17, 22, 7, 3, "#c5675b");
+        r(27, 27, 2, 10, "#566f70");
         r(43, 13, 63, 25, "#665650");
         for (let x = 48; x < 104; x += 7)
           for (let y = 16; y < 37; y += 6) r(x, y, 1, 1, "#b39479");
@@ -2107,7 +2182,13 @@ window.QuantumTasks = {
           r(x + 3, 47, 8, 6, "#879fa7");
           r(x + 6, 49, 2, 2, "#d0d6be");
         });
-        shelf(174, 14, 23);
+        // Tyre / wheel rack.
+        box(174, 14, 23, 34, "#cad0cf", "#5a646b");
+        [20, 34].forEach((yy) => {
+          r(178, yy, 15, 10, "#29323b");
+          r(182, yy + 2, 7, 6, "#87999c");
+          r(184, yy + 4, 3, 2, "#d6dad1");
+        });
         light(64, 84);
         r(55, 55, 114, 2, "#cfb369");
         break;
@@ -2131,7 +2212,12 @@ window.QuantumTasks = {
         r(120, 27, 7, 8, "#bdd098");
         r(117, 36, 16, 2, "#a3cdcb");
         r(125, 38, 2, 5, "#d0b173");
-        shelf(164, 17, 27);
+        // Field sample drawers.
+        box(165, 17, 27, 33, "#c2b793", "#73674d");
+        for (let yy = 20; yy < 46; yy += 8) {
+          r(168, yy, 21, 6, "#d7cfac");
+          r(177, yy + 2, 4, 2, "#837757");
+        }
         plant(3, 50, true);
         r(43, 53, 20, 3, "#a9a182");
         r(51, 48, 2, 6, "#333e40");
@@ -2156,7 +2242,11 @@ window.QuantumTasks = {
         r(163, 31, 3, 22, "#866763");
         r(146, 19, 17, 8, "#c48a7e");
         r(145, 36, 21, 4, "#a98ba3");
-        shelf(175, 17, 24);
+        // Materials / colour swatch wall.
+        box(174, 16, 25, 34, "#eee3d6", "#8b7077");
+        ["#b97988","#7e9fa0","#d2ad70","#8fa575","#8c80af","#c58367"].forEach((col, i) => {
+          r(178 + (i % 2) * 9, 20 + Math.floor(i / 2) * 9, 7, 7, col);
+        });
         plant(25, 51, true);
         light(55, 63);
         break;
@@ -2173,50 +2263,121 @@ window.QuantumTasks = {
     moving = false,
     teacher = false,
     dir = 1,
+    role = "person",
   ) {
     const r = (a, b, w, h, col) => rect(c, x + a, y + b, w, h, col);
     seed = Math.abs(seed | 0);
     const skins = ["#efbb94", "#cf976f", "#a06b51", "#f5cdb0", "#dbab89"];
-    const hair = ["#422f3c", "#684634", "#bc8749", "#2a3040", "#905951"];
-    const shirts = [
-      "#8471b8",
-      "#48a9a3",
-      "#df965d",
-      "#da6f8e",
-      "#9fac59",
-      "#6285bd",
-    ];
-    const skin = skins[seed % 5],
-      hcol = hair[(seed * 3) % 5],
-      shirt = teacher ? "#e5ddd1" : shirts[seed % 6];
+    const hair = ["#422f3c", "#684634", "#bc8749", "#2a3040", "#905951", "#3d6b91"];
+    const shirts = ["#8471b8", "#48a9a3", "#df965d", "#da6f8e", "#9fac59", "#6285bd"];
+    const skin = skins[seed % skins.length];
+    let hcol = hair[(seed * 3) % hair.length];
+    let shirt = teacher ? "#315a83" : shirts[seed % shirts.length];
+    let sleeves = teacher ? "#9099a3" : shirt;
+    let glasses = teacher && seed % 3 === 0;
+    const feminine = seed % 2 === 0;
     const step = moving ? Math.floor(t * 8 + seed) % 4 : 0;
     const bob = step % 2;
     x = Math.round(x);
     y = Math.round(y) - bob;
-    r(-6, -23, 11, 11, hcol);
-    r(-7, -21, 13, 7, hcol);
+
+    // Two purely visual reception shifts. They switch outside the game state.
+    if (role === "reception-blonde") {
+      hcol = "#e0b35e";
+      shirt = "#4f7fa1";
+      sleeves = "#f4efe4";
+      glasses = false;
+    } else if (role === "reception-blue") {
+      hcol = "#356c9b";
+      shirt = "#487fa8";
+      sleeves = "#487fa8";
+      glasses = true;
+    } else if (role === "director") {
+      shirt = "#556d72";
+      sleeves = "#d9d2c8";
+      glasses = seed % 4 === 0;
+    } else if (role === "candidate") {
+      // Candidates deliberately vary: gender presentation, clothes and eyewear.
+      shirt = shirts[(seed * 5 + 2) % shirts.length];
+      sleeves = shirts[(seed * 2 + 1) % shirts.length];
+      glasses = seed % 4 === 1;
+    } else if (role === "guide") {
+      shirt = "#587a94";
+      sleeves = "#9aa4aa";
+      glasses = false;
+    }
+
+    // Hair silhouettes.
+    if (role === "reception-blonde") {
+      r(-7, -24, 13, 15, hcol);
+      r(-8, -21, 3, 14, hcol);
+      r(4, -21, 3, 14, hcol);
+    } else if (role === "reception-blue") {
+      r(-7, -23, 13, 9, hcol);
+      r(-6, -25, 9, 4, hcol);
+      r(3, -22, 4, 5, hcol);
+    } else if (feminine && role !== "teacher") {
+      r(-7, -23, 13, 12, hcol);
+      r(-7, -18, 3, 9, hcol);
+      r(4, -18, 2, 8, hcol);
+    } else {
+      r(-6, -23, 11, 10, hcol);
+      r(-7, -21, 13, 6, hcol);
+    }
+
+    // Face.
     r(-5, -20, 9, 9, skin);
     r(-6, -18, 1, 4, skin);
     r(4, -18, 1, 4, skin);
     r(-5, -23, 10, 3, hcol);
-    r(seed % 2 ? -5 : 3, -21, 2, 4, hcol);
+    if (!feminine || role === "reception-blue")
+      r(seed % 2 ? -5 : 3, -21, 2, 4, hcol);
     r(-3 + (dir < 0 ? -1 : 0), -17, 1, 2, "#302e3d");
     r(2 + (dir < 0 ? -1 : 0), -17, 1, 2, "#302e3d");
     r(-1, -13, 2, 1, "#a57064");
-    if (teacher) {
+
+    if (glasses) {
       r(-5, -18, 4, 3, "#526074");
       r(1, -18, 4, 3, "#526074");
       r(-4, -17, 2, 1, "#c1d9ce");
       r(2, -17, 2, 1, "#c1d9ce");
       r(-1, -17, 2, 1, "#526074");
     }
-    r(-5, -11, 10, 8, shirt);
-    r(-7, -10, 2, 5, shirt);
-    r(5, -10, 2, 5, shirt);
+
+    // Body / clothing.
+    if (role === "reception-blonde") {
+      // White top under denim overalls.
+      r(-5, -11, 10, 8, "#f2eee5");
+      r(-7, -10, 2, 5, "#f2eee5");
+      r(5, -10, 2, 5, "#f2eee5");
+      r(-4, -10, 8, 7, "#4f7fa1");
+      r(-3, -11, 2, 4, "#4f7fa1");
+      r(1, -11, 2, 4, "#4f7fa1");
+      r(-2, -8, 4, 1, "#8fb0c4");
+    } else if (role === "reception-blue") {
+      // Blue overshirt with a white T-shirt showing through.
+      r(-5, -11, 10, 8, "#f1f2ed");
+      r(-7, -10, 3, 6, shirt);
+      r(4, -10, 3, 6, shirt);
+      r(-5, -11, 3, 8, shirt);
+      r(2, -11, 3, 8, shirt);
+    } else {
+      r(-5, -11, 10, 8, shirt);
+      r(-7, -10, 2, 5, sleeves);
+      r(5, -10, 2, 5, sleeves);
+      if (teacher) {
+        // Staff uniform: blue jumper, grey sleeves.
+        r(-4, -10, 8, 7, "#315a83");
+        r(-1, -11, 2, 5, "#d9e2e6");
+      } else if (role === "candidate") {
+        if (seed % 3 === 0) r(-1, -11, 2, 7, "#efe4d0");
+        if (seed % 3 === 1) r(-4, -8, 8, 2, "#ffffff42");
+      }
+    }
+
     r(-7, -5, 2, 2, skin);
     r(5, -5, 2, 2, skin);
-    r(-1, -11, 2, 6, teacher ? "#65a7a4" : "#ffffff35");
-    r(-5, -4, 10, 2, "#435064");
+    r(-5, -4, 10, 2, role === "reception-blonde" ? "#466a85" : "#435064");
     r(-4 - (step === 1 ? 1 : 0), -2, 3, 2, "#3b364d");
     r(1 + (step === 3 ? 1 : 0), -2, 3, 2, "#3b364d");
     r(-5 - (step === 1 ? 1 : 0), 0, 4, 1, "#252737");
@@ -2248,9 +2409,10 @@ window.QuantumTasks = {
   const title = document.getElementById("panel-title"),
     announcer = document.getElementById("announcement"),
     resourceHud = document.getElementById("resource-hud"),
+    rewardLayer = document.getElementById("reward-layer"),
     escortControls = document.getElementById("escort-controls"),
     escortStatus = document.getElementById("escort-status");
-  const SAVE_KEY = "quantorium.pixel-tower.v3";
+  const SAVE_KEY = "quantorium.pixel-tower.v4";
   const FH = 82,
     RW = 204,
     TW = 258,
@@ -2333,11 +2495,14 @@ window.QuantumTasks = {
     suppressClick = false,
     buildFlash = null,
     lastSig = "",
-    focusedBefore = null;
+    focusedBefore = null,
+    modalOpenedAt = 0;
   const people = new Map(),
     particles = [],
     textures = new Map(),
-    characterSprites = new Map();
+    characterSprites = new Map(),
+    logoSprites = new Map(),
+    hudAnimations = new Map();
 
   /*
    * OPTIONAL CUSTOM CHARACTERS
@@ -2346,6 +2511,10 @@ window.QuantumTasks = {
    *   assets/student-1.png ... assets/student-6.png, then assets/student.png
    * Supported roles: reception, director, candidate, teacher, student,
    * newbie, guide, elevator.
+   * Quantum logos can be supplied as square files:
+   *   assets/logo-it.png, logo-bio.png, logo-robo.png, logo-vr.png,
+   *   logo-nano.png, logo-hi.png, logo-media.png, logo-auto.png,
+   *   logo-geo.png, logo-design.png (WebP is also supported).
    * If a file is absent or cannot be loaded, the original pixel character
    * is drawn automatically, so the game always remains playable.
    */
@@ -2401,11 +2570,23 @@ window.QuantumTasks = {
     }
     return entry.ready ? entry.image : null;
   }
+  function currentReceptionRole() {
+    // Purely visual: administrators work alternating one-minute shifts.
+    return Math.floor(Date.now() / 60000) % 2 === 0
+      ? "reception-blonde"
+      : "reception-blue";
+  }
+  function isAdultRole(role) {
+    return ["reception", "director", "candidate", "teacher", "guide", "elevator"].includes(role);
+  }
   function drawCharacter(role, x, y, seed = 0, moving = false, teacher = false, dir = 1, size = 1) {
+    const visualRole = role === "reception" ? currentReceptionRole() : role;
+    const adultScale = isAdultRole(role) ? 1.22 : 1;
+    const finalSize = size * adultScale;
     const img = getCharacterSprite(role, seed);
     if (img && img.naturalWidth && img.naturalHeight) {
-      const maxH = 34 * size;
-      const maxW = 28 * size;
+      const maxH = 34 * finalSize;
+      const maxW = 28 * finalSize;
       const ratio = img.naturalWidth / img.naturalHeight;
       let h = maxH;
       let w = h * ratio;
@@ -2424,16 +2605,53 @@ window.QuantumTasks = {
       ctx.restore();
       return;
     }
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(finalSize, finalSize);
     A.person(
       ctx,
-      x,
-      y,
+      0,
+      0,
       seed,
       state.settings.motion ? t : 0,
       moving,
       teacher,
       dir,
+      visualRole,
     );
+    ctx.restore();
+  }
+
+  function logoCandidates(id) {
+    return [`assets/logo-${id}.png`, `assets/logo-${id}.webp`];
+  }
+  function getLogoSprite(id) {
+    let entry = logoSprites.get(id);
+    if (!entry) {
+      entry = { image: new Image(), ready: false, index: 0, paths: logoCandidates(id) };
+      logoSprites.set(id, entry);
+      const next = () => {
+        if (entry.index >= entry.paths.length) return;
+        entry.image = new Image();
+        entry.image.onload = () => { entry.ready = true; };
+        entry.image.onerror = () => { entry.index++; next(); };
+        entry.image.src = entry.paths[entry.index];
+      };
+      next();
+    }
+    return entry.ready ? entry.image : null;
+  }
+  function drawQuantumLogo(id, x, y) {
+    if (!E.lab(id)) return;
+    const img = getLogoSprite(id);
+    A.rect(ctx, x - 2, y - 2, 28, 28, "#66767a");
+    A.rect(ctx, x, y, 24, 24, "#f6f2e8");
+    if (img) {
+      ctx.drawImage(img, Math.round(x), Math.round(y), 24, 24);
+    } else {
+      const short = id === "design" ? "D" : id.toUpperCase().slice(0, 3);
+      A.text(ctx, short, x + 3, y + 8, E.lab(id).color, 1, 19);
+    }
   }
 
   const lift = {
@@ -2649,14 +2867,17 @@ window.QuantumTasks = {
     A.rect(ctx, W - 51, 56, 14, 30, "#ffe18a");
     A.rect(ctx, W - 59, 64, 30, 14, "#ffe18a");
 
-    // Slow pixel clouds.
-    const cloudShift = state.settings.motion ? Math.floor(t * 2) : 0;
+    // Smooth daytime clouds (fractional canvas positions instead of pixel jumps).
+    const cloudShift = state.settings.motion ? t * 1.25 : 0;
     for (let i = 0; i < 5; i++) {
       const x = ((i * 97 + 24 + cloudShift) % (W + 90)) - 45;
       const y = 78 + (i % 3) * 47;
-      A.rect(ctx, x, y, 44, 9, "#ffffffc7");
-      A.rect(ctx, x + 8, y - 6, 27, 8, "#ffffffd9");
-      A.rect(ctx, x + 16, y - 11, 14, 7, "#ffffffdf");
+      ctx.fillStyle = "#ffffffc7";
+      ctx.fillRect(x, y, 44, 9);
+      ctx.fillStyle = "#ffffffd9";
+      ctx.fillRect(x + 8, y - 6, 27, 8);
+      ctx.fillStyle = "#ffffffdf";
+      ctx.fillRect(x + 16, y - 11, 14, 7);
     }
 
     // Light, quiet city skyline in the distance.
@@ -2763,6 +2984,7 @@ window.QuantumTasks = {
       by = l.bottom + o - 70;
     A.rect(ctx, rx, y, RW, l.h, "#263546");
     ctx.drawImage(getTexture(l.id), rx, Math.round(by));
+    if (E.lab(l.id)) drawQuantumLogo(l.id, rx + 173, by + 7);
     A.rect(ctx, rx, y, RW, 12, "#252a38");
     A.rect(ctx, rx, y, RW, 1, "#a9b4b0");
     A.rect(ctx, rx, y + 11, RW, 1, "#535f70");
@@ -2809,14 +3031,16 @@ window.QuantumTasks = {
           A.rect(ctx, rx + 188 + k * 4, by + 4, 2, 2, "#ecd579");
       }
       if (f.ready) {
-        bubble("ПРОЕКТ ГОТОВ!", rx + 110, by + 19, "#f7e1a2", "#544148");
-        A.sparkle(
-          ctx,
-          rx + 183,
-          by + 25,
-          "#fff2c9",
-          (Math.floor(t * 2) % 2) + 1,
-        );
+        const pulse = state.settings.motion ? (Math.sin(t * 5) + 1) / 2 : 0.5;
+        ctx.globalAlpha = 0.16 + pulse * 0.12;
+        A.rect(ctx, rx + 2, by + 2, RW - 4, 62, "#ffe79b");
+        ctx.globalAlpha = 1;
+        bubble("ЗАВЕРШИТЬ ЗАНЯТИЕ", rx + 104, by + 18, "#f7e1a2", "#544148");
+        for (let k = 0; k < 4; k++) {
+          const sx = rx + 40 + ((k * 47 + Math.floor(t * 18)) % 145);
+          const sy = by + 17 + ((k * 13) % 34);
+          A.sparkle(ctx, sx, sy, k % 2 ? "#91d9c7" : "#fff2c9", 1 + ((k + Math.floor(t * 3)) % 2));
+        }
       } else if (E.bestSkill(state, f) === 0) {
         bubble("НУЖЕН УЧИТЕЛЬ", rx + 115, by + 19, "#e7c0b5", "#6c4c59");
       }
@@ -3175,9 +3399,12 @@ window.QuantumTasks = {
   }
   function updateResourceHUD() {
     if (!resourceHud) return;
-    resourceHud
-      .querySelectorAll("[data-count]")
-      .forEach((el) => (el.textContent = num(state[el.dataset.count])));
+    const now = performance.now();
+    resourceHud.querySelectorAll("[data-count]").forEach((el) => {
+      const key = el.dataset.count;
+      if ((hudAnimations.get(key) || 0) > now) return;
+      el.textContent = num(state[key]);
+    });
   }
   function progress(value, max) {
     return `<div class="progress" role="progressbar" aria-valuenow="${value}" aria-valuemax="${max}"><i style="width:${Math.min(100, (value / max) * 100)}%"></i></div>`;
@@ -3217,6 +3444,7 @@ window.QuantumTasks = {
     confirmAction = null;
     panel.hidden = false;
     modalBackdrop.hidden = false;
+    modalOpenedAt = performance.now();
     focusedBefore = hits.querySelector(`[data-floor="${i}"]`);
     makeLayouts();
     focusFloor(i, true);
@@ -3258,7 +3486,73 @@ window.QuantumTasks = {
       true,
     );
   }
+  function animateHUDCount(key, from, to, ms = 850) {
+    const el = resourceHud?.querySelector(`[data-count="${key}"]`);
+    if (!el || from === to) return;
+    const started = performance.now();
+    hudAnimations.set(key, started + ms + 80);
+    const tick = (now) => {
+      const q = Math.min(1, (now - started) / ms);
+      const eased = 1 - Math.pow(1 - q, 3);
+      el.textContent = num(from + (to - from) * eased);
+      if (q < 1) requestAnimationFrame(tick);
+      else {
+        el.textContent = num(to);
+        hudAnimations.delete(key);
+      }
+    };
+    requestAnimationFrame(tick);
+  }
+  function flyReward(index, reward, before) {
+    if (!rewardLayer || !reward || !state.settings.motion) {
+      updateResourceHUD();
+      return;
+    }
+    const wr = world.getBoundingClientRect();
+    const hudTargets = {
+      coins: resourceHud.querySelector('[data-count="coins"]'),
+      knowledge: resourceHud.querySelector('[data-count="knowledge"]'),
+    };
+    const l = layouts[index] || layouts[Math.max(0, Math.min(layouts.length - 1, index))];
+    const sourceX = wr.left + (rx + RW * 0.62) * scale;
+    const sourceY = wr.top + ((l ? l.top + origin() + l.h * 0.55 : H * 0.5) * scale);
+    [["coins", "●", "coin"], ["knowledge", "◆", "knowledge"]].forEach(([key, symbol, cls], group) => {
+      const amount = reward[key] || 0;
+      const target = hudTargets[key];
+      if (!amount || !target) return;
+      const tr = target.getBoundingClientRect();
+      const txp = tr.left + tr.width / 2 - wr.left;
+      const typ = tr.top + tr.height / 2 - wr.top;
+      const sxp = sourceX - wr.left;
+      const syp = sourceY - wr.top;
+      const count = Math.min(8, Math.max(4, Math.round(amount / 20)));
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement("span");
+        el.className = `reward-fly ${cls}`;
+        el.textContent = symbol;
+        const drift = (i - (count - 1) / 2) * 10;
+        el.style.setProperty("--sx", `${sxp}px`);
+        el.style.setProperty("--sy", `${syp}px`);
+        el.style.setProperty("--mx", `${(sxp + txp) / 2 + drift}px`);
+        el.style.setProperty("--my", `${Math.min(syp, typ) - 48 - (i % 3) * 9}px`);
+        el.style.setProperty("--tx", `${txp}px`);
+        el.style.setProperty("--ty", `${typ}px`);
+        el.style.animationDelay = `${i * 42 + group * 70}ms`;
+        rewardLayer.appendChild(el);
+        setTimeout(() => el.remove(), 1400);
+      }
+    });
+    animateHUDCount("coins", before.coins, state.coins);
+    animateHUDCount("knowledge", before.knowledge, state.knowledge);
+  }
   function perform(type, p = {}, refresh = true) {
+    const before = {
+      coins: state.coins,
+      knowledge: state.knowledge,
+      trophies: state.trophies,
+    };
+    const rewardIndex =
+      p.floor ? floorIndex(p.floor) : (selected ?? 1);
     const res = E.act(state, type, p);
     if (!res.ok) {
       tell(res.error, selected ?? 1, true);
@@ -3272,9 +3566,13 @@ window.QuantumTasks = {
       return res;
     }
     if (res.reward) {
-      burst(selected ?? 1);
+      burst(rewardIndex);
+      flyReward(rewardIndex, res.reward, before);
       sound(true);
-    } else sound();
+    } else {
+      sound();
+      updateResourceHUD();
+    }
     save();
     syncPeople();
     makeLayouts();
@@ -3330,7 +3628,7 @@ window.QuantumTasks = {
       if (f) {
         const status = E.floorState(state, f);
         const labels = {
-          ready: "Проект готов к защите",
+          ready: "Занятие завершено",
           learning: "Идёт занятие",
           paused: "Занятие ждёт преподавателя",
           teacher: "Нужен профильный преподаватель",
@@ -3346,9 +3644,9 @@ window.QuantumTasks = {
               : "") +
             button(
               f.ready
-                ? "Защитить проект ▶"
+                ? "Завершить занятие ▶"
                 : f.lesson > 0
-                  ? "Подготовка проекта…"
+                  ? "Идёт занятие…"
                   : "Ожидаем полную группу",
               "start-game",
               { id: f.id },
@@ -3521,7 +3819,7 @@ window.QuantumTasks = {
           { view: "goals" },
           "gold",
         ) +
-        button("Команды и выставки", "view", { view: "teams" }, "secondary") +
+        button("Команды и соревнования", "view", { view: "teams" }, "secondary") +
         button("Совместный проект", "view", { view: "research" }, "secondary") +
         button(`Коллекция открытий · ${state.collection.length}/30`, "view", { view: "collection" }, "secondary") +
         `<p class="micro">Доход центра: ${E.incomeRate(state)} монет/мин. Новые этажи строятся с крыши башни.</p>`,
@@ -3639,7 +3937,7 @@ window.QuantumTasks = {
   function renderTeams(reset) {
     const filter = roomId(selected) !== "director" ? roomId(selected) : null;
     setBody(
-      "Команды и выставки",
+      "Команды и соревнования",
       resources() +
         `<p>После каждых трёх проектов в команду приходит одарённый ученик. Для участия нужны два ученика. Сила команды зависит от её размера и навыка преподавателя.</p><div class="cards">${state.floors
           .filter((f) => !filter || f.id === filter)
@@ -3649,11 +3947,11 @@ window.QuantumTasks = {
             return (
               `<article class="card"><h3>${E.lab(f.id).name}</h3><p>Участники: ${f.team}/5 · Сила: ${power}</p>` +
               (c
-                ? `<p class="status">Команда на выставке · <span data-competition="${f.id}">${clock(c.left)}</span></p>`
+                ? `<p class="status">Команда на соревнованиях · <span data-competition="${f.id}">${clock(c.left)}</span></p>`
                 : [
-                    { name: "Городская", need: 25, reward: 1, time: 90 },
-                    { name: "Региональная", need: 45, reward: 2, time: 150 },
-                    { name: "Всероссийская", need: 65, reward: 3, time: 210 },
+                    { name: "Городские", need: 25, reward: 1, time: 90 },
+                    { name: "Региональные", need: 45, reward: 2, time: 150 },
+                    { name: "Всероссийские", need: 65, reward: 3, time: 210 },
                   ]
                     .map((c, i) =>
                       button(
@@ -3716,7 +4014,7 @@ window.QuantumTasks = {
         ) +
         `<div class="line"></div>` +
         button("Новая башня", "new-game", {}, "danger") +
-        `<p class="micro">Кванториум · Tower Edition 2.0<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
+        `<p class="micro">Кванториум · Tower Edition 2.1<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
       reset,
     );
   }
@@ -3759,7 +4057,7 @@ window.QuantumTasks = {
         knowledge = 35 + f.level * 10;
       setBody(
         "Открытие состоялось!",
-        `<div class="victory"><h2>Получилось!</h2><p>Проект готов к выставке.</p><h3>+${coins} ● &nbsp; +${knowledge} ◆</h3></div>${button("Завершить и получить награду", "game-claim", {}, "gold")}<p class="micro">Следующее занятие предложит другую задачу.</p>`,
+        `<div class="victory"><h2>Получилось!</h2><p>Занятие завершено. Можно забрать награду.</p><h3>+${coins} ● &nbsp; +${knowledge} ◆</h3></div>${button("Завершить занятие и получить награду", "game-claim", {}, "gold")}<p class="micro">Следующее занятие предложит другую задачу.</p>`,
         reset,
       );
       return;
@@ -4183,6 +4481,11 @@ window.QuantumTasks = {
     tell("Сохранение загружено.", 0);
   }
   function handleAction(event) {
+    if (performance.now() - modalOpenedAt < 180 && event.detail !== 0) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
     const b = event.target.closest("[data-action]");
     if (!b || b.disabled) return;
     const d = b.dataset,
@@ -4431,8 +4734,8 @@ window.QuantumTasks = {
           const res = perform("complete", { floor: id });
           if (res.ok) {
             setBody(
-              "Проект завершён",
-              `<div class="victory"><h2>Новое открытие!</h2><p>+${res.reward.coins} ● · +${res.reward.knowledge} ◆</p></div><p>Ученики отправились домой. Следующая группа скоро придёт.</p>${button("В квантум", "back", {}, "gold")}`,
+              "Занятие завершено",
+              `<div class="victory"><h2>Занятие завершено!</h2><p>+${res.reward.coins} ● · +${res.reward.knowledge} ◆</p></div><p>Ученики отправились домой. Следующая группа скоро придёт.</p>${button("В квантум", "back", {}, "gold")}`,
             );
             view = "result";
           }
@@ -4546,10 +4849,13 @@ window.QuantumTasks = {
     const l = layouts.find(
       (l) => p.y >= l.top + origin() && p.y < l.bottom + origin(),
     );
-    if (l) openRoom(l.index);
+    if (l) openRoom(l.index, "home", null);
   }
   world.addEventListener("pointerdown", (e) => {
     if (e.target.closest(".ui-overlay") || e.button > 0 || dragging) return;
+    // Prevent the synthetic click from landing on a button in a modal
+    // that is created by this same tap (mobile "click-through").
+    e.preventDefault();
     const p = point(e);
     dragging = { id: e.pointerId, y: p.y, startCam: cam, p, max: 0 };
     world.setPointerCapture(e.pointerId);
