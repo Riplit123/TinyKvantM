@@ -7,7 +7,7 @@
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
     <meta name="theme-color" content="#8fd2f2" />
-    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=b9Tk3WyNYtJYtN4gDO_5BeGEPjCqyiRTdl0qNx9h7tXeYnoYxlxR1NjR19S0p0ddYsPm6w2Xtgu_P_DeOLphnY4LyINULBspjVaQyyVPiCgkJhCinMNdBqw7K8md1dA5rQsxB-j0KdY8vAiwAD4GhPrCEZ6iJtQJid49jgOPCsFNxUpUxVzxVaPOjjb4scspIK00nzS22YWUlEfmZFuJahkF8tEFEHQGjAZiTtk8NbS_GnKFAWmudf_gJiEy1GBhFyeWF1glUmUrinhj010ymg" charset="UTF-8"></script><style>
+    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=mX61OYEvuVEZLHDriNODySc1Itr8W7M-bCeyTEpvrMFnb20JY_YEWcQYO6Y7qIm4m9JsHRPhJs-JTwz4-JqIRnm3BhtL7rz0hjSobjYdsBPyO7bSo-EjEAdoy4RXY3nd72AS5UgoL2Cd-Gd7cYqtd6VhDwAKMdmHocLlaSAAhL4jHelGF8O6bbZl8y49aEO9RkykcQ2C3qOTxh2gYDYonejTaJDVYDd9ZygAF7nfL0Y6ThXbvN3TOOaM8PiXIgyjJWCUXQ7o80QHcXeWWCIVubpDioQq8SywWO8mXQUWbCtE1tCKnIuewhYebWTq90O8xbgHatJx39YFtGzhlFGsaQ" charset="UTF-8"></script><style>
 :root {
   color-scheme: light;
   font-family: Consolas, "DejaVu Sans Mono", monospace;
@@ -873,7 +873,7 @@ select {
   font-size: 18px;
 }
 
-/* Third conference arcade: colourful 3x3 impulse field. */
+/* Third conference arcade: remember and repeat an increasingly long colour code. */
 .pulse-head {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -896,39 +896,41 @@ select {
 }
 .pulse-board {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 9px;
-  width: min(78vw, 310px);
-  margin: 12px auto;
-  padding: 9px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: min(76vw, 292px);
+  margin: 14px auto;
+  padding: 11px;
   border: 3px solid #788d96;
-  border-radius: 16px;
+  border-radius: 18px;
   background: #d8e4e2;
   box-shadow: inset 0 0 0 2px #f4f5ec;
 }
 .pulse-cell {
   aspect-ratio: 1;
-  border: 2px solid #ffffffa6;
-  border-radius: 14px;
+  border: 3px solid #ffffffa8;
+  border-radius: 18px;
   background: var(--pulse-bg, #b7c8c8);
-  box-shadow: 0 4px #75878a;
+  box-shadow: 0 5px #75878a;
   cursor: pointer;
   touch-action: manipulation;
   transition: transform .08s ease, filter .08s ease, box-shadow .08s ease;
 }
-.pulse-cell:nth-child(4n+1) { --pulse-bg: #e59a91; }
-.pulse-cell:nth-child(4n+2) { --pulse-bg: #7fc5b0; }
-.pulse-cell:nth-child(4n+3) { --pulse-bg: #e2c673; }
-.pulse-cell:nth-child(4n+4) { --pulse-bg: #969bd3; }
+.pulse-cell:nth-child(1) { --pulse-bg: #e58d88; }
+.pulse-cell:nth-child(2) { --pulse-bg: #70bea6; }
+.pulse-cell:nth-child(3) { --pulse-bg: #e1c25f; }
+.pulse-cell:nth-child(4) { --pulse-bg: #8e93cf; }
 .pulse-cell.active {
-  transform: translateY(3px) scale(1.06);
-  filter: brightness(1.2) saturate(1.2);
-  box-shadow: 0 1px #75878a, 0 0 0 4px #fff2a4;
-  animation: pulse-target .55s ease-in-out infinite alternate;
+  transform: translateY(3px) scale(1.055);
+  filter: brightness(1.38) saturate(1.25);
+  box-shadow: 0 2px #75878a, 0 0 0 5px #fff0a0, 0 0 22px #fff0a0;
 }
-@keyframes pulse-target {
-  from { filter: brightness(1.08) saturate(1.05); }
-  to { filter: brightness(1.34) saturate(1.28); }
+.pulse-cell:disabled {
+  opacity: 1;
+  filter: none;
+}
+.pulse-cell.active:disabled {
+  filter: brightness(1.38) saturate(1.25);
 }
 #room-panel .lesson-complete {
   margin-bottom: 12px;
@@ -1581,7 +1583,7 @@ a {
         [domain]: 4 + (s.uid % 4),
         ...(secondary !== domain ? { [secondary]: 2 + (s.uid % 3) } : {}),
       },
-      cost: 100 + (s.uid % 4) * 25,
+      cost: 200 + (s.uid % 4) * 25,
     };
   }
   function chapterProgress(s) {
@@ -3173,7 +3175,7 @@ window.QuantumTasks = {
     rewardLayer = document.getElementById("reward-layer"),
     escortControls = document.getElementById("escort-controls"),
     escortStatus = document.getElementById("escort-status");
-  const SAVE_KEY = "quantorium.pixel-tower.v5";
+  const SAVE_KEY = "quantorium.pixel-tower.v6";
   const FH = 82,
     RW = 204,
     TW = 258,
@@ -3289,44 +3291,18 @@ window.QuantumTasks = {
   const people = new Map(),
     particles = [],
     textures = new Map(),
-    characterSprites = new Map(),
     logoSprites = new Map(),
     hudAnimations = new Map();
 
   /*
-   * OPTIONAL CUSTOM CHARACTERS
-   * Put transparent PNG/WebP files next to this HTML in the assets folder.
-   * The game first tries a numbered variant, then a generic role:
-   *   assets/student-1.png ... assets/student-6.png, then assets/student.png
-   * Supported roles: reception, director, candidate, teacher, student,
-   * newbie, guide, elevator.
-   * Quantum logos can be supplied as square files:
+   * OPTIONAL QUANTUM LOGOS ONLY
+   * Characters are always drawn by the built-in pixel-art renderer.
+   * Square quantum logos may be placed in assets:
    *   assets/logo-it.png, logo-bio.png, logo-robo.png, logo-vr.png,
    *   logo-nano.png, logo-hi.png, logo-media.png, logo-auto.png,
-   *   logo-geo.png, logo-design.png, logo-anim.png, logo-chess.png (WebP is also supported).
-   * If a file is absent or cannot be loaded, the original pixel character
-   * is drawn automatically, so the game always remains playable.
+   *   logo-geo.png, logo-design.png, logo-anim.png, logo-chess.png.
+   * WebP with the same filenames is also supported.
    */
-  const CHARACTER_ASSETS = {
-    reception: "reception",
-    director: "director",
-    candidate: "candidate",
-    teacher: "teacher",
-    student: "student",
-    newbie: "newbie",
-    guide: "guide",
-    elevator: "elevator",
-  };
-  function spriteCandidates(role, seed = 0) {
-    const base = CHARACTER_ASSETS[role] || role;
-    const variant = (Math.abs(seed | 0) % 6) + 1;
-    return [
-      `assets/${base}-${variant}.png`,
-      `assets/${base}-${variant}.webp`,
-      `assets/${base}.png`,
-      `assets/${base}.webp`,
-    ];
-  }
   const optionalImageQueue = [];
   let optionalImagesActive = 0, optionalImagesScheduled = false;
   function scheduleOptionalImages() {
@@ -3376,16 +3352,6 @@ window.QuantumTasks = {
     });
     scheduleOptionalImages();
   }
-  function getCharacterSprite(role, seed = 0) {
-    const key = `${role}:${Math.abs(seed | 0) % 6}`;
-    let entry = characterSprites.get(key);
-    if (!entry) {
-      entry = { image: null, ready: false, failed: false, queued: false };
-      characterSprites.set(key, entry);
-      queueOptionalImage(entry, spriteCandidates(role, seed));
-    }
-    return entry.ready ? entry.image : null;
-  }
   let adminShiftIndex = Math.floor(Date.now() / 60000) % 2;
   let adminShiftClock = (Date.now() % 60000) / 1000;
   function currentReceptionRole() {
@@ -3433,32 +3399,10 @@ window.QuantumTasks = {
     const finalSize = size * adultScaleFor(role, teacher);
     const px = Math.round(x);
     const py = Math.round(y);
-    const img = getCharacterSprite(role, seed);
 
     ctx.imageSmoothingEnabled = false;
-    if (img && img.naturalWidth && img.naturalHeight) {
-      const maxH = Math.max(1, Math.round(34 * finalSize));
-      const maxW = Math.max(1, Math.round(28 * finalSize));
-      const ratio = img.naturalWidth / img.naturalHeight;
-      let h = maxH;
-      let w = Math.round(h * ratio);
-      if (w > maxW) {
-        w = maxW;
-        h = Math.round(w / ratio);
-      }
-      if (dir < 0) {
-        ctx.save();
-        ctx.translate(px, 0);
-        ctx.scale(-1, 1);
-        ctx.drawImage(img, Math.round(-w / 2), py - h, w, h);
-        ctx.restore();
-      } else {
-        ctx.drawImage(img, Math.round(px - w / 2), py - h, w, h);
-      }
-      return;
-    }
 
-    // Draw the original pixel person at 1:1 into an off-screen buffer, then
+    // Draw the built-in pixel person at 1:1 into an off-screen buffer, then
     // enlarge it with nearest-neighbour sampling. This keeps walking children
     // and scaled adults crisp instead of putting pixel edges on sub-pixels.
     personBufferCtx.clearRect(0, 0, personBuffer.width, personBuffer.height);
@@ -4689,12 +4633,14 @@ window.QuantumTasks = {
               view: "staff",
               floor: f.id,
             }) +
-            button(
-              "Улучшить квантум",
-              "view",
-              { view: "upgrade" },
-              "secondary",
-            ) +
+            (f.level < 3
+              ? button(
+                  "Улучшить квантум",
+                  "view",
+                  { view: "upgrade" },
+                  "secondary",
+                )
+              : "") +
             button(
               `Команда · ${f.team}/5`,
               "view",
@@ -4885,7 +4831,7 @@ window.QuantumTasks = {
         cooling ? `Подготовка зала · <span data-event-button-time>${clock(es.cooldown)}</span>` : "Провести мероприятие ▶",
         "start-event",
         { id: ev.id },
-        ev.id === "battle" ? "gold" : "",
+        "",
         cooling,
       )}</article>`;
     }).join("");
@@ -4938,6 +4884,28 @@ window.QuantumTasks = {
     renderEventGame(true);
   }
 
+  function makePulseSequence(length) {
+    const seq = [];
+    for (let i = 0; i < length; i++) {
+      let next = Math.floor(Math.random() * 4);
+      if (seq.length && next === seq[seq.length - 1])
+        next = (next + 1 + Math.floor(Math.random() * 3)) % 4;
+      seq.push(next);
+    }
+    return seq;
+  }
+  function preparePulseStage(g = game, first = false) {
+    if (!g || g.kind !== "event-pulse" || g.done) return;
+    const length = Math.min(10, 2 + g.stage);
+    g.sequence = makePulseSequence(length);
+    g.phase = "show";
+    g.showIndex = 0;
+    g.inputIndex = 0;
+    g.lit = null;
+    g.nextCueAt = Date.now() + (first ? 700 : 550);
+    g.status = `Этап ${g.stage}: запоминайте последовательность.`;
+    renderPulseEvent(first);
+  }
   function startPulseEvent(id) {
     const ev = E.EVENTS.find((x) => x.id === id);
     const es = eventState();
@@ -4945,24 +4913,57 @@ window.QuantumTasks = {
     game = {
       kind: "event-pulse",
       eventId: id,
-      target: Math.floor(Math.random() * 9),
-      hits: 0,
-      misses: 0,
-      goal: 15,
+      stage: 1,
+      sequence: [],
+      phase: "show",
+      showIndex: 0,
+      inputIndex: 0,
+      lit: null,
+      nextCueAt: 0,
+      score: 0,
       done: false,
-      deadline: Date.now() + 45000,
-      status: "Найдите светящийся импульс.",
+      deadline: Date.now() + 60000,
+      status: "Подготовьтесь.",
     };
-    renderPulseEvent(true);
+    preparePulseStage(game, true);
   }
-  function nextPulseTarget(current) {
-    let next = Math.floor(Math.random() * 9);
-    if (next === current) next = (next + 1 + Math.floor(Math.random() * 8)) % 9;
-    return next;
+  function updatePulseEvent(now = Date.now()) {
+    const g = game;
+    if (!g || g.kind !== "event-pulse" || g.done) return;
+    if (now >= g.deadline) {
+      finishPulseEvent("Минута закончилась.");
+      return;
+    }
+    if (g.phase === "between") {
+      if (now >= g.nextCueAt) preparePulseStage(g);
+      return;
+    }
+    if (g.phase !== "show" || now < g.nextCueAt) return;
+
+    const flashMs = Math.max(260, 510 - g.stage * 18);
+    const gapMs = Math.max(115, 220 - g.stage * 10);
+    if (g.lit === null) {
+      if (g.showIndex >= g.sequence.length) {
+        g.phase = "input";
+        g.inputIndex = 0;
+        g.status = `Этап ${g.stage}: повторите ${g.sequence.length} цветов по порядку.`;
+        renderPulseEvent();
+        return;
+      }
+      g.lit = g.sequence[g.showIndex];
+      g.nextCueAt = now + flashMs;
+    } else {
+      g.lit = null;
+      g.showIndex++;
+      g.nextCueAt = now + gapMs;
+    }
+    renderPulseEvent();
   }
-  function finishPulseEvent(reason = "Сигнальная серия завершена.") {
+  function finishPulseEvent(reason = "Световой код завершён.") {
     if (!game || game.kind !== "event-pulse" || game.done) return;
     game.done = true;
+    game.phase = "done";
+    game.lit = null;
     game.status = reason;
     sound(true);
     burst(2);
@@ -4973,15 +4974,18 @@ window.QuantumTasks = {
     const ev = E.EVENTS.find((x) => x.id === g?.eventId);
     if (!g || g.kind !== "event-pulse" || !ev) return;
     const left = Math.max(0, Math.ceil((g.deadline - Date.now()) / 1000));
+    const showing = g.phase === "show";
     const html =
-      `<div class="event-marquee"><h3>${ev.name}</h3><p>Ловите светящиеся импульсы. Чем точнее серия, тем быстрее заполняется шкала.</p></div>` +
-      `<div class="pulse-head"><div class="pulse-stat"><b data-pulse-time>${left}</b>секунд</div><div class="pulse-stat"><b>${g.hits}/${g.goal}</b>импульсов</div><div class="pulse-stat"><b>${g.misses}</b>промахов</div></div>` +
-      `<div class="pulse-board">${Array.from({ length: 9 }, (_, i) => `<button class="pulse-cell ${!g.done && i === g.target ? "active" : ""}" data-action="pulse-hit" data-index="${i}" ${g.done ? "disabled" : ""} aria-label="Сигнальная ячейка ${i + 1}"></button>`).join("")}</div>` +
+      `<div class="event-marquee"><h3>${ev.name}</h3><p>Запоминайте световой код, а затем повторяйте его. Каждый следующий этап длиннее предыдущего.</p></div>` +
+      `<div class="pulse-head"><div class="pulse-stat"><b data-pulse-time>${left}</b>секунд</div><div class="pulse-stat"><b>${g.stage}</b>этап</div><div class="pulse-stat"><b>${g.score}</b>очков</div></div>` +
+      `<div class="pulse-board">${Array.from({ length: 4 }, (_, i) =>
+        `<button class="pulse-cell ${g.lit === i ? "active" : ""}" data-action="pulse-hit" data-index="${i}" ${g.done || showing || g.phase === "between" ? "disabled" : ""} aria-label="Цвет ${i + 1}"></button>`
+      ).join("")}</div>` +
       `<div class="status" role="status">${esc(g.status)}</div>` +
       (g.done
-        ? button(`Завершить мероприятие · +${ev.reward.coins} ● +${ev.reward.knowledge} ◆`, "event-claim", { id: ev.id }, "gold")
-        : button("Закончить мероприятие сейчас", "pulse-finish", {}, "ghost"));
-    setBody("Импульсная сеть", html, reset);
+        ? button(`Завершить мероприятие · ${g.score} очков`, "event-claim", { id: ev.id }, "gold")
+        : "");
+    setBody("Световой код", html, reset);
   }
 
   const BLOCK_SHAPES = [
@@ -5460,7 +5464,7 @@ window.QuantumTasks = {
         button("Редактор персонажей", "view", { view: "characters" }, "gold") +
         `<div class="line"></div>` +
         button("Новая башня", "new-game", {}, "danger") +
-        `<p class="micro">Кванториум · Tower Edition 2.5<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
+        `<p class="micro">Кванториум · Tower Edition 2.7<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
       reset,
     );
   }
@@ -6193,7 +6197,7 @@ window.QuantumTasks = {
             const s = E.initialState();
             replaceState(s);
             fresh = true;
-            tell("Начните с крыши: первый квантум можно построить бесплатно.", 3);
+            tell("Нажмите на крышу: первый квантум можно построить бесплатно.", 3);
           },
         );
         break;
@@ -6250,29 +6254,39 @@ window.QuantumTasks = {
         break;
       }
       case "pulse-hit": {
-        if (game?.kind !== "event-pulse" || game.done) break;
+        if (
+          game?.kind !== "event-pulse" ||
+          game.done ||
+          game.phase !== "input"
+        )
+          break;
         const i = Number(d.index);
-        if (i === game.target) {
-          game.hits++;
-          game.status = game.hits >= game.goal ? "Серия собрана!" : "Точно! Следующий импульс.";
-          sound();
-          if (game.hits >= game.goal) finishPulseEvent("Все импульсы собраны!");
-          else {
-            game.target = nextPulseTarget(game.target);
-            renderPulseEvent();
-          }
-        } else {
-          game.misses++;
-          game.status = "Почти! Ищите светящуюся ячейку.";
-          sound();
-          renderPulseEvent();
+        const expected = game.sequence[game.inputIndex];
+        if (i !== expected) {
+          finishPulseEvent(
+            `Последовательность нарушена на этапе ${game.stage}. Набранные очки сохраняются.`,
+          );
+          break;
         }
+
+        game.inputIndex++;
+        game.score += 10;
+        sound();
+
+        if (game.inputIndex >= game.sequence.length) {
+          game.score += game.stage * 20;
+          game.status = `Этап ${game.stage} пройден!`;
+          game.stage++;
+          game.phase = "between";
+          game.lit = null;
+          game.nextCueAt = Date.now() + 700;
+          sound(true);
+        } else {
+          game.status = `Верно: ${game.inputIndex}/${game.sequence.length}.`;
+        }
+        renderPulseEvent();
         break;
       }
-      case "pulse-finish":
-        if (game?.kind === "event-pulse" && !game.done)
-          finishPulseEvent("Мероприятие завершено.");
-        break;
       case "event-claim": {
         if (
           !game ||
@@ -6281,7 +6295,9 @@ window.QuantumTasks = {
         )
           break;
         const id = game.eventId;
-        const score = game.kind === "event-block" ? game.score : null;
+        const score = ["event-block", "event-pulse"].includes(game.kind)
+          ? game.score
+          : null;
         game = null;
         view = "home";
         const res = perform(
@@ -6560,7 +6576,15 @@ window.QuantumTasks = {
   document.getElementById("back").addEventListener("click", () => {
     game = null;
     confirmAction = null;
-    view = "home";
+    if (selected === 1 && view === "characters")
+      view = "settings";
+    else if (
+      selected === 1 &&
+      ["staff", "goals", "teams", "research", "collection"].includes(view)
+    )
+      view = "management";
+    else
+      view = "home";
     renderPanel(true);
   });
   document
@@ -6897,11 +6921,11 @@ window.QuantumTasks = {
           finishBlockEvent("Минута закончилась.");
       }
       if (game?.kind === "event-pulse" && !game.done) {
-        const left = Math.max(0, Math.ceil((game.deadline - Date.now()) / 1000));
+        const nowMs = Date.now();
+        const left = Math.max(0, Math.ceil((game.deadline - nowMs) / 1000));
         const timerEl = body.querySelector("[data-pulse-time]");
         if (timerEl) timerEl.textContent = String(left);
-        if (Date.now() >= game.deadline)
-          finishPulseEvent("Время вышло — мероприятие завершено.");
+        updatePulseEvent(nowMs);
       }
       positionUI();
       draw(dt);
@@ -6920,7 +6944,7 @@ window.QuantumTasks = {
   }
   // Read-only inspection is useful when extending the game in a browser console.
   window.QuantumTower = Object.freeze({
-    version: "6.0",
+    version: "6.2",
     inspect: () => JSON.parse(JSON.stringify(state)),
     get lift() {
       return {
@@ -6942,7 +6966,7 @@ window.QuantumTasks = {
   save();
   if (saveError) tell(saveError, 0, true);
   else if (fresh)
-    tell("Начните с крыши: первый квантум можно построить бесплатно.", 3);
+    tell("Нажмите на крышу: первый квантум можно построить бесплатно.", 3);
   requestAnimationFrame(frame);
 })();
 
