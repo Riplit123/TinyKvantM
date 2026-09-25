@@ -7,7 +7,7 @@
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
     <meta name="theme-color" content="#8fd2f2" />
-    <title>Кванториум • маленькая башня больших идей</title><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=mX61OYEvuVEZLHDriNODySc1Itr8W7M-bCeyTEpvrMFnb20JY_YEWcQYO6Y7qIm4m9JsHRPhJs-JTwz4-JqIRnm3BhtL7rz0hjSobjYdsBPyO7bSo-EjEAdoy4RXY3nd72AS5UgoL2Cd-Gd7cYqtd6VhDwAKMdmHocLlaSAAhL4jHelGF8O6bbZl8y49aEO9RkykcQ2C3qOTxh2gYDYonejTaJDVYDd9ZygAF7nfL0Y6ThXbvN3TOOaM8PiXIgyjJWCUXQ7o80QHcXeWWCIVubpDioQq8SywWO8mXQUWbCtE1tCKnIuewhYebWTq90O8xbgHatJx39YFtGzhlFGsaQ" charset="UTF-8"></script><style>
+    <title>Кванториум</title><style>
 :root {
   color-scheme: light;
   font-family: Consolas, "DejaVu Sans Mono", monospace;
@@ -932,6 +932,147 @@ select {
 .pulse-cell.active:disabled {
   filter: brightness(1.38) saturate(1.25);
 }
+
+/* Reception telephone mini-game. */
+#room-panel.phone-call-panel {
+  width: min(92vw, 540px);
+  height: auto;
+  max-height: min(78vh, 610px);
+}
+#room-panel.phone-call-panel #panel-body {
+  padding: 14px;
+  overflow-y: auto;
+}
+.phone-dialog {
+  display: grid;
+  gap: 12px;
+}
+.phone-line {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+.phone-line.caller {
+  margin-top: 3px;
+}
+.phone-avatar-wrap {
+  width: 66px;
+  text-align: center;
+}
+.phone-avatar {
+  display: block;
+  width: 62px;
+  height: 62px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  border: 2px solid #91aaa8;
+  border-radius: 13px;
+  background: #e5eee9;
+  box-shadow: 0 3px #bdcac6;
+}
+.phone-speaker {
+  display: block;
+  margin-top: 4px;
+  color: #63757b;
+  font-size: 9px;
+  line-height: 1.2;
+}
+.phone-bubble {
+  position: relative;
+  min-height: 54px;
+  padding: 10px 11px;
+  border: 2px solid #a9a77d;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 88% 18%, #a8e2d3 0 3px, transparent 4px),
+    #f6efda;
+  color: #384f56;
+  line-height: 1.45;
+}
+.phone-bubble::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 15px;
+  width: 12px;
+  height: 12px;
+  background: #f6efda;
+  border-left: 2px solid #a9a77d;
+  border-bottom: 2px solid #a9a77d;
+  transform: rotate(45deg);
+}
+.phone-answers {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+.phone-answers .btn {
+  margin: 0;
+  min-height: 48px;
+  text-align: left;
+}
+
+.phone-answers .btn.phone-answer-correct,
+.phone-answers .btn.phone-answer-wrong {
+  opacity: 1;
+  filter: none;
+  color: #fffdf2;
+  font-weight: 800;
+}
+.phone-answers .btn.phone-answer-correct {
+  background: #3f815f;
+  border-color: #76b88e;
+  box-shadow: 0 3px #27523e;
+}
+.phone-answers .btn.phone-answer-wrong {
+  background: #a34f55;
+  border-color: #d38488;
+  box-shadow: 0 3px #6d3439;
+}
+.phone-answers .btn.phone-answer-muted {
+  opacity: .42;
+  filter: saturate(.45);
+}
+.phone-final {
+  border-color: #8fa9b2;
+  background:
+    radial-gradient(circle at 84% 20%, #c8b8ee 0 3px, transparent 4px),
+    #eaf1ef;
+}
+
+.phone-reveal {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+.phone-step-hidden {
+  opacity: 0;
+  transform: translateY(7px) scale(.97);
+  transition: opacity .24s ease, transform .24s ease;
+}
+.phone-bubble.phone-step-hidden {
+  transform: translateX(-7px);
+}
+.phone-answers.phone-step-hidden {
+  transform: translateY(8px);
+  pointer-events: none;
+}
+.phone-answers.phone-reveal {
+  pointer-events: auto;
+}
+.phone-typing-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -.15em;
+  border-right: 2px solid #607982;
+  animation: phone-cursor .7s steps(1) infinite;
+}
+@keyframes phone-cursor {
+  50% { opacity: 0; }
+}
+
 #room-panel .lesson-complete {
   margin-bottom: 12px;
 }
@@ -1540,10 +1681,11 @@ a {
       jointDone: 0,
       chapter: 0,
       events: { unlocked: ["quiz"], cooldown: 0, completed: 0 },
+      receptionPhone: { next: 120, active: null },
       collection: [],
       log: [],
       stats: { escorted: 0, trained: 0 },
-      settings: { sound: false, motion: true, speed: 1, paused: false },
+      settings: { sound: false, music: true, motion: true, speed: 1, paused: false },
       savedAt: now,
       uid: 1,
     };
@@ -1843,7 +1985,7 @@ a {
         if (p.key === "speed" && [1, 2].includes(p.value))
           s.settings.speed = p.value;
         else if (
-          ["sound", "motion", "paused"].includes(p.key) &&
+          ["sound", "music", "motion", "paused"].includes(p.key) &&
           typeof p.value === "boolean"
         )
           s.settings[p.key] = p.value;
@@ -1866,6 +2008,8 @@ a {
       s.coins += (incomeRate(s) * dt) / 60;
       if (s.events?.cooldown > 0)
         s.events.cooldown = Math.max(0, s.events.cooldown - dt);
+      if (s.receptionPhone && !s.receptionPhone.active && s.receptionPhone.next > 0)
+        s.receptionPhone.next = Math.max(0, s.receptionPhone.next - dt);
       if (s.construction) {
         s.construction.left = Math.max(0, s.construction.left - dt);
         if (s.construction.left <= 0) {
@@ -2141,10 +2285,12 @@ a {
       )
     )
       throw Error("Повреждён журнал");
+    if (x.settings && typeof x.settings.music !== "boolean")
+      x.settings.music = true;
     if (
       !x.settings ||
       ![1, 2].includes(x.settings.speed) ||
-      ["sound", "motion", "paused"].some(
+      ["sound", "music", "motion", "paused"].some(
         (k) => typeof x.settings[k] !== "boolean",
       )
     )
@@ -2160,6 +2306,27 @@ a {
       !Number.isInteger(x.events.completed)
     )
       throw Error("Повреждены данные конференц-зала");
+    if (!x.receptionPhone)
+      x.receptionPhone = { next: 120, active: null };
+    if (!finite(x.receptionPhone.next, 0, 420))
+      throw Error("Повреждён таймер телефона");
+    if (x.receptionPhone.active) {
+      const call = x.receptionPhone.active;
+      if (
+        !Number.isInteger(call.question) ||
+        call.question < 0 ||
+        call.question > 4 ||
+        !Number.isInteger(call.callerSeed) ||
+        call.callerSeed < 0 ||
+        call.callerSeed > 999999 ||
+        !["reception-blonde", "reception-blue"].includes(call.adminRole) ||
+        !Array.isArray(call.order) ||
+        call.order.length !== 3 ||
+        new Set(call.order).size !== 3 ||
+        call.order.some((n) => ![0, 1, 2].includes(n))
+      )
+        throw Error("Повреждены данные звонка");
+    }
     return x;
   }
 
@@ -2196,201 +2363,398 @@ a {
 /* Three thematic project activities for each of twelve labs. */
 window.QuantumTasks = {
   "IT-квантум": {
-    title: "Робот-почтальон",
-    hint: "Робот стоит у закрытой двери. За ней посылка. Составь алгоритм доставки к выходу.",
+    title: "Сборка приложения",
+    hint: "Расставь этапы от постановки задачи до проверки готовой программы.",
     steps: [
-      "Открыть дверь",
-      "Войти в комнату",
-      "Взять посылку",
-      "Отнести посылку к выходу",
+      "Сформулировать задачу",
+      "Написать алгоритм",
+      "Собрать программу",
+      "Проверить результат",
     ],
-    pair_title: "Инструменты программиста",
+    pair_title: "Конструкции программы",
+    pair_hint: "Соедини элемент программы с его ролью.",
     pairs: [
       ["Переменная", "Хранит значение"],
       ["Условие", "Выбирает ветку действий"],
       ["Цикл", "Повторяет действия"],
       ["Функция", "Объединяет команды в именованный блок"],
     ],
-  },
-  "VR/AR-квантум": {
-    title: "Виртуальная выставка",
-    hint: "Сначала создай форму экспоната, затем раскрась, размести в сцене и проверь в VR.",
-    steps: [
-      "Создать 3D-модель",
-      "Назначить материал",
-      "Разместить модель в сцене",
-      "Проверить сцену в VR",
-    ],
-    pair_title: "Мастерская 3D",
-    pairs: [
-      ["Модель", "Форма объекта"],
-      ["Материал", "Вид поверхности"],
-      ["Камера", "Точка обзора сцены"],
-      ["Источник света", "Освещение объектов"],
-    ],
+    third: {
+      kind: "route",
+      title: "Курьерский алгоритм",
+      hint: "Запрограммируй робота так, чтобы он дошёл от старта к серверной, не задев препятствия.",
+      start: 20,
+      target: 4,
+      walls: [7, 12, 17],
+    },
   },
   Биоквантум: {
-    title: "От семени к растению",
-    hint: "Расположи стадии развития цветкового растения от семени до новых семян.",
+    title: "Эксперимент с ростком",
+    hint: "Подготовь наблюдение так, чтобы результат можно было сравнить и записать.",
     steps: [
-      "Семя прорастает",
-      "Появляются листья",
-      "Растение цветёт",
-      "Созревают плоды с семенами",
+      "Выбрать одинаковые семена",
+      "Изменить один фактор",
+      "Наблюдать рост",
+      "Сравнить результаты",
     ],
-    pair_title: "Части растения",
+    pair_title: "Системы живого организма",
+    pair_hint: "Соедини орган или структуру с её основной функцией.",
     pairs: [
-      ["Корень", "Поглощает воду из почвы"],
-      ["Лист", "Основное место фотосинтеза"],
-      ["Стебель", "Поддерживает листья и проводит вещества"],
-      ["Цветок", "Орган семенного размножения"],
+      ["Корень", "Поглощает воду и минеральные вещества"],
+      ["Лист", "Участвует в фотосинтезе"],
+      ["Лёгкие", "Обеспечивают газообмен"],
+      ["Сердце", "Перемещает кровь по организму"],
     ],
-  },
-  Наноквантум: {
-    title: "Масштабы мира",
-    hint: "Выбери объекты от самого большого к самому маленькому. Здесь сравниваем человека, клетку, молекулу воды и атом водорода.",
-    steps: ["Человек", "Клетка кожи", "Молекула воды", "Атом водорода"],
-    pair_title: "Состояния воды",
-    pairs: [
-      ["Таяние льда", "Твёрдое → жидкое"],
-      ["Замерзание воды", "Жидкое → твёрдое"],
-      ["Испарение воды", "Жидкое → газ"],
-      ["Конденсация пара", "Газ → жидкое"],
-    ],
+    third: {
+      kind: "classify",
+      title: "Условия для растения",
+      hint: "Раздели факторы на необходимые растению для нормального роста и лишние для эксперимента.",
+      categories: ["Нужно растению", "Не является необходимым"],
+      items: [
+        ["Свет", 0],
+        ["Вода", 0],
+        ["Воздух", 0],
+        ["Подходящая температура", 0],
+        ["Громкая музыка", 1],
+        ["Яркая наклейка на горшке", 1],
+      ],
+    },
   },
   Промробоквантум: {
-    title: "Робот-сортировщик",
-    hint: "Деталь уже перед роботом. Сначала определи её цвет, затем захвати, перенеси и отпусти.",
+    title: "Настройка робота-сортировщика",
+    hint: "Собери рабочий цикл промышленного робота.",
     steps: [
-      "Считать цвет датчиком",
-      "Захватить деталь",
-      "Перенести к нужному лотку",
-      "Разжать захват",
+      "Считать метку датчиком",
+      "Выбрать нужный лоток",
+      "Переместить манипулятор",
+      "Отпустить деталь",
     ],
     pair_title: "Узлы робота",
+    pair_hint: "Соедини узел с его задачей.",
     pairs: [
       ["Датчик", "Измеряет состояние среды"],
       ["Контроллер", "Исполняет программу"],
       ["Мотор", "Создаёт движение"],
       ["Захват", "Удерживает деталь"],
     ],
+    third: {
+      kind: "route",
+      title: "Маршрут манипулятора",
+      hint: "Проведи рабочую головку к детали, обходя закрытые зоны станка.",
+      start: 24,
+      target: 0,
+      walls: [6, 7, 8, 16, 17],
+    },
+  },
+  "VR/AR-квантум": {
+    title: "Сборка VR-сцены",
+    hint: "Подготовь сцену так, чтобы её можно было комфортно посмотреть в шлеме.",
+    steps: [
+      "Создать 3D-объекты",
+      "Настроить материалы и свет",
+      "Разместить камеру и объекты",
+      "Проверить сцену в шлеме",
+    ],
+    pair_title: "Мастерская 3D",
+    pair_hint: "Соедини элемент сцены с его назначением.",
+    pairs: [
+      ["Модель", "Форма объекта"],
+      ["Материал", "Вид поверхности"],
+      ["Камера", "Точка обзора сцены"],
+      ["Источник света", "Освещение объектов"],
+    ],
+    third: {
+      kind: "quiz",
+      title: "Комфорт виртуальной сцены",
+      hint: "Выбери решение, которое делает VR-сцену понятнее и комфортнее для пользователя.",
+      questions: [
+        {
+          text: "Текст в VR трудно читать. Что лучше сделать?",
+          answers: ["Увеличить размер и контраст", "Уменьшить текст", "Поставить его дальше"],
+          correct: 0,
+        },
+        {
+          text: "Пользователь не понимает, куда идти дальше.",
+          answers: ["Добавить понятный визуальный ориентир", "Убрать освещение", "Случайно менять направление"],
+          correct: 0,
+        },
+        {
+          text: "Объект выглядит плоско и теряется в сцене.",
+          answers: ["Настроить свет и материал", "Удалить камеру", "Сделать фон таким же цветом"],
+          correct: 0,
+        },
+      ],
+    },
+  },
+  Наноквантум: {
+    title: "Подготовка образца",
+    hint: "Соблюдай порядок работы с небольшим образцом материала.",
+    steps: [
+      "Очистить рабочую поверхность",
+      "Подготовить образец",
+      "Провести измерение",
+      "Записать результат",
+    ],
+    pair_title: "Материалы и свойства",
+    pair_hint: "Соедини свойство материала с его смыслом.",
+    pairs: [
+      ["Твёрдость", "Сопротивление царапанию и вдавливанию"],
+      ["Проводимость", "Способность проводить ток или тепло"],
+      ["Прозрачность", "Способность пропускать свет"],
+      ["Упругость", "Способность возвращать форму"],
+    ],
+    third: {
+      kind: "classify",
+      title: "Масштабы мира",
+      hint: "Раздели объекты на наномир и объекты, размеры которых значительно больше нанометра.",
+      categories: ["Наномир", "Макромир"],
+      items: [
+        ["Молекула воды", 0],
+        ["Наночастица", 0],
+        ["Молекула ДНК по толщине", 0],
+        ["Человеческий волос", 1],
+        ["Песчинка", 1],
+        ["Школьная линейка", 1],
+      ],
+    },
   },
   Хайтек: {
-    title: "Корпус для устройства",
-    hint: "В нашей мастерской сначала измеряют плату, затем проектируют корпус, печатают и проверяют посадку.",
+    title: "Прототип электронного устройства",
+    hint: "Пройди путь от схемы до работающего корпуса.",
     steps: [
-      "Измерить плату",
+      "Собрать схему на макете",
+      "Проверить питание",
       "Спроектировать корпус",
-      "Напечатать корпус",
-      "Проверить посадку платы",
+      "Собрать и протестировать устройство",
     ],
     pair_title: "Электронная мастерская",
+    pair_hint: "Соедини компонент с его функцией.",
     pairs: [
       ["Батарея", "Источник электрической энергии"],
       ["Выключатель", "Замыкает или размыкает цепь"],
       ["Светодиод", "Излучает свет при протекании тока"],
       ["Резистор", "Ограничивает ток в цепи"],
     ],
+    third: {
+      kind: "quiz",
+      title: "Диагностика прототипа",
+      hint: "Выбери наиболее разумный следующий шаг мастера.",
+      questions: [
+        {
+          text: "Светодиод не включается после сборки схемы.",
+          answers: ["Проверить питание и полярность", "Сразу печатать новый корпус", "Увеличить размер платы"],
+          correct: 0,
+        },
+        {
+          text: "Плата не помещается в корпус.",
+          answers: ["Перепроверить размеры и модель корпуса", "Сильнее вдавить плату", "Удалить крепления"],
+          correct: 0,
+        },
+        {
+          text: "Провод нагревается при работе.",
+          answers: ["Отключить питание и проверить схему", "Продолжить испытание", "Закрыть провод изолентой и не проверять"],
+          correct: 0,
+        },
+      ],
+    },
   },
   Медиаквантум: {
-    title: "Репортаж о выставке",
-    hint: "Сначала собери материал, проверь его, смонтируй сюжет и только затем публикуй.",
+    title: "Подготовка репортажа",
+    hint: "Собери материал и проверь его до публикации.",
     steps: [
-      "Снять интервью",
+      "Выбрать тему",
+      "Снять интервью и планы",
       "Проверить факты",
-      "Смонтировать сюжет",
-      "Опубликовать репортаж",
+      "Смонтировать и опубликовать",
     ],
     pair_title: "Команда редакции",
+    pair_hint: "Соедини профессию с её работой.",
     pairs: [
       ["Корреспондент", "Собирает сведения и берёт интервью"],
       ["Оператор", "Снимает видеоматериал"],
       ["Монтажёр", "Собирает сюжет из фрагментов"],
       ["Редактор", "Проверяет содержание перед публикацией"],
     ],
+    third: {
+      kind: "classify",
+      title: "Факт или мнение",
+      hint: "Отдели проверяемые утверждения от оценочных суждений.",
+      categories: ["Факт", "Мнение"],
+      items: [
+        ["Мероприятие началось в 15:00", 0],
+        ["В классе было 18 участников", 0],
+        ["Это был самый интересный урок", 1],
+        ["Новый робот красивее старого", 1],
+        ["Интервью длилось 12 минут", 0],
+        ["Экспозиция выглядит потрясающе", 1],
+      ],
+    },
   },
   Автоквантум: {
-    title: "Испытание модели автомобиля",
-    hint: "Сначала собери модель, проверь её на стенде, проведи заезд и оцени результат.",
+    title: "Подготовка модели к заезду",
+    hint: "Перед испытанием проверь основные системы модели.",
     steps: [
-      "Собрать модель",
-      "Проверить крепления на стенде",
-      "Провести пробный заезд",
-      "Сравнить результат с целью",
+      "Проверить крепления",
+      "Проверить рулевое управление",
+      "Проверить питание",
+      "Провести контрольный заезд",
     ],
     pair_title: "Устройство автомобиля",
+    pair_hint: "Соедини систему автомобиля с её задачей.",
     pairs: [
       ["Двигатель", "Создаёт механическую мощность"],
       ["Трансмиссия", "Передаёт мощность к ведущим колёсам"],
       ["Тормоза", "Замедляют движение"],
       ["Подвеска", "Смягчает воздействие неровностей"],
     ],
+    third: {
+      kind: "route",
+      title: "Испытательная трасса",
+      hint: "Запрограммируй движение модели по безопасному маршруту до финиша.",
+      start: 20,
+      target: 4,
+      walls: [6, 11, 12, 13, 18],
+    },
   },
   Геоквантум: {
-    title: "От школы к планете",
-    hint: "Расширяй масштаб карты: от школьного двора до всей Земли.",
-    steps: ["Школьный двор", "Город", "Материк", "Планета Земля"],
-    pair_title: "Условные знаки карты",
+    title: "Подготовка полевой экспедиции",
+    hint: "Сначала выбери точку, затем подготовь маршрут и только потом отправляйся в поле.",
+    steps: [
+      "Определить цель наблюдения",
+      "Отметить точку на карте",
+      "Подготовить маршрут и оборудование",
+      "Собрать данные на местности",
+    ],
+    pair_title: "Язык карты",
+    pair_hint: "Соедини элемент карты с его назначением.",
     pairs: [
       ["Масштаб", "Связь расстояний на карте и местности"],
       ["Легенда", "Объяснение условных знаков"],
       ["Параллель", "Линия одинаковой широты"],
       ["Меридиан", "Линия одинаковой долготы"],
     ],
+    third: {
+      kind: "route",
+      title: "Маршрут экспедиции",
+      hint: "Проведи группу к точке наблюдения, обходя закрытые участки местности.",
+      start: 24,
+      target: 0,
+      walls: [6, 7, 12, 17, 18],
+    },
   },
   "Промдизайн квантум": {
-    title: "Удобный школьный стул",
-    hint: "Начни с потребностей ученика, затем предложи форму, сделай прототип и проверь удобство.",
+    title: "Проектирование школьного стула",
+    hint: "Начни с пользователя и проверь решение на прототипе.",
     steps: [
-      "Изучить потребности ученика",
-      "Нарисовать эскиз",
+      "Наблюдать за пользователем",
+      "Сформулировать проблему",
       "Сделать прототип",
-      "Проверить удобство прототипа",
+      "Проверить и доработать",
     ],
     pair_title: "Язык дизайнера",
+    pair_hint: "Соедини термин с его смыслом.",
     pairs: [
       ["Эргономика", "Удобство использования человеком"],
       ["Эскиз", "Быстрый рисунок идеи"],
       ["Прототип", "Модель для проверки решения"],
       ["Тестирование", "Проверка решения на практике"],
     ],
+    third: {
+      kind: "quiz",
+      title: "Решение для пользователя",
+      hint: "Выбери действие дизайнера, которое лучше помогает понять и решить проблему.",
+      questions: [
+        {
+          text: "Ученики жалуются, что стул неудобен.",
+          answers: ["Наблюдать посадку и спросить пользователей", "Сразу выбрать самый яркий цвет", "Увеличить логотип"],
+          correct: 0,
+        },
+        {
+          text: "Первый прототип оказался слишком высоким.",
+          answers: ["Изменить размеры и проверить снова", "Оставить как есть", "Сделать только фотографию"],
+          correct: 0,
+        },
+        {
+          text: "Два варианта ручки выглядят одинаково хорошо.",
+          answers: ["Дать пользователям попробовать оба", "Выбрать случайно", "Не делать прототипы"],
+          correct: 0,
+        },
+      ],
+    },
   },
   "Школа анимации": {
-    title: "Ожившая история",
-    hint: "Сначала придумай сцену, затем разложи её на ключевые моменты и только потом собирай движение.",
+    title: "Создание короткой сцены",
+    hint: "Собери сцену от идеи до плавного движения.",
     steps: [
-      "Придумать сцену",
+      "Придумать действие героя",
       "Сделать раскадровку",
-      "Нарисовать ключевые кадры",
-      "Собрать движение",
+      "Нарисовать ключевые позы",
+      "Добавить промежуточные кадры",
     ],
     pair_title: "Язык аниматора",
+    pair_hint: "Соедини термин с его ролью в работе над сценой.",
     pairs: [
       ["Раскадровка", "Последовательность рисунков будущей сцены"],
       ["Ключевой кадр", "Главная поза или состояние движения"],
       ["Тайминг", "Распределение движения во времени"],
       ["Интервал", "Промежуточный кадр между ключевыми"],
     ],
+    third: {
+      kind: "classify",
+      title: "До анимации или во время анимации",
+      hint: "Раздели действия на подготовку сцены и непосредственную работу над движением.",
+      categories: ["Подготовка", "Создание движения"],
+      items: [
+        ["Сценарный набросок", 0],
+        ["Раскадровка", 0],
+        ["Выбор композиции кадра", 0],
+        ["Ключевые позы", 1],
+        ["Промежуточные кадры", 1],
+        ["Настройка тайминга движения", 1],
+      ],
+    },
   },
   Квантошахматы: {
-    title: "Шахматная задача",
-    hint: "Оцени позицию, найди угрозу, проверь ответ соперника и выбери точный ход.",
+    title: "Разбор позиции",
+    hint: "Перед ходом сначала оцени угрозы и только затем выбирай план.",
     steps: [
-      "Оценить позицию",
-      "Найти сильную угрозу",
+      "Проверить угрозы королю",
+      "Найти незащищённые фигуры",
+      "Сравнить варианты хода",
       "Проверить ответ соперника",
-      "Сделать решающий ход",
     ],
     pair_title: "Шахматный словарь",
+    pair_hint: "Соедини шахматный термин с его значением.",
     pairs: [
       ["Шах", "Нападение на короля"],
       ["Мат", "Шах, от которого нельзя защититься"],
       ["Вилка", "Одновременное нападение на несколько фигур"],
       ["Дебют", "Начальная стадия шахматной партии"],
     ],
+    third: {
+      kind: "quiz",
+      title: "Шахматное решение",
+      hint: "Выбери наиболее точный принцип для каждой позиции.",
+      questions: [
+        {
+          text: "Королю объявлен шах. Что нужно сделать прежде всего?",
+          answers: ["Устранить шах", "Атаковать пешку на другом фланге", "Не обращать внимания"],
+          correct: 0,
+        },
+        {
+          text: "Конь одновременно напал на короля и ферзя. Как называется такой приём?",
+          answers: ["Вилка", "Рокировка", "Пат"],
+          correct: 0,
+        },
+        {
+          text: "Перед ходом найден красивый вариант атаки. Что стоит проверить?",
+          answers: ["Ответные ходы соперника", "Только цвет фигур", "Сколько ходов уже сыграно"],
+          correct: 0,
+        },
+      ],
+    },
   },
 };
-
 </script>
     <script>
 /* art.js */
@@ -3198,6 +3562,57 @@ window.QuantumTasks = {
     const s = Math.ceil(Math.max(0, n));
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
   };
+  const PHONE_QUESTIONS = [
+    {
+      question: "Проводите ли вы мероприятия для целого класса?",
+      choices: [
+        "Да. Кроме экскурсий, которые проводятся на бесплатной основе, у нас есть платные мастер-классы.",
+        "Нет, мероприятия рассчитаны только на индивидуальное посещение детьми.",
+        "Для классов доступны только экскурсии, мастер-классы для групп не проводятся.",
+      ],
+    },
+    {
+      question: "Как можно прийти на экскурсию в технопарк? Есть ли индивидуальные экскурсии?",
+      choices: [
+        "На наших площадках предусмотрены только групповые экскурсии в будние дни.",
+        "Можно прийти на индивидуальную экскурсию в любой день без предварительной записи.",
+        "Экскурсии проходят только по выходным и только в индивидуальном формате.",
+      ],
+    },
+    {
+      question: "Что выдается ребенку по окончании обучения?",
+      choices: [
+        "По окончании любого из уровней обучения ребенку выдается сертификат о прохождении соответствующего курса.",
+        "После обучения выдается диплом государственного образца с присвоением квалификации.",
+        "По окончании курса никаких документов не выдается, сохраняется только запись в электронном журнале.",
+      ],
+    },
+    {
+      question: "Возможно ли поменять направление обучения после окончания первого уровня?",
+      choices: [
+        "Да, возможно, при наличии свободных мест на интересующее Вас направление.",
+        "Нет, выбранное при поступлении направление сохраняется на все уровни обучения.",
+        "Да, направление можно менять в любой момент без учета наличия свободных мест.",
+      ],
+    },
+    {
+      question: "Как часто проходят занятия?",
+      choices: [
+        "Как правило, занятия проходят 2 раза в неделю по 2 академических часа.",
+        "Как правило, занятия проходят один раз в неделю по 4 академических часа.",
+        "Занятия проходят каждый будний день по одному академическому часу.",
+      ],
+    },
+  ];
+  const phoneShuffle = () => {
+    const order = [0, 1, 2];
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    return order;
+  };
+  const nextPhoneDelay = () => 300 + Math.floor(Math.random() * 121);
   let state,
     fresh = false,
     saveError = "",
@@ -3236,6 +3651,7 @@ window.QuantumTasks = {
       state.settings.motion = false;
   }
   state.events ||= { unlocked: ["quiz"], cooldown: 0, completed: 0 };
+  state.receptionPhone ||= { next: 120, active: null };
   state.candidateQueue ||= [];
   state.construction ??= null;
   const CHARACTER_STYLE_DEFAULTS = Object.freeze({
@@ -3244,7 +3660,15 @@ window.QuantumTasks = {
     reception2: Object.freeze({ hair: "#3c92c6", clothes: "#487fa8", skin: "#efbb94", glasses: false }),
   });
   function ensureCharacterStyles(targetState = state) {
-    targetState.settings ||= { sound: false, motion: true, speed: 1, paused: false };
+    targetState.settings ||= {
+      sound: false,
+      music: true,
+      motion: true,
+      speed: 1,
+      paused: false,
+    };
+    if (typeof targetState.settings.music !== "boolean")
+      targetState.settings.music = true;
     targetState.settings.characters ||= {};
     for (const key of Object.keys(CHARACTER_STYLE_DEFAULTS)) {
       const base = CHARACTER_STYLE_DEFAULTS[key];
@@ -3356,10 +3780,16 @@ window.QuantumTasks = {
   let adminShiftClock = (Date.now() % 60000) / 1000;
   function currentReceptionRole() {
     if (lift?.adminRole && escortPhases.has(lift.phase)) return lift.adminRole;
+    if (state.receptionPhone?.active?.adminRole)
+      return state.receptionPhone.active.adminRole;
     return adminShiftIndex === 0 ? "reception-blonde" : "reception-blue";
   }
   function updateAdminShift(dt) {
-    if (lift?.passenger && escortPhases.has(lift.phase)) return;
+    if (
+      (lift?.passenger && escortPhases.has(lift.phase)) ||
+      state.receptionPhone?.active
+    )
+      return;
     adminShiftClock += dt;
     while (adminShiftClock >= 60) {
       adminShiftClock -= 60;
@@ -3559,6 +3989,51 @@ window.QuantumTasks = {
       /* Optional audio must never block play. */
     }
   }
+  const MUSIC_SOURCES = [
+    "assets/music.mp3",
+    "assets/music.ogg",
+    "assets/music.wav",
+  ];
+  let backgroundMusic = null,
+    backgroundMusicSource = 0,
+    musicUnlocked = false;
+
+  function ensureBackgroundMusic() {
+    if (backgroundMusic) return backgroundMusic;
+    const audio = new Audio();
+    audio.loop = true;
+    audio.preload = "none";
+    audio.volume = 0.22;
+    audio.addEventListener("error", () => {
+      if (backgroundMusic !== audio) return;
+      backgroundMusicSource++;
+      if (backgroundMusicSource < MUSIC_SOURCES.length) {
+        audio.src = MUSIC_SOURCES[backgroundMusicSource];
+        audio.load();
+        syncBackgroundMusic();
+      }
+    });
+    audio.src = MUSIC_SOURCES[backgroundMusicSource];
+    backgroundMusic = audio;
+    return audio;
+  }
+
+  function syncBackgroundMusic() {
+    const audio = ensureBackgroundMusic();
+    if (!state.settings.music || state.settings.paused) {
+      audio.pause();
+      return;
+    }
+    if (!musicUnlocked) return;
+    const play = audio.play();
+    if (play?.catch) play.catch(() => {});
+  }
+
+  function unlockBackgroundMusic() {
+    if (!musicUnlocked) musicUnlocked = true;
+    syncBackgroundMusic();
+  }
+
   function burst(index) {
     if (!state.settings.motion) return;
     const l = layouts[index];
@@ -3927,6 +4402,26 @@ window.QuantumTasks = {
           "#3b6158",
         );
     }
+    if (l.id === "lobby" && state.receptionPhone?.active) {
+      const pulse = state.settings.motion ? (Math.sin(t * 6.2) + 1) / 2 : 0.5;
+      ctx.globalAlpha = 0.18 + pulse * 0.18;
+      A.rect(ctx, rx + 2, by + 2, RW - 4, 62, "#9eddf1");
+      ctx.globalAlpha = 0.08 + pulse * 0.12;
+      A.rect(ctx, rx + 10, by + 7, RW - 20, 50, "#c6b9ef");
+      ctx.globalAlpha = 1;
+
+      for (let k = 0; k < 10; k++) {
+        const sx = rx + 14 + ((k * 37 + Math.floor(t * 22)) % 184);
+        const sy = by + 7 + ((k * 17 + Math.floor(t * 8)) % 50);
+        A.sparkle(
+          ctx,
+          sx,
+          sy,
+          ["#dff8ff", "#c9bdf3", "#fff0b1"][k % 3],
+          1 + ((k + Math.floor(t * 3)) % 2),
+        );
+      }
+    }
     if (state.settings.paused && l.id === "lobby")
       bubble("ПАУЗА", rx + 156, by + 18, "#f0dbaf", "#614e65");
     A.rect(ctx, rx, l.bottom + o - 2, RW, 2, "#767b88");
@@ -4074,6 +4569,69 @@ window.QuantumTasks = {
       }
     }
   }
+  function drawReceptionPhoneOverlay(o) {
+    if (!state.receptionPhone?.active) return;
+    const lobby = layouts[0];
+    if (!lobby) return;
+    const by = lobby.bottom + o - 70;
+
+    // Compact office desk phone, drawn after characters so it overlaps the receptionist.
+    const baseCx = rx + RW / 2 + 2;
+    const baseCy = by + 35;
+    const shakeFrame = Math.floor(t * 18) % 4;
+    const shakeX = state.settings.motion ? [-2, 1, -1, 2][shakeFrame] : 0;
+    const shakeY = state.settings.motion ? [0, -1, 1, 0][shakeFrame] : 0;
+    const cx = Math.round(baseCx + shakeX);
+    const cy = Math.round(baseCy + shakeY);
+
+    ctx.globalAlpha =
+      0.14 + (state.settings.motion ? (Math.sin(t * 6.2) + 1) / 2 : 0.5) * 0.11;
+    A.rect(ctx, cx - 30, cy - 18, 60, 36, "#eafcff");
+    ctx.globalAlpha = 1;
+
+    if (state.settings.motion) {
+      const mark = shakeFrame % 2 === 0 ? "#9ddfea" : "#c6b9ef";
+      A.rect(ctx, cx - 37, cy - 10, 3, 7, mark);
+      A.rect(ctx, cx - 41, cy - 5, 3, 6, mark);
+      A.rect(ctx, cx + 34, cy + 2, 3, 7, mark);
+      A.rect(ctx, cx + 38, cy + 6, 3, 6, mark);
+    }
+
+    // Phone body: slightly angled office desktop phone with a small display.
+    A.rect(ctx, cx - 22, cy - 7, 40, 23, "#305064");
+    A.rect(ctx, cx - 19, cy - 10, 34, 5, "#557f91");
+    A.rect(ctx, cx - 21, cy + 16, 42, 4, "#223a49");
+    A.rect(ctx, cx - 20, cy - 6, 36, 20, "#477189");
+
+    // Top display.
+    A.rect(ctx, cx - 10, cy - 3, 16, 6, "#263845");
+    A.rect(ctx, cx - 9, cy - 2, 14, 4, "#92d1b9");
+
+    // Keypad in a slight perspective step.
+    const keyColors = ["#dbe7ee", "#d5e0e7", "#cedae2"];
+    let k = 0;
+    for (let row = 0; row < 3; row++) {
+      const rowY = cy + 4 + row * 4;
+      const rowOffset = row; // makes the keypad/body look slightly angled
+      for (let col = 0; col < 3; col++) {
+        const keyX = cx - 12 + col * 7 + rowOffset;
+        A.rect(ctx, keyX, rowY, 4, 3, keyColors[(k++) % keyColors.length]);
+      }
+    }
+    // bottom function keys
+    A.rect(ctx, cx - 10, cy + 16, 7, 2, "#9fc3d2");
+    A.rect(ctx, cx + 1, cy + 16, 7, 2, "#9fc3d2");
+
+    // Handset resting across the top of the office phone at a slight angle.
+    A.rect(ctx, cx - 18, cy - 17, 10, 6, "#29485c");
+    A.rect(ctx, cx - 9, cy - 15, 11, 6, "#3f7187");
+    A.rect(ctx, cx + 1, cy - 13, 11, 6, "#3f7187");
+    A.rect(ctx, cx + 11, cy - 11, 10, 6, "#29485c");
+    A.rect(ctx, cx - 16, cy - 18, 8, 2, "#79a8b5");
+    A.rect(ctx, cx + 11, cy - 12, 8, 2, "#79a8b5");
+    A.rect(ctx, cx - 8, cy - 15, 18, 2, "#8fc1ce");
+  }
+
   function levelBottom(level) {
     const low = Math.floor(level),
       hi = Math.ceil(level);
@@ -4265,6 +4823,7 @@ window.QuantumTasks = {
     const o = origin();
     layouts.forEach((l) => drawFloor(l, o));
     drawPeople(o);
+    drawReceptionPhoneOverlay(o);
     drawShaft(o);
     drawFacade(o);
     if (buildFlash && t - buildFlash.at < 1 && state.settings.motion) {
@@ -4338,7 +4897,13 @@ window.QuantumTasks = {
 
     // Only short navigation menus and the lesson-result card shrink to content.
     // Every information-heavy submenu keeps the normal large modal.
-    panel.classList.remove("compact-menu", "lesson-result", "quantum-compact", "character-editor-panel");
+    panel.classList.remove(
+      "compact-menu",
+      "lesson-result",
+      "quantum-compact",
+      "character-editor-panel",
+      "phone-call-panel",
+    );
     panel.style.removeProperty("--menu-items");
     panel.style.removeProperty("--compact-extra");
     const compactLabels = new Set([
@@ -4551,6 +5116,16 @@ window.QuantumTasks = {
         setBody(
           "Ресепшен",
           (saveError ? `<p class="status">${esc(saveError)}</p>` : "") +
+            (state.receptionPhone?.active
+              ? button(
+                  "Ответить на звонок",
+                  "phone-open",
+                  {},
+                  "gold",
+                  false,
+                  { text: "!", tone: "gold" },
+                )
+              : "") +
             button(
               "Гости на ресепшене",
               "view",
@@ -4790,9 +5365,19 @@ window.QuantumTasks = {
         state.newbies
           .map((n) => {
             const f = state.floors.find((f) => f.id === n.target),
+              phoneBusy = !!state.receptionPhone?.active,
               available =
-                f && !f.ready && f.lesson === 0 && f.students < E.capacity(f);
-            return `<article class="card"><h3>${esc(n.name)}</h3><p>Этаж ${floorIndex(n.target)} · ${E.lab(n.target).name}</p>${button(available ? "Сопроводить к лифту →" : "Группа занята — подождём", "escort", { id: n.id }, "", !available)}<p class="micro">За помощь: 25 ● и 10 ◆.</p></article>`;
+                f &&
+                !phoneBusy &&
+                !f.ready &&
+                f.lesson === 0 &&
+                f.students < E.capacity(f);
+            const label = phoneBusy
+              ? "Сначала ответьте на звонок"
+              : available
+                ? "Сопроводить к лифту →"
+                : "Группа занята — подождём";
+            return `<article class="card"><h3>${esc(n.name)}</h3><p>Этаж ${floorIndex(n.target)} · ${E.lab(n.target).name}</p>${button(label, "escort", { id: n.id }, "", !available)}<p class="micro">За помощь: 25 ● и 10 ◆.</p></article>`;
           })
           .join("") ||
         '<p class="empty">Сейчас все знают дорогу. Новые гости появятся чуть позже.</p>'
@@ -5450,6 +6035,12 @@ window.QuantumTasks = {
           "secondary",
         ) +
         button(
+          `Музыка: ${state.settings.music ? "включена" : "выключена"}`,
+          "setting",
+          { key: "music", value: !state.settings.music },
+          "secondary",
+        ) +
+        button(
           `Анимации: ${state.settings.motion ? "включены" : "сокращены"}`,
           "setting",
           { key: "motion", value: !state.settings.motion },
@@ -5464,12 +6055,13 @@ window.QuantumTasks = {
         button("Редактор персонажей", "view", { view: "characters" }, "gold") +
         `<div class="line"></div>` +
         button("Новая башня", "new-game", {}, "danger") +
-        `<p class="micro">Кванториум · Tower Edition 2.7<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
+        `<p class="micro">Кванториум · Tower Edition 2.9.4<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
       reset,
     );
   }
 
-  // Thirty-six subject-specific activities share three interaction patterns.
+  // Each quantum keeps two familiar activities and gets a subject-specific
+  // third activity: route, quiz or classification.
   function startGame(id) {
     const f = state.floors.find((x) => x.id === id);
     if (!f?.ready) return;
@@ -5477,9 +6069,10 @@ window.QuantumTasks = {
       task = TASKS[E.lab(id).name];
     const order = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
     if (order.join("") === "0123") order.reverse();
-    const odd = E.LABS.findIndex((l) => l.id === id) % 2;
+
+    let kind = variant === 0 ? "sequence" : variant === 1 ? "pairs" : task.third.kind;
     game = {
-      kind: ["sequence", "pairs", "route"][variant],
+      kind,
       floor: id,
       task,
       progress: 0,
@@ -5489,17 +6082,222 @@ window.QuantumTasks = {
       status: "Ошибки не уменьшают награду. Попробуйте!",
       done: false,
       program: [],
-      start: odd ? 24 : 20,
-      pos: odd ? 24 : 20,
-      target: odd ? 0 : 4,
-      walls: odd ? [6, 7, 8, 16, 17] : [7, 12, 17],
       running: false,
     };
+
+    if (kind === "route") {
+      const route = task.third;
+      game.start = route.start;
+      game.pos = route.start;
+      game.target = route.target;
+      game.walls = [...route.walls];
+    } else if (kind === "quiz") {
+      game.quizIndex = 0;
+      game.quizOrder = [0, 1, 2].sort(() => Math.random() - 0.5);
+      game.status = "Выберите наиболее точный ответ.";
+    } else if (kind === "classify") {
+      game.classOrder = task.third.items
+        .map((_, i) => i)
+        .sort(() => Math.random() - 0.5);
+      game.classIndex = 0;
+      game.status = "Определите подходящую категорию.";
+    }
+
     view = "game";
     renderGame(true);
   }
+  function activatePhoneCallIfDue() {
+    state.receptionPhone ||= { next: 120, active: null };
+    if (
+      state.receptionPhone.active ||
+      state.receptionPhone.next > 0 ||
+      escortPhases.has(lift.phase)
+    )
+      return false;
+
+    state.receptionPhone.active = {
+      question: Math.floor(Math.random() * PHONE_QUESTIONS.length),
+      callerSeed: Math.floor(Math.random() * 1000000),
+      order: phoneShuffle(),
+      adminRole: currentReceptionRole(),
+    };
+    save();
+    sound(true);
+    tell("На ресепшен поступил телефонный звонок.", 0);
+    lastSig = "";
+    return true;
+  }
+
+  const phoneWait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  async function typePhoneText(element, text, g, speed = 24) {
+    if (!element || game !== g) return false;
+    element.textContent = "";
+    const actualSpeed = state.settings.motion ? speed : 4;
+    for (let i = 0; i < text.length; i++) {
+      if (game !== g) return false;
+      element.textContent += text[i];
+      if (text[i] === " " && i % 4 !== 0) continue;
+      await phoneWait(actualSpeed);
+    }
+    return game === g;
+  }
+
+  async function runPhoneIntro(g) {
+    if (!g || game !== g || g.kind !== "phone-call" || g.animationStarted) return;
+    g.animationStarted = true;
+    const step = (normal, reduced = 35) =>
+      phoneWait(state.settings.motion ? normal : reduced);
+
+    await step(220);
+    if (game !== g) return;
+    document.getElementById("phone-admin-avatar-wrap")?.classList.add("phone-reveal");
+
+    await step(320);
+    if (game !== g) return;
+    document.getElementById("phone-admin-bubble")?.classList.add("phone-reveal");
+    const adminEl = document.getElementById("phone-admin-text");
+    if (!(await typePhoneText(adminEl, "Детский технопарк Кванториум, здравствуйте", g, 25))) return;
+    document.getElementById("phone-admin-cursor")?.remove();
+
+    await step(380);
+    if (game !== g) return;
+    document.getElementById("phone-caller-avatar-wrap")?.classList.add("phone-reveal");
+
+    await step(300);
+    if (game !== g) return;
+    document.getElementById("phone-caller-bubble")?.classList.add("phone-reveal");
+    const q = PHONE_QUESTIONS[g.call.question];
+    const callerEl = document.getElementById("phone-caller-text");
+    if (!(await typePhoneText(callerEl, `Здравствуйте, у меня такой вопрос — ${q.question}`, g, 21))) return;
+    document.getElementById("phone-caller-cursor")?.remove();
+
+    await step(300);
+    if (game !== g) return;
+    g.stage = "question";
+    document.getElementById("phone-answer-list")?.classList.add("phone-reveal");
+  }
+
+  function paintPhoneAvatar(canvasId, role, seed) {
+    const c = document.getElementById(canvasId);
+    if (!c) return;
+    const ac = c.getContext("2d");
+    ac.clearRect(0, 0, c.width, c.height);
+    ac.imageSmoothingEnabled = false;
+    ac.save();
+    ac.scale(1.42, 1.42);
+    A.person(
+      ac,
+      22,
+      40,
+      seed,
+      0,
+      false,
+      false,
+      1,
+      role,
+      role.startsWith("reception-") ? characterStyleForRole(role) : null,
+    );
+    ac.restore();
+  }
+
+  function paintPhoneAvatars(g = game) {
+    if (!g || g.kind !== "phone-call") return;
+    paintPhoneAvatar("phone-admin-avatar", g.call.adminRole, 1);
+    paintPhoneAvatar("phone-caller-avatar", "candidate", g.call.callerSeed);
+  }
+
+  function startPhoneCall() {
+    const call = state.receptionPhone?.active;
+    if (!call || escortPhases.has(lift.phase)) return;
+
+    selected = 0;
+    view = "home";
+    viewParam = null;
+    confirmAction = null;
+    game = {
+      kind: "phone-call",
+      call: JSON.parse(JSON.stringify(call)),
+      stage: "intro",
+      chosen: null,
+      animationStarted: false,
+    };
+    panel.hidden = false;
+    modalBackdrop.hidden = false;
+    modalOpenedAt = performance.now();
+    focusedBefore = hits.querySelector('[data-floor="0"]');
+    makeLayouts();
+    focusFloor(0, true);
+    positionUI();
+    renderPhoneGame(true);
+  }
+
+  function renderPhoneGame(reset = false) {
+    const g = game;
+    if (!g || g.kind !== "phone-call") return;
+    const q = PHONE_QUESTIONS[g.call.question];
+
+    let html = `<div class="phone-dialog">`;
+
+    if (g.stage === "intro" || g.stage === "question") {
+      const revealed = g.stage === "question";
+      html +=
+        `<div class="phone-line">` +
+          `<div id="phone-admin-avatar-wrap" class="phone-avatar-wrap ${revealed ? "phone-reveal" : "phone-step-hidden"}"><canvas id="phone-admin-avatar" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Администратор</span></div>` +
+          `<div id="phone-admin-bubble" class="phone-bubble ${revealed ? "phone-reveal" : "phone-step-hidden"}"><span id="phone-admin-text">${revealed ? esc("Детский технопарк Кванториум, здравствуйте") : ""}</span>${revealed ? "" : '<span id="phone-admin-cursor" class="phone-typing-cursor"></span>'}</div>` +
+        `</div>` +
+        `<div class="phone-line caller">` +
+          `<div id="phone-caller-avatar-wrap" class="phone-avatar-wrap ${revealed ? "phone-reveal" : "phone-step-hidden"}"><canvas id="phone-caller-avatar" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Звонящий</span></div>` +
+          `<div id="phone-caller-bubble" class="phone-bubble ${revealed ? "phone-reveal" : "phone-step-hidden"}"><span id="phone-caller-text">${revealed ? esc(`Здравствуйте, у меня такой вопрос — ${q.question}`) : ""}</span>${revealed ? "" : '<span id="phone-caller-cursor" class="phone-typing-cursor"></span>'}</div>` +
+        `</div>` +
+        `<div id="phone-answer-list" class="phone-answers ${revealed ? "phone-reveal" : "phone-step-hidden"}">${g.call.order
+          .map((choice) =>
+            button(
+              esc(q.choices[choice]),
+              "phone-answer",
+              { choice },
+              "secondary",
+            ),
+          )
+          .join("")}</div>`;
+    } else {
+      const answerFeedback = g.call.order
+        .map((choice) => {
+          const selected = choice === g.chosen;
+          const cls = selected
+            ? g.correct
+              ? "phone-answer-correct"
+              : "phone-answer-wrong"
+            : "phone-answer-muted";
+          return `<button class="btn secondary ${cls}" disabled>${esc(q.choices[choice])}</button>`;
+        })
+        .join("");
+      html +=
+        `<div class="phone-line"><div class="phone-avatar-wrap"><canvas id="phone-admin-avatar" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Администратор</span></div><div class="phone-bubble">${esc("Детский технопарк Кванториум, здравствуйте")}</div></div>` +
+        `<div class="phone-line caller"><div class="phone-avatar-wrap"><canvas id="phone-caller-avatar" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Звонящий</span></div><div class="phone-bubble">${esc(`Здравствуйте, у меня такой вопрос — ${q.question}`)}</div></div>` +
+        `<div class="phone-answers">${answerFeedback}</div>` +
+        `<div class="phone-line"><div class="phone-avatar-wrap"><canvas id="phone-admin-avatar-answer" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Администратор</span></div><div class="phone-bubble">${esc(q.choices[g.chosen])}</div></div>` +
+        `<div class="phone-line caller"><div class="phone-avatar-wrap"><canvas id="phone-caller-avatar-answer" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Звонящий</span></div><div class="phone-bubble phone-final">Хорошо, спасибо</div></div>`;
+    }
+
+    html += `</div>`;
+    setBody("Звонок на ресепшен", html, reset);
+    panel.classList.add("phone-call-panel");
+    paintPhoneAvatars(g);
+    if (g.stage === "thanks") {
+      paintPhoneAvatar("phone-admin-avatar-answer", g.call.adminRole, 1);
+      paintPhoneAvatar("phone-caller-avatar-answer", "candidate", g.call.callerSeed);
+    }
+    if (g.stage === "intro")
+      requestAnimationFrame(() => runPhoneIntro(g));
+  }
+
   function renderGame(reset = false) {
     const g = game;
+    if (g?.kind === "phone-call") {
+      renderPhoneGame(reset);
+      return;
+    }
     if (g?.kind === "event-memory") {
       renderEventGame(reset);
       return;
@@ -5540,23 +6338,10 @@ window.QuantumTasks = {
           )
           .join("");
     } else if (g.kind === "pairs") {
-      html = `<h3>${g.task.pair_title}</h3><p>Выберите понятие, затем его описание.</p>${progress(g.matched.length, 4)}<div class="status" role="status">${esc(g.status)}</div><div class="pairs"><div class="term-grid">${g.task.pairs.map((p, i) => button(`${g.matched.includes(i) ? "✓ " : ""}${esc(p[0])}`, "pair-left", { index: i }, g.matched.includes(i) ? "correct" : g.selected === i ? "selected" : "secondary", g.matched.includes(i))).join("")}</div><div class="pair-answers">${g.order.map((i) => button(esc(g.task.pairs[i][1]), "pair-right", { index: i }, g.matched.includes(i) ? "correct" : "secondary", g.matched.includes(i))).join("")}</div></div>`;
-    } else {
-      const routeNames = {
-        it: "Программа робота",
-        bio: "Доставка образца",
-        robo: "Робот на складе",
-        vr: "Виртуальный лабиринт",
-        nano: "Доставка материала",
-        hi: "Логистика мастерской",
-        media: "Съёмочная экспедиция",
-        auto: "Автономный автомобиль",
-        geo: "Маршрут экспедиции",
-        design: "Путь пользователя",
-        anim: "Маршрут кадра",
-        chess: "Путь фигуры",
-      };
-      html = `<h3>${routeNames[g.floor]}</h3><p class="micro">Проведите ◉ к ★. Добавляйте стрелки и запустите программу. Полосатые клетки — препятствия. До 16 команд.</p><div class="grid-game" role="img" aria-label="Поле 5 на 5. Робот: строка ${Math.floor(g.pos / 5) + 1}, столбец ${(g.pos % 5) + 1}. Цель: строка ${Math.floor(g.target / 5) + 1}, столбец ${(g.target % 5) + 1}.">${Array.from({ length: 25 }, (_, i) => `<div class="grid-cell ${g.walls.includes(i) ? "wall" : g.pos === i ? "bot" : g.target === i ? "target" : ""}">${g.pos === i ? "◉" : g.target === i ? "★" : ""}</div>`).join("")}</div><div class="program">${g.program.map((d) => ({ left: "←", up: "↑", down: "↓", right: "→" })[d]).join(" ") || "Ваша программа"}</div><div class="arrows">${[
+      html = `<h3>${g.task.pair_title}</h3><p>${esc(g.task.pair_hint || "Выберите понятие, затем его описание.")}</p>${progress(g.matched.length, 4)}<div class="status" role="status">${esc(g.status)}</div><div class="pairs"><div class="term-grid">${g.task.pairs.map((p, i) => button(`${g.matched.includes(i) ? "✓ " : ""}${esc(p[0])}`, "pair-left", { index: i }, g.matched.includes(i) ? "correct" : g.selected === i ? "selected" : "secondary", g.matched.includes(i))).join("")}</div><div class="pair-answers">${g.order.map((i) => button(esc(g.task.pairs[i][1]), "pair-right", { index: i }, g.matched.includes(i) ? "correct" : "secondary", g.matched.includes(i))).join("")}</div></div>`;
+    } else if (g.kind === "route") {
+      const route = g.task.third;
+      html = `<h3>${esc(route.title)}</h3><p>${esc(route.hint)}</p><p class="micro">Проведите ◉ к ★. Добавляйте стрелки и запустите программу. Полосатые клетки — препятствия. До 16 команд.</p><div class="grid-game" role="img" aria-label="Поле 5 на 5. Робот: строка ${Math.floor(g.pos / 5) + 1}, столбец ${(g.pos % 5) + 1}. Цель: строка ${Math.floor(g.target / 5) + 1}, столбец ${(g.target % 5) + 1}.">${Array.from({ length: 25 }, (_, i) => `<div class="grid-cell ${g.walls.includes(i) ? "wall" : g.pos === i ? "bot" : g.target === i ? "target" : ""}">${g.pos === i ? "◉" : g.target === i ? "★" : ""}</div>`).join("")}</div><div class="program">${g.program.map((d) => ({ left: "←", up: "↑", down: "↓", right: "→" })[d]).join(" ") || "Ваша программа"}</div><div class="arrows">${[
         ["left", "←"],
         ["up", "↑"],
         ["down", "↓"],
@@ -5574,9 +6359,26 @@ window.QuantumTasks = {
         .join(
           "",
         )}</div><div class="status" role="status">${esc(g.status)}</div>${button(g.running ? "Выполняется…" : "Запустить ▶", "route-run", {}, "", g.running || !g.program.length)}<div class="row">${button("Убрать шаг", "route-undo", {}, "secondary", g.running || !g.program.length)}${button("Сначала", "route-reset", {}, "secondary", g.running)}</div>`;
+    } else if (g.kind === "quiz") {
+      const quiz = g.task.third;
+      const q = quiz.questions[g.quizIndex];
+      html =
+        `<h3>${esc(quiz.title)}</h3><p>${esc(quiz.hint)}</p>${progress(g.quizIndex, quiz.questions.length)}<div class="status" role="status">${esc(g.status)} · ${g.quizIndex + 1}/${quiz.questions.length}</div>` +
+        `<article class="card"><h3>${esc(q.text)}</h3>${g.quizOrder.map((i) =>
+          button(esc(q.answers[i]), "quantum-quiz", { index: i }, "secondary")
+        ).join("")}</article>`;
+    } else if (g.kind === "classify") {
+      const cl = g.task.third;
+      const itemIndex = g.classOrder[g.classIndex];
+      const item = cl.items[itemIndex];
+      html =
+        `<h3>${esc(cl.title)}</h3><p>${esc(cl.hint)}</p>${progress(g.classIndex, cl.items.length)}<div class="status" role="status">${esc(g.status)} · ${g.classIndex + 1}/${cl.items.length}</div>` +
+        `<article class="card"><h3>${esc(item[0])}</h3><div class="row">${cl.categories.map((name, i) =>
+          button(esc(name), "quantum-classify", { category: i }, "secondary")
+        ).join("")}</div></article>`;
     }
     setBody(
-      `Проект · ${["sequence", "pairs", "route"].indexOf(g.kind) + 1}/3`,
+      `Задание · ${g.kind === "sequence" ? 1 : g.kind === "pairs" ? 2 : 3}/3`,
       html + button("Вернуться позже", "cancel-game", {}, "ghost"),
       reset,
     );
@@ -5623,6 +6425,10 @@ window.QuantumTasks = {
 
   // Guided elevator mini-game: walk to the lift, move between floors, exit into the classroom.
   function startEscort(id) {
+    if (state.receptionPhone?.active) {
+      tell("Сначала ответьте на звонок на ресепшене.", 0);
+      return;
+    }
     const n = state.newbies.find((x) => x.id === id),
       f = n && state.floors.find((x) => x.id === n.target);
     if (!n || !f || f.ready || f.lesson > 0 || f.students >= E.capacity(f)) {
@@ -6036,6 +6842,51 @@ window.QuantumTasks = {
       case "view":
         go(d.view, d.floor ? { floor: d.floor } : null);
         break;
+      case "phone-open":
+        startPhoneCall();
+        break;
+      case "phone-answer": {
+        if (game?.kind !== "phone-call" || game.stage !== "question") break;
+        const choice = Number(d.choice);
+        if (![0, 1, 2].includes(choice)) break;
+
+        const g = game;
+        const correct = choice === 0;
+        const before = {
+          coins: state.coins,
+          knowledge: state.knowledge,
+        };
+
+        if (correct) {
+          state.coins += 40;
+          state.knowledge += 15;
+        } else {
+          state.coins = Math.max(0, state.coins - 25);
+          state.knowledge = Math.max(0, state.knowledge - 10);
+        }
+
+        g.chosen = choice;
+        g.correct = correct;
+        g.stage = "thanks";
+        state.receptionPhone = {
+          next: nextPhoneDelay(),
+          active: null,
+        };
+        E.note(state, "На ресепшене обработан телефонный звонок.");
+        animateHUDCount("coins", before.coins, state.coins, 650);
+        animateHUDCount("knowledge", before.knowledge, state.knowledge, 650);
+        sound();
+        save();
+        lastSig = "";
+        renderPhoneGame(false);
+
+        setTimeout(() => {
+          if (game !== g) return;
+          game = null;
+          if (selected === 0) closeRoom();
+        }, state.settings.motion ? 2300 : 900);
+        break;
+      }
       case "back":
         game = null;
         confirmAction = null;
@@ -6157,12 +7008,15 @@ window.QuantumTasks = {
       case "escort":
         startEscort(d.id);
         break;
-      case "setting":
+      case "setting": {
         perform("settings", {
           key: d.key,
           value: d.key === "speed" ? Number(d.value) : d.value === "true",
         });
+        if (d.key === "music" || d.key === "paused")
+          syncBackgroundMusic();
         break;
+      }
       case "export":
         downloadSave();
         break;
@@ -6367,6 +7221,52 @@ window.QuantumTasks = {
             }
           } else
             game.status = "Это описание другого понятия. Попробуйте ещё раз.";
+          renderGame();
+        }
+        break;
+      case "quantum-quiz":
+        if (game?.kind === "quiz" && !game.done) {
+          const quiz = game.task.third;
+          const q = quiz.questions[game.quizIndex];
+          const answer = Number(d.index);
+          if (answer === q.correct) {
+            game.quizIndex++;
+            sound();
+            if (game.quizIndex >= quiz.questions.length) {
+              game.done = true;
+              game.status = "Все решения найдены!";
+              sound(true);
+              burst(selected);
+            } else {
+              game.quizOrder = [0, 1, 2].sort(() => Math.random() - 0.5);
+              game.status = "Верно! Следующая ситуация.";
+            }
+          } else {
+            game.status = "Это решение не подходит. Посмотрите на задачу ещё раз.";
+          }
+          renderGame();
+        }
+        break;
+      case "quantum-classify":
+        if (game?.kind === "classify" && !game.done) {
+          const cl = game.task.third;
+          const itemIndex = game.classOrder[game.classIndex];
+          const expected = cl.items[itemIndex][1];
+          const category = Number(d.category);
+          if (category === expected) {
+            game.classIndex++;
+            sound();
+            if (game.classIndex >= cl.items.length) {
+              game.done = true;
+              game.status = "Все объекты распределены!";
+              sound(true);
+              burst(selected);
+            } else {
+              game.status = "Верно! Следующий объект.";
+            }
+          } else {
+            game.status = "Эта категория не подходит. Попробуйте ещё раз.";
+          }
           renderGame();
         }
         break;
@@ -6639,6 +7539,17 @@ window.QuantumTasks = {
       if (selected !== null) closeRoom();
       return;
     }
+    if (state.receptionPhone?.active && !escortPhases.has(lift.phase)) {
+      const lobby = layouts[0];
+      if (lobby) {
+        const by = lobby.bottom + origin() - 70;
+        const cx = rx + RW / 2 + 2, cy = by + 35;
+        if (Math.abs(p.x - cx) <= 34 && Math.abs(p.y - cy) <= 24) {
+          startPhoneCall();
+          return;
+        }
+      }
+    }
     if (selected === null && !phasesBusy())
       for (const npc of people.values())
         if (npc.newbie) {
@@ -6657,6 +7568,13 @@ window.QuantumTasks = {
     );
     if (l) openRoom(l.index, "home", null);
   }
+  world.addEventListener("pointerdown", unlockBackgroundMusic, {
+    passive: true,
+  });
+  document.addEventListener("keydown", unlockBackgroundMusic, {
+    passive: true,
+  });
+
   world.addEventListener("pointerdown", (e) => {
     if (e.target.closest(".ui-overlay") || e.button > 0 || dragging) return;
     // Prevent the synthetic click from landing on a button in a modal
@@ -6804,6 +7722,7 @@ window.QuantumTasks = {
       state.events?.unlocked,
       state.events?.completed,
       Math.ceil(state.events?.cooldown || 0) === 0,
+      !!state.receptionPhone?.active,
     ]);
     if (sig !== lastSig) {
       lastSig = sig;
@@ -6913,6 +7832,7 @@ window.QuantumTasks = {
       updateAdminShift(dt);
       updatePeople(dt);
       updateLift(dt);
+      activatePhoneCallIfDue();
       if (game?.kind === "event-block" && !game.done) {
         const left = Math.max(0, Math.ceil((game.deadline - Date.now()) / 1000));
         const timerEl = body.querySelector("[data-block-time]");
@@ -6944,7 +7864,7 @@ window.QuantumTasks = {
   }
   // Read-only inspection is useful when extending the game in a browser console.
   window.QuantumTower = Object.freeze({
-    version: "6.2",
+    version: "6.4.4",
     inspect: () => JSON.parse(JSON.stringify(state)),
     get lift() {
       return {
