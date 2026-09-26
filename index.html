@@ -6119,7 +6119,7 @@ window.QuantumTasks = {
     const unlocked = state.floors.length > 0 && E.teacherList(state).length > 0;
     const intro = state.daily.firstPromptShown
       ? ""
-      : `<div class="daily-callout"><b>Ежедневные награды</b><br>Заходите в игру каждый день, чтобы получать всё более ценные призы. В конце первой недели вас ждёт стиль 90-ых для IT-квантума, а стиль 90-ых для VR/AR уже доступен сразу.</div>`;
+      : `<div class="daily-callout"><b>Ежедневные награды</b><br>Заходите в игру каждый день, чтобы получать всё более ценные призы.</div>`;
     const list = DAILY_REWARDS.map((reward, i) => {
       const day = i + 1;
       const done = state.daily.lastClaim === todayKey() ? day < todayIndex : day < todayIndex;
