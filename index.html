@@ -594,6 +594,104 @@ select {
   color: #24554e;
   border: 2px solid #5da89a;
 }
+.reward-fly.coin.negative,
+.reward-fly.knowledge.negative {
+  background: #e78a90;
+  color: #fff7f7;
+  border: 2px solid #b95058;
+}
+.skin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+.skin-choice {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border-radius: 16px;
+  border: 2px solid #8aa8ab;
+  background: linear-gradient(180deg, #eef5f4, #d8e8e6);
+  text-align: left;
+}
+.skin-choice.selected {
+  border-color: #d6b665;
+  box-shadow: 0 0 0 2px #f3e3ab inset;
+}
+.skin-choice.locked {
+  opacity: .56;
+  filter: saturate(.5);
+}
+.skin-choice h3 {
+  margin: 6px 0 2px;
+  font-size: 14px;
+}
+.skin-choice p {
+  margin: 0;
+  font-size: 12px;
+}
+.skin-thumb {
+  width: 100%;
+  aspect-ratio: 204 / 68;
+  border-radius: 10px;
+  border: 2px solid #57677a;
+  background: #223448;
+  image-rendering: pixelated;
+}
+.skin-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #e7d27d;
+  color: #4b3f2b;
+  font: 800 13px/22px Inter, system-ui, sans-serif;
+  text-align: center;
+  box-shadow: 0 2px 0 #9f8850;
+}
+.daily-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+.daily-card {
+  padding: 10px 11px;
+  border-radius: 16px;
+  border: 2px solid #8db0b2;
+  background: linear-gradient(180deg, #eff8f6, #d7e9e6);
+}
+.daily-card.today {
+  border-color: #dcb96c;
+  background: linear-gradient(180deg, #fff7db, #efe1aa);
+}
+.daily-card.done {
+  border-color: #8ab69b;
+  background: linear-gradient(180deg, #eff8f1, #d0e8d3);
+}
+.daily-card h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+.daily-card p {
+  margin: 0 0 6px;
+  font-size: 12px;
+}
+.daily-card .tag {
+  margin-right: 6px;
+}
+.daily-callout {
+  border-radius: 18px;
+  border: 2px solid #d5b96d;
+  background: linear-gradient(180deg, #fff9df, #f0e0af);
+  padding: 12px 14px;
+  color: #534539;
+}
 @keyframes reward-flight {
   0% {
     left: var(--sx);
@@ -1561,54 +1659,21 @@ a {
     },
   ];
   const FIRST = [
-    "Алина",
-    "Марк",
-    "София",
-    "Тимур",
-    "Вера",
-    "Лев",
-    "Артём",
-    "Ева",
-    "Олег",
-    "Нина",
-    "Виктория",
-    "Валерия",
-    "Людмила",
-    "Арина",
-    "Дарья",
-    "Алина",
-    "Петр",
-    "Дмитрий",
-    "Петр",
-    "Дмитрий",
-    "Дмитрий",
-    "Виктория",
-    "Человек",
+    "Алина","Марк","София","Тимур","Вера","Лев","Артём","Ева","Олег","Нина",
+    "Виктория","Валерия","Людмила","Арина","Дарья","Пётр","Дмитрий","Ксения","Илья","Анна",
+    "Максим","Мария","Никита","Полина","Егор","Анастасия","Глеб","Светлана","Роман","Таисия",
+    "Матвей","Елизавета","Степан","Ульяна","Ирина","Кирилл","Злата","Ярослав","Мирослава","Фёдор"
   ];
   const LAST = [
-    "Лебедева",
-    "Ким",
-    "Миронова",
-    "Соколов",
-    "Волкова",
-    "Орлов",
-    "Смирнов",
-    "Соколова",
-    "Морозов",
-    "Новикова",
-    "Воробьева",
-    "Никулина",
-    "Веденина",
-    "Лощева",
-    "Авдонина",
-    "Зотеева",
-    "Молодец",
-    "Евдокимов",
-    "Третьков",
-    "Никитин",
-    "Уланов",
-    "Рубцова",
-    "Паук",
+    "Лебедева","Ким","Миронова","Соколов","Волкова","Орлов","Смирнов","Соколова","Морозов","Новикова",
+    "Воробьёва","Никулина","Веденина","Лощева","Авдонина","Зотеева","Евдокимов","Третьяков","Никитин","Уланова",
+    "Рубцова","Баранова","Павлова","Фролова","Кузнецов","Медведева","Федосеева","Гордеев","Данилова","Ларионов",
+    "Белоусова","Жуков","Калашникова","Савельева","Тетерин","Швецова","Аксёнова","Чернов","Шумилова","Громов"
+  ];
+  const CHILD_FIRST = [
+    "Миша","Соня","Лиза","Костя","Маша","Даня","Аня","Кирилл","Саша","Ника",
+    "Рома","Катя","Таня","Женя","Вика","Яна","Вадим","Лёша","Ира","Паша",
+    "Слава","Алина","Лена","Тимофей","Гоша","Сева","Оля","Юля","Соня","Назар"
   ];
   const lab = (id) => LABS.find((l) => l.id === id);
   const capacity = (f) => 4 + (f.level - 1) * 2;
@@ -1829,10 +1894,12 @@ a {
         if (!t || !home || t.training) return fail("Преподаватель недоступен");
         if (t.skills[home.id] >= 10) return fail("Навык уже максимальный");
         let cost = 30 * t.skills[home.id];
-        if (s.knowledge < cost) return fail(`Нужно ${cost} знаний`);
-        s.knowledge -= cost;
+        const useVoucher = (s.freeTrainings || 0) > 0;
+        if (!useVoucher && s.knowledge < cost) return fail(`Нужно ${cost} знаний`);
+        if (useVoucher) s.freeTrainings--;
+        else s.knowledge -= cost;
         t.training = { left: 90, total: 90, skill: home.id };
-        note(s, `${t.name} начал повышение квалификации`);
+        note(s, useVoucher ? `${t.name} начал повышение квалификации по бесплатному талону` : `${t.name} начал повышение квалификации`);
         break;
       }
       case "upgrade": {
@@ -2088,7 +2155,7 @@ a {
           const f = s.floors[Math.floor(s.elapsed / 80) % s.floors.length];
           s.newbies.push({
             id: "n" + s.uid++,
-            name: FIRST[s.uid % FIRST.length],
+            name: CHILD_FIRST[s.uid % CHILD_FIRST.length],
             target: f.id,
           });
         }
@@ -3049,6 +3116,27 @@ window.QuantumTasks = {
         r(33, 51, 3, 7, "#5c5862");
         light(74, 55);
         break;
+      case "it-90s":
+        box(5, 12, 28, 39, "#7f8b9b", "#556273");
+        for (let yy = 16; yy < 45; yy += 7) {
+          r(9, yy, 20, 4, "#cfd8dc");
+          r(11, yy + 1, 3, 2, "#6fe3b8");
+          r(17, yy + 1, 3, 2, "#e6c15d");
+        }
+        for (let i = 0; i < 3; i++) {
+          desk(36 + i * 51, 42, 42, "#c8b48c");
+          r(44 + i * 51, 20, 20, 17, "#ddd9c8");
+          r(47 + i * 51, 23, 14, 10, ["#5bbdbe","#547fd1","#76bb7d"][i]);
+          r(50 + i * 51, 37, 8, 5, "#8f8170");
+          stool(51 + i * 51, 51, "#805f75");
+        }
+        frame(55, 6, 90, 13, "DOS / BASIC", "#8ce6cf");
+        box(168, 15, 28, 35, "#bfb5a1", "#756a57");
+        r(173, 20, 18, 11, "#2d3641");
+        r(176, 23, 12, 5, "#69d6a8");
+        r(171, 34, 22, 9, "#cfc4ad");
+        light(88, 74);
+        break;
       case "it":
         box(3, 13, 23, 40, "#172235");
         for (let j = 0; j < 5; j++) {
@@ -3116,6 +3204,28 @@ window.QuantumTasks = {
         r(165, 46, 33, 8, "#b08151");
         light(70, 63);
         frame(35, 12, 25, 19, "R");
+        break;
+      case "vr-90s":
+        r(0, 7, 204, 2, "#b86ec7");
+        r(0, 47, 204, 2, "#5f88d8");
+        for (let x = 0; x < 204; x += 14) r(x, 49, 1, 16, "#b8adc9");
+        box(7, 13, 58, 31, "#4a3e63", "#9788ba");
+        r(11, 17, 49, 22, "#78629a");
+        r(23, 20, 23, 15, "#bcb0d8");
+        r(25, 22, 7, 10, "#8a7cb7");
+        r(33, 21, 10, 2, "#ddd2ef");
+        desk(79, 43, 48, "#c4ae8c");
+        r(89, 20, 18, 18, "#d8d0c2");
+        r(92, 23, 12, 10, "#79b7d8");
+        r(95, 37, 6, 4, "#837868");
+        desk(136, 43, 56, "#baa181");
+        r(148, 18, 21, 19, "#ddd5c7");
+        r(151, 21, 15, 11, "#b57de1");
+        r(155, 38, 7, 4, "#807366");
+        frame(79, 8, 48, 11, "CYBER", "#a7b2ee");
+        box(175, 15, 20, 20, "#3d4353", "#808ca0");
+        r(180, 20, 10, 9, "#69d0c5");
+        light(133, 63);
         break;
       case "vr":
         r(0, 7, 204, 2, "#bd78c9");
@@ -3650,6 +3760,8 @@ window.QuantumTasks = {
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
       state.settings.motion = false;
   }
+  ensureMetaState(state);
+  refreshDailyAvailability(state);
   state.events ||= { unlocked: ["quiz"], cooldown: 0, completed: 0 };
   state.receptionPhone ||= { next: 120, active: null };
   state.candidateQueue ||= [];
@@ -3684,6 +3796,199 @@ window.QuantumTasks = {
     }
   }
   ensureCharacterStyles();
+  ensureMetaState();
+
+  function ensureMetaState(targetState = state) {
+    targetState.freeTrainings = Math.max(0, Number(targetState.freeTrainings || 0));
+    targetState.skinUnlocks ||= {};
+    if (targetState.skinUnlocks["vr:90s"] === undefined)
+      targetState.skinUnlocks["vr:90s"] = true;
+    if (targetState.skinUnlocks["it:90s"] === undefined)
+      targetState.skinUnlocks["it:90s"] = false;
+    targetState.daily ||= {};
+    targetState.daily.day = Math.max(0, Math.min(7, Number(targetState.daily.day || 0)));
+    targetState.daily.lastClaim = typeof targetState.daily.lastClaim === "string" ? targetState.daily.lastClaim : "";
+    targetState.daily.lastSeen = typeof targetState.daily.lastSeen === "string" ? targetState.daily.lastSeen : "";
+    targetState.daily.claimable = !!targetState.daily.claimable;
+    targetState.daily.firstPromptShown = !!targetState.daily.firstPromptShown;
+    targetState.daily.autoOpenedForDate = typeof targetState.daily.autoOpenedForDate === "string" ? targetState.daily.autoOpenedForDate : "";
+  }
+  const DAILY_REWARDS = [
+    {
+      title: "Добро пожаловать!",
+      text: "Монеты, знания и стартовый бонус за первый вход.",
+      preview: ["+140 ●", "+45 ◆"],
+      apply(s) {
+        s.coins += 140;
+        s.knowledge += 45;
+        return ["+140 монет", "+45 знаний"];
+      },
+    },
+    {
+      title: "Растущий интерес",
+      text: "Ещё немного ресурсов на развитие центра.",
+      preview: ["+180 ●", "+60 ◆"],
+      apply(s) {
+        s.coins += 180;
+        s.knowledge += 60;
+        return ["+180 монет", "+60 знаний"];
+      },
+    },
+    {
+      title: "Особый кандидат",
+      text: "Уникальный кандидат с тремя навыками.",
+      preview: ["Кандидат ×3 навыка", "+60 ◆"],
+      apply(s) {
+        s.knowledge += 60;
+        const cand = createSpecialCandidate(3, false);
+        placeCandidateReward(s, cand);
+        return [`Кандидат: ${cand.name}`, "+60 знаний"];
+      },
+    },
+    {
+      title: "Поддержка команды",
+      text: "Пять бесплатных повышений квалификации для педагогов.",
+      preview: ["5 бесплатных обучений", "+120 ●"],
+      apply(s) {
+        s.coins += 120;
+        s.freeTrainings = (s.freeTrainings || 0) + 5;
+        return ["+120 монет", "+5 бесплатных обучений"];
+      },
+    },
+    {
+      title: "Научный день",
+      text: "Более весомый пакет ресурсов.",
+      preview: ["+260 ●", "+110 ◆"],
+      apply(s) {
+        s.coins += 260;
+        s.knowledge += 110;
+        return ["+260 монет", "+110 знаний"];
+      },
+    },
+    {
+      title: "Мастер-наставник",
+      text: "Редкий кандидат с тремя сильными навыками.",
+      preview: ["Редкий кандидат", "+160 ●", "+80 ◆"],
+      apply(s) {
+        s.coins += 160;
+        s.knowledge += 80;
+        const cand = createSpecialCandidate(3, true);
+        placeCandidateReward(s, cand);
+        return [`Редкий кандидат: ${cand.name}`, "+160 монет", "+80 знаний"];
+      },
+    },
+    {
+      title: "Недельный стрик",
+      text: "Награда за вход 7 дней подряд: стиль 90-ых для IT-квантума.",
+      preview: ["Стиль 90-ых · IT", "+320 ●", "+140 ◆"],
+      apply(s) {
+        s.skinUnlocks["it:90s"] = true;
+        s.coins += 320;
+        s.knowledge += 140;
+        return ["Открыт стиль 90-ых для IT-квантума", "+320 монет", "+140 знаний"];
+      },
+    },
+  ];
+  const REWARD_FIRST = [
+    "Алёна","Егор","Станислав","Ольга","Вероника","Павел","Диана","Тихон","Инна","Марат",
+    "Лидия","Руслан","Элина","Алексей","Маргарита","Семён","Агата","Григорий","Юлия","Рената"
+  ];
+  const REWARD_LAST = [
+    "Кузьмина","Ершов","Гусева","Беляев","Кравцова","Филатов","Козлова","Ермаков","Рябинина","Шестаков",
+    "Тихонова","Логинов","Панина","Самойлов","Колесникова","Бобров","Нестерова","Комаров","Зыкова","Тарасов"
+  ];
+  function todayKey(time = Date.now()) {
+    const d = new Date(time);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
+  function keyToDate(key) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(key || "");
+    return m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])) : null;
+  }
+  function daysBetweenKeys(a, b) {
+    const da = keyToDate(a), db = keyToDate(b);
+    if (!da || !db) return Infinity;
+    return Math.round((db - da) / 86400000);
+  }
+  function nextDailyIndex(targetState = state) {
+    ensureMetaState(targetState);
+    if (!targetState.daily.lastClaim) return 1;
+    const diff = daysBetweenKeys(targetState.daily.lastClaim, todayKey());
+    if (diff === 1) return targetState.daily.day >= 7 ? 1 : Math.max(1, targetState.daily.day + 1);
+    if (diff === 0) return Math.max(1, targetState.daily.day || 1);
+    return 1;
+  }
+  function refreshDailyAvailability(targetState = state) {
+    ensureMetaState(targetState);
+    const today = todayKey();
+    if (targetState.daily.lastSeen !== today)
+      targetState.daily.lastSeen = today;
+    targetState.daily.claimable = targetState.daily.lastClaim !== today;
+  }
+  function createSpecialCandidate(skillCount = 3, elite = false) {
+    const used = new Set([
+      ...Object.keys(state.teachers || {}),
+      ...(state.candidates || []).map((x) => x.id),
+      ...(state.candidateQueue || []).map((x) => x.id),
+    ]);
+    let id = "t" + state.uid++;
+    while (used.has(id)) id = "t" + state.uid++;
+    const built = state.floors.map((f) => f.id);
+    const pool = built.length ? [...built] : E.LABS.map((l) => l.id);
+    while (pool.length < skillCount)
+      pool.push(...E.LABS.map((l) => l.id));
+    const shuffled = [...new Set(pool)].sort(() => Math.random() - 0.5).slice(0, skillCount);
+    const skills = {};
+    shuffled.forEach((id2, idx) => {
+      skills[id2] = elite ? (idx === 0 ? 10 : 7 + Math.floor(Math.random() * 4)) : 4 + Math.floor(Math.random() * 5);
+    });
+    const pick = state.uid % REWARD_FIRST.length;
+    return {
+      id,
+      name: REWARD_FIRST[pick] + " " + REWARD_LAST[(pick * 3) % REWARD_LAST.length],
+      skills,
+      cost: 0,
+    };
+  }
+  function placeCandidateReward(targetState, cand) {
+    if (targetState.candidates.length < 5) {
+      targetState.candidates.push(cand);
+      return;
+    }
+    targetState.candidateQueue ||= [];
+    targetState.candidateQueue.push(cand);
+    E.note(targetState, `Особый кандидат ${cand.name} ожидает в очереди на лифт.`);
+  }
+  function claimDailyReward() {
+    ensureMetaState();
+    refreshDailyAvailability();
+    if (!state.floors.length || E.teacherList(state).length === 0) return null;
+    if (!state.daily.claimable) return null;
+    const before = { coins: state.coins, knowledge: state.knowledge };
+    const index = nextDailyIndex();
+    const reward = DAILY_REWARDS[index - 1];
+    const lines = reward.apply(state);
+    state.daily.day = index;
+    state.daily.lastClaim = todayKey();
+    state.daily.claimable = false;
+    state.daily.firstPromptShown = true;
+    E.note(state, `Получена ежедневная награда: день ${index}.`);
+    if (state.coins !== before.coins || state.knowledge !== before.knowledge)
+      flyReward(1, { coins: Math.max(0, state.coins - before.coins), knowledge: Math.max(0, state.knowledge - before.knowledge) }, before);
+    save();
+    return { day: index, title: reward.title, lines };
+  }
+  function maybeOpenDailyRewards(force = false) {
+    ensureMetaState();
+    refreshDailyAvailability();
+    if (!state.floors.length || E.teacherList(state).length === 0) return false;
+    const today = todayKey();
+    if (!state.daily.claimable) return false;
+    if (!force && state.daily.autoOpenedForDate === today) return false;
+    state.daily.autoOpenedForDate = today;
+    openRoom(1, "daily");
+    return true;
+  }
   let W = 360,
     H = 640,
     scale = 1,
@@ -4290,14 +4595,16 @@ window.QuantumTasks = {
       return;
     }
     const y = l.top + o,
-      by = l.bottom + o - 70;
+      by = l.bottom + o - 70,
+      f = state.floors[l.index - 3];
     A.rect(ctx, rx, y, RW, l.h, "#263546");
-    ctx.drawImage(getTexture(l.id), rx, Math.round(by));
+    const textureKey =
+      f && f.skin && f.skin !== "default" ? `${l.id}-${f.skin}` : l.id;
+    ctx.drawImage(getTexture(textureKey), rx, Math.round(by));
     if (E.lab(l.id)) drawQuantumLogo(l.id, rx + 173, by + 7);
     A.rect(ctx, rx, y, RW, 12, "#252a38");
     A.rect(ctx, rx, y, RW, 1, "#a9b4b0");
     A.rect(ctx, rx, y + 11, RW, 1, "#535f70");
-    const f = state.floors[l.index - 3];
     A.text(
       ctx,
       l.id === "lobby"
@@ -4649,10 +4956,10 @@ window.QuantumTasks = {
       const l = layouts[i],
         y = l.top + o;
       if (l.bottom + o < -FH || y > H + FH) continue;
-      A.rect(ctx, tx + 8, y + 2, 29, l.h - 4, "#6a5c40");
-      A.rect(ctx, tx + 9, y + 3, 27, 10, "#9b8858");
-      A.rect(ctx, tx + 9, y + 14, 27, 1, "#3b3b35");
-      A.rect(ctx, tx + 9, y + l.h - 5, 27, 3, "#a58a4e");
+      A.rect(ctx, tx + 8, y + 2, 29, l.h - 4, "#6f7a86");
+      A.rect(ctx, tx + 9, y + 3, 27, 10, "#c3ced8");
+      A.rect(ctx, tx + 9, y + 14, 27, 1, "#59636d");
+      A.rect(ctx, tx + 9, y + l.h - 5, 27, 3, "#9aa7b4");
       const highlight =
         lift.passenger && floorIndex(lift.passenger.target) === i;
       if (highlight) {
@@ -4667,17 +4974,17 @@ window.QuantumTasks = {
         highlight ? "#f7e69b" : "#d4c6a3",
       );
     }
-    A.rect(ctx, tx + 9, top, 2, first.bottom + o - top, "#cbb471");
-    A.rect(ctx, tx + 35, top, 2, first.bottom + o - top, "#bca065");
+    A.rect(ctx, tx + 9, top, 2, first.bottom + o - top, "#c3ccd6");
+    A.rect(ctx, tx + 35, top, 2, first.bottom + o - top, "#aeb8c4");
     const by = levelBottom(lift.level) + o - 3,
       cy = by - 58;
     A.rect(ctx, tx + 22, top, 1, Math.max(0, cy - top), "#33383c");
-    A.rect(ctx, tx + 8, cy, 31, 59, "#282c32");
-    A.rect(ctx, tx + 9, cy + 2, 29, 55, "#c5a15c");
-    A.rect(ctx, tx + 12, cy + 5, 23, 48, "#544a3a");
-    A.rect(ctx, tx + 13, cy + 6, 21, 12, "#807047");
-    A.rect(ctx, tx + 13, cy + 18, 21, 34, "#353638");
-    A.rect(ctx, tx + 13, cy + 49, 21, 3, "#ac925a");
+    A.rect(ctx, tx + 8, cy, 31, 59, "#3e4650");
+    A.rect(ctx, tx + 9, cy + 2, 29, 55, "#b7c1cb");
+    A.rect(ctx, tx + 12, cy + 5, 23, 48, "#67727d");
+    A.rect(ctx, tx + 13, cy + 6, 21, 12, "#d0d9e1");
+    A.rect(ctx, tx + 13, cy + 18, 21, 34, "#505a64");
+    A.rect(ctx, tx + 13, cy + 49, 21, 3, "#8d99a4");
     A.text(
       ctx,
       floorNumber(Math.round(lift.level)),
@@ -5021,11 +5328,13 @@ window.QuantumTasks = {
     };
     requestAnimationFrame(tick);
   }
-  function flyReward(index, reward, before) {
-    if (!rewardLayer || !reward || !state.settings.motion) {
+  function flyReward(index, reward, before, options = {}) {
+    if (!rewardLayer || !reward) {
       updateResourceHUD();
       return;
     }
+    const reverse = !!options.reverse;
+    const negative = !!options.negative;
     const wr = world.getBoundingClientRect();
     const hudTargets = {
       coins: resourceHud.querySelector('[data-count="coins"]'),
@@ -5039,29 +5348,34 @@ window.QuantumTasks = {
       const target = hudTargets[key];
       if (!amount || !target) return;
       const tr = target.getBoundingClientRect();
-      const txp = tr.left + tr.width / 2 - wr.left;
-      const typ = tr.top + tr.height / 2 - wr.top;
-      const sxp = sourceX - wr.left;
-      const syp = sourceY - wr.top;
-      const count = Math.min(8, Math.max(4, Math.round(amount / 20)));
-      for (let i = 0; i < count; i++) {
-        const el = document.createElement("span");
-        el.className = `reward-fly ${cls}`;
-        el.textContent = symbol;
-        const drift = (i - (count - 1) / 2) * 10;
-        el.style.setProperty("--sx", `${sxp}px`);
-        el.style.setProperty("--sy", `${syp}px`);
-        el.style.setProperty("--mx", `${(sxp + txp) / 2 + drift}px`);
-        el.style.setProperty("--my", `${Math.min(syp, typ) - 48 - (i % 3) * 9}px`);
-        el.style.setProperty("--tx", `${txp}px`);
-        el.style.setProperty("--ty", `${typ}px`);
-        el.style.animationDelay = `${i * 42 + group * 70}ms`;
-        rewardLayer.appendChild(el);
-        setTimeout(() => el.remove(), 1400);
+      const hudX = tr.left + tr.width / 2 - wr.left;
+      const hudY = tr.top + tr.height / 2 - wr.top;
+      const roomX = sourceX - wr.left;
+      const roomY = sourceY - wr.top;
+      const sxp = reverse ? hudX : roomX;
+      const syp = reverse ? hudY : roomY;
+      const txp = reverse ? roomX : hudX;
+      const typ = reverse ? roomY : hudY;
+      const count = Math.min(10, Math.max(4, Math.round(amount / 18)));
+      if (state.settings.motion) {
+        for (let i = 0; i < count; i++) {
+          const el = document.createElement("span");
+          el.className = `reward-fly ${cls}${negative ? " negative" : ""}`;
+          el.textContent = symbol;
+          const drift = (i - (count - 1) / 2) * 10;
+          el.style.setProperty("--sx", `${sxp}px`);
+          el.style.setProperty("--sy", `${syp}px`);
+          el.style.setProperty("--mx", `${(sxp + txp) / 2 + drift}px`);
+          el.style.setProperty("--my", `${Math.min(syp, typ) - 48 - (i % 3) * 9}px`);
+          el.style.setProperty("--tx", `${txp}px`);
+          el.style.setProperty("--ty", `${typ}px`);
+          el.style.animationDelay = `${i * 42 + group * 70}ms`;
+          rewardLayer.appendChild(el);
+          setTimeout(() => el.remove(), 1400);
+        }
       }
+      animateHUDCount(key, before[key], state[key], 720);
     });
-    animateHUDCount("coins", before.coins, state.coins);
-    animateHUDCount("knowledge", before.knowledge, state.knowledge);
   }
   function perform(type, p = {}, refresh = true) {
     const before = {
@@ -5165,6 +5479,14 @@ window.QuantumTasks = {
               false,
               gifts ? { text: "!", tone: "gold" } : null,
             ) +
+            button(
+              "Ежедневные награды",
+              "view",
+              { view: "daily" },
+              "secondary",
+              false,
+              state.daily?.claimable ? { text: "!", tone: "gold" } : null,
+            ) +
             button("Сохранение и настройки", "view", { view: "settings" }, "secondary") +
             button("Как играть", "view", { view: "help" }, "ghost"),
           reset,
@@ -5220,6 +5542,12 @@ window.QuantumTasks = {
               `Команда · ${f.team}/5`,
               "view",
               { view: "teams", floor: f.id },
+              "secondary",
+            ) +
+            button(
+              "Вид квантума",
+              "view",
+              { view: "skin", floor: f.id },
               "secondary",
             ) +
             `<p class="micro">Проектов: ${f.projects}. Ученики приходят автоматически при наличии преподавателя. Новеньким можно помочь на лифте.</p>`,
@@ -5311,6 +5639,14 @@ window.QuantumTasks = {
     }
     if (view === "settings") {
       renderSettings(reset);
+      return;
+    }
+    if (view === "daily") {
+      renderDailyRewards(reset);
+      return;
+    }
+    if (view === "skin") {
+      renderQuantumSkins(reset);
       return;
     }
     if (view === "characters") {
@@ -5775,6 +6111,94 @@ window.QuantumTasks = {
       button("Вернуться в конференц-зал", "cancel-game", {}, "ghost");
     setBody("Мини-игра мероприятия", html, reset);
   }
+
+  function renderDailyRewards(reset) {
+    ensureMetaState();
+    refreshDailyAvailability();
+    const todayIndex = nextDailyIndex();
+    const unlocked = state.floors.length > 0 && E.teacherList(state).length > 0;
+    const intro = state.daily.firstPromptShown
+      ? ""
+      : `<div class="daily-callout"><b>Ежедневные награды</b><br>Заходите в игру каждый день, чтобы получать всё более ценные призы. В конце первой недели вас ждёт стиль 90-ых для IT-квантума, а стиль 90-ых для VR/AR уже доступен сразу.</div>`;
+    const list = DAILY_REWARDS.map((reward, i) => {
+      const day = i + 1;
+      const done = state.daily.lastClaim === todayKey() ? day < todayIndex : day < todayIndex;
+      const isToday = day === todayIndex;
+      return `<article class="daily-card ${done ? "done" : ""} ${isToday ? "today" : ""}"><h3>День ${day}</h3><p>${reward.title}</p><div>${reward.preview.map((x) => `<span class="tag">${esc(x)}</span>`).join("")}</div></article>`;
+    }).join("");
+    const claimText = state.daily.claimable
+      ? `Забрать награду дня ${todayIndex}`
+      : "Награда за сегодня уже получена";
+    setBody(
+      "Ежедневные награды",
+      intro +
+        `<p>Текущий прогресс недели: <b>${state.daily.day || 0}/7</b>. ${
+          !unlocked
+            ? "Постройте первый квантум и наймите первого педагога, чтобы открыть ежедневные награды."
+            : state.daily.claimable
+              ? "Сегодня можно получить новую награду."
+              : "Сегодняшняя награда уже получена."
+        }</p>` +
+        button(claimText, "daily-claim", {}, "gold", !state.daily.claimable || !unlocked) +
+        `<p class="micro">У вас бесплатных обучений: ${state.freeTrainings || 0}. На 7-й день открывается стиль 90-ых для IT-квантума.</p>` +
+        `<div class="daily-strip">${list}</div>`,
+      reset,
+    );
+  }
+  function availableSkinsForFloor(floorId) {
+    const items = [{ id: "default", title: "Базовый вид", text: "Стандартный интерьер квантума.", room: floorId }];
+    if (floorId === "vr")
+      items.push({
+        id: "90s",
+        title: "Стиль 90-ых",
+        text: "VR/AR в эстетике компьютерных классов 90-х.",
+        room: "vr-90s",
+      });
+    if (floorId === "it")
+      items.push({
+        id: "90s",
+        title: "Стиль 90-ых",
+        text: "IT-класс в эстетике компьютерных клубов 90-х.",
+        room: "it-90s",
+        locked: !state.skinUnlocks?.["it:90s"],
+      });
+    return items;
+  }
+  function paintSkinThumbs() {
+    body.querySelectorAll("canvas[data-skin-room]").forEach((canvas) => {
+      const id = canvas.dataset.skinRoom;
+      const ctx2 = canvas.getContext("2d");
+      if (!ctx2) return;
+      ctx2.imageSmoothingEnabled = false;
+      const tex = getTexture(id);
+      ctx2.clearRect(0, 0, canvas.width, canvas.height);
+      ctx2.drawImage(tex, 0, 0, canvas.width, canvas.height);
+    });
+  }
+  function renderQuantumSkins(reset) {
+    const floorId = viewParam?.floor || roomId(selected);
+    const f = state.floors.find((x) => x.id === floorId);
+    if (!f) {
+      view = "home";
+      renderPanel(reset);
+      return;
+    }
+    const cards = availableSkinsForFloor(floorId).map((skin) => {
+      const selectedSkin = (f.skin || "default") === skin.id;
+      return `<button class="skin-choice ${selectedSkin ? "selected" : ""} ${skin.locked ? "locked" : ""}" data-action="set-skin" data-floor="${floorId}" data-skin="${skin.id}" ${skin.locked ? "disabled" : ""}>
+        <canvas class="skin-thumb" data-skin-room="${skin.room}" width="204" height="68"></canvas>
+        <h3>${esc(skin.title)}</h3>
+        <p>${esc(skin.text)}</p>
+        <span class="skin-check">${selectedSkin ? "✓" : skin.locked ? "🔒" : "○"}</span>
+      </button>`;
+    }).join("");
+    setBody(
+      "Вид квантума",
+      `<p>Выберите оформление для ${E.lab(floorId).name}. Достаточно нажать на миниатюру, и интерьер сразу сменится.</p><div class="skin-grid">${cards}</div>`,
+      reset,
+    );
+    paintSkinThumbs();
+  }
   function renderManagement(reset) {
     const ch = E.CHAPTERS[state.chapter],
       cp = E.chapterProgress(state),
@@ -5880,14 +6304,19 @@ window.QuantumTasks = {
                       ? `<p class="status">Повышение квалификации: <span data-training="${id}">${clock(t.training.left)}</span></p>`
                       : button(
                           t.skills[f.id] < 10
-                            ? `Обучить · ${t.skills[f.id] * 30} ◆`
+                            ? state.freeTrainings
+                              ? `Обучить бесплатно · ${state.freeTrainings}`
+                              : `Обучить · ${t.skills[f.id] * 30} ◆`
                             : "Максимальный навык",
                           "train",
                           { id },
                           "secondary",
                           t.skills[f.id] >= 10 ||
-                            state.knowledge < t.skills[f.id] * 30,
+                            (!state.freeTrainings && state.knowledge < t.skills[f.id] * 30),
                         ) +
+                        (state.freeTrainings
+                          ? `<p class="micro">Доступно бесплатных обучений: ${state.freeTrainings}.</p>`
+                          : "") +
                         (others.length
                           ? `<select id="move-${id}" aria-label="Новый квантум для ${esc(t.name)}">${others.map((x) => `<option value="${x.id}">${E.lab(x.id).name}</option>`).join("")}</select>${button("Перевести", "move", { id }, "secondary")}`
                           : "") +
@@ -6055,7 +6484,7 @@ window.QuantumTasks = {
         button("Редактор персонажей", "view", { view: "characters" }, "gold") +
         `<div class="line"></div>` +
         button("Новая башня", "new-game", {}, "danger") +
-        `<p class="micro">Кванториум · Tower Edition 2.9.4<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
+        `<p class="micro">Кванториум · Tower Edition 3.0.0<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
       reset,
     );
   }
@@ -6243,11 +6672,11 @@ window.QuantumTasks = {
       const revealed = g.stage === "question";
       html +=
         `<div class="phone-line">` +
-          `<div id="phone-admin-avatar-wrap" class="phone-avatar-wrap ${revealed ? "phone-reveal" : "phone-step-hidden"}"><canvas id="phone-admin-avatar" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Администратор</span></div>` +
+          `<div id="phone-admin-avatar-wrap" class="phone-avatar-wrap ${revealed ? "phone-reveal" : "phone-step-hidden"}"><canvas id="phone-admin-avatar" class="phone-avatar" width="64" height="64"></canvas></div>` +
           `<div id="phone-admin-bubble" class="phone-bubble ${revealed ? "phone-reveal" : "phone-step-hidden"}"><span id="phone-admin-text">${revealed ? esc("Детский технопарк Кванториум, здравствуйте") : ""}</span>${revealed ? "" : '<span id="phone-admin-cursor" class="phone-typing-cursor"></span>'}</div>` +
         `</div>` +
         `<div class="phone-line caller">` +
-          `<div id="phone-caller-avatar-wrap" class="phone-avatar-wrap ${revealed ? "phone-reveal" : "phone-step-hidden"}"><canvas id="phone-caller-avatar" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Звонящий</span></div>` +
+          `<div id="phone-caller-avatar-wrap" class="phone-avatar-wrap ${revealed ? "phone-reveal" : "phone-step-hidden"}"><canvas id="phone-caller-avatar" class="phone-avatar" width="64" height="64"></canvas></div>` +
           `<div id="phone-caller-bubble" class="phone-bubble ${revealed ? "phone-reveal" : "phone-step-hidden"}"><span id="phone-caller-text">${revealed ? esc(`Здравствуйте, у меня такой вопрос — ${q.question}`) : ""}</span>${revealed ? "" : '<span id="phone-caller-cursor" class="phone-typing-cursor"></span>'}</div>` +
         `</div>` +
         `<div id="phone-answer-list" class="phone-answers ${revealed ? "phone-reveal" : "phone-step-hidden"}">${g.call.order
@@ -6273,11 +6702,11 @@ window.QuantumTasks = {
         })
         .join("");
       html +=
-        `<div class="phone-line"><div class="phone-avatar-wrap"><canvas id="phone-admin-avatar" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Администратор</span></div><div class="phone-bubble">${esc("Детский технопарк Кванториум, здравствуйте")}</div></div>` +
-        `<div class="phone-line caller"><div class="phone-avatar-wrap"><canvas id="phone-caller-avatar" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Звонящий</span></div><div class="phone-bubble">${esc(`Здравствуйте, у меня такой вопрос — ${q.question}`)}</div></div>` +
+        `<div class="phone-line"><div class="phone-avatar-wrap"><canvas id="phone-admin-avatar" class="phone-avatar" width="64" height="64"></canvas></div><div class="phone-bubble">${esc("Детский технопарк Кванториум, здравствуйте")}</div></div>` +
+        `<div class="phone-line caller"><div class="phone-avatar-wrap"><canvas id="phone-caller-avatar" class="phone-avatar" width="64" height="64"></canvas></div><div class="phone-bubble">${esc(`Здравствуйте, у меня такой вопрос — ${q.question}`)}</div></div>` +
         `<div class="phone-answers">${answerFeedback}</div>` +
-        `<div class="phone-line"><div class="phone-avatar-wrap"><canvas id="phone-admin-avatar-answer" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Администратор</span></div><div class="phone-bubble">${esc(q.choices[g.chosen])}</div></div>` +
-        `<div class="phone-line caller"><div class="phone-avatar-wrap"><canvas id="phone-caller-avatar-answer" class="phone-avatar" width="64" height="64"></canvas><span class="phone-speaker">Звонящий</span></div><div class="phone-bubble phone-final">Хорошо, спасибо</div></div>`;
+        `<div class="phone-line"><div class="phone-avatar-wrap"><canvas id="phone-admin-avatar-answer" class="phone-avatar" width="64" height="64"></canvas></div><div class="phone-bubble">${esc(q.choices[g.chosen])}</div></div>` +
+        `<div class="phone-line caller"><div class="phone-avatar-wrap"><canvas id="phone-caller-avatar-answer" class="phone-avatar" width="64" height="64"></canvas></div><div class="phone-bubble phone-final">Хорошо, спасибо</div></div>`;
     }
 
     html += `</div>`;
@@ -6800,6 +7229,8 @@ window.QuantumTasks = {
   function replaceState(next) {
     state = E.validateSave(next);
     ensureCharacterStyles(state);
+    ensureMetaState(state);
+    refreshDailyAvailability(state);
     blockedSave = false;
     saveError = "";
     game = null;
@@ -6845,6 +7276,25 @@ window.QuantumTasks = {
       case "phone-open":
         startPhoneCall();
         break;
+      case "daily-claim": {
+        const reward = claimDailyReward();
+        if (reward) {
+          tell(`Получена награда: ${reward.title}.`, 1);
+          renderDailyRewards(false);
+        }
+        break;
+      }
+      case "set-skin": {
+        const floor = state.floors.find((x) => x.id === d.floor);
+        if (!floor) break;
+        const allowed = availableSkinsForFloor(d.floor).find((x) => x.id === d.skin && !x.locked);
+        if (!allowed) break;
+        floor.skin = d.skin;
+        textures.delete(d.skin === "default" ? d.floor : `${d.floor}-${d.skin}`);
+        save();
+        renderQuantumSkins(false);
+        break;
+      }
       case "phone-answer": {
         if (game?.kind !== "phone-call" || game.stage !== "question") break;
         const choice = Number(d.choice);
@@ -6873,8 +7323,15 @@ window.QuantumTasks = {
           active: null,
         };
         E.note(state, "На ресепшене обработан телефонный звонок.");
-        animateHUDCount("coins", before.coins, state.coins, 650);
-        animateHUDCount("knowledge", before.knowledge, state.knowledge, 650);
+        if (correct)
+          flyReward(0, { coins: 40, knowledge: 15 }, before);
+        else
+          flyReward(
+            0,
+            { coins: Math.max(0, before.coins - state.coins), knowledge: Math.max(0, before.knowledge - state.knowledge) },
+            before,
+            { reverse: true, negative: true },
+          );
         sound();
         save();
         lastSig = "";
@@ -6957,6 +7414,14 @@ window.QuantumTasks = {
             p.wait = 0;
           }
           tell("Преподаватель принят в штат.", selected);
+          if (state.floors.length >= 1 && E.teacherList(state).length === 1) {
+            state.daily.firstPromptShown ||= false;
+            if (state.daily.claimable && !state.daily.firstPromptShown) {
+              setTimeout(() => {
+                maybeOpenDailyRewards(true);
+              }, 220);
+            }
+          }
         }
         break;
       }
@@ -7703,6 +8168,7 @@ window.QuantumTasks = {
     }
   });
   function tickUI() {
+    refreshDailyAvailability();
     updateResourceHUD();
     const sig = JSON.stringify([
       state.floors.map((f) => [
@@ -7723,6 +8189,9 @@ window.QuantumTasks = {
       state.events?.completed,
       Math.ceil(state.events?.cooldown || 0) === 0,
       !!state.receptionPhone?.active,
+      !!state.daily?.claimable,
+      state.daily?.day || 0,
+      !!state.skinUnlocks?.["it:90s"],
     ]);
     if (sig !== lastSig) {
       lastSig = sig;
@@ -7864,7 +8333,7 @@ window.QuantumTasks = {
   }
   // Read-only inspection is useful when extending the game in a browser console.
   window.QuantumTower = Object.freeze({
-    version: "6.4.4",
+    version: "6.5.0",
     inspect: () => JSON.parse(JSON.stringify(state)),
     get lift() {
       return {
@@ -7887,6 +8356,10 @@ window.QuantumTasks = {
   if (saveError) tell(saveError, 0, true);
   else if (fresh)
     tell("Нажмите на крышу: первый квантум можно построить бесплатно.", 3);
+  else
+    setTimeout(() => {
+      maybeOpenDailyRewards(false);
+    }, 320);
   requestAnimationFrame(frame);
 })();
 
