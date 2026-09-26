@@ -230,6 +230,55 @@ select {
   border-color: #8bbc82;
   opacity: 0.8;
 }
+
+/* Distinct pastel navigation colours. */
+#room-panel .btn.daily-rewards {
+  background: #b9deda;
+  border-color: #7faeaa;
+  color: #2f5251;
+  box-shadow: 0 3px #8eaaa7;
+}
+#room-panel .btn.settings-pastel {
+  background: #d9c9e8;
+  border-color: #a896bd;
+  color: #51445f;
+  box-shadow: 0 3px #aa9ab8;
+}
+
+#room-panel .btn.quantum-action {
+  color: #33464e;
+  font-weight: 700;
+}
+#room-panel .btn.quantum-project {
+  background: #f1dba8;
+  border-color: #c7aa69;
+  box-shadow: 0 3px #c3ad7e;
+}
+#room-panel .btn.quantum-staff {
+  background: #b9ddd1;
+  border-color: #82ad9f;
+  box-shadow: 0 3px #91b4a9;
+}
+#room-panel .btn.quantum-upgrade {
+  background: #c8d9ee;
+  border-color: #91a9c5;
+  box-shadow: 0 3px #9fadc0;
+}
+#room-panel .btn.quantum-team {
+  background: #e6c8d5;
+  border-color: #b997a8;
+  box-shadow: 0 3px #b6a0aa;
+}
+#room-panel .btn.quantum-skin {
+  background: #d8d6aa;
+  border-color: #aaa874;
+  box-shadow: 0 3px #b1ae83;
+}
+#room-panel .btn.daily-rewards:disabled,
+#room-panel .btn.settings-pastel:disabled,
+#room-panel .btn.quantum-action:disabled {
+  filter: saturate(.35);
+}
 .small {
   border: 1px solid #94a09e;
   background: #476275;
@@ -656,7 +705,7 @@ select {
 }
 .daily-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 10px;
   margin-top: 12px;
 }
@@ -5483,11 +5532,16 @@ window.QuantumTasks = {
               "Ежедневные награды",
               "view",
               { view: "daily" },
-              "secondary",
+              "daily-rewards",
               false,
               state.daily?.claimable ? { text: "!", tone: "gold" } : null,
             ) +
-            button("Сохранение и настройки", "view", { view: "settings" }, "secondary") +
+            button(
+              "Сохранение и настройки",
+              "view",
+              { view: "settings" },
+              "settings-pastel",
+            ) +
             button("Как играть", "view", { view: "help" }, "ghost"),
           reset,
         );
@@ -5522,33 +5576,38 @@ window.QuantumTasks = {
                   : "Ожидаем полную группу",
               "start-game",
               { id: f.id },
-              "gold",
+              "quantum-action quantum-project",
               !f.ready,
               f.ready ? { text: "!", tone: "gold" } : null,
             ) +
-            button(`Преподаватели · ${f.teachers.length}/3`, "view", {
-              view: "staff",
-              floor: f.id,
-            }) +
+            button(
+              `Преподаватели · ${f.teachers.length}/3`,
+              "view",
+              {
+                view: "staff",
+                floor: f.id,
+              },
+              "quantum-action quantum-staff",
+            ) +
             (f.level < 3
               ? button(
                   "Улучшить квантум",
                   "view",
                   { view: "upgrade" },
-                  "secondary",
+                  "quantum-action quantum-upgrade",
                 )
               : "") +
             button(
               `Команда · ${f.team}/5`,
               "view",
               { view: "teams", floor: f.id },
-              "secondary",
+              "quantum-action quantum-team",
             ) +
             button(
               "Вид квантума",
               "view",
               { view: "skin", floor: f.id },
-              "secondary",
+              "quantum-action quantum-skin",
             ) +
             `<p class="micro">Проектов: ${f.projects}. Ученики приходят автоматически при наличии преподавателя. Новеньким можно помочь на лифте.</p>`,
           reset,
@@ -6484,7 +6543,7 @@ window.QuantumTasks = {
         button("Редактор персонажей", "view", { view: "characters" }, "gold") +
         `<div class="line"></div>` +
         button("Новая башня", "new-game", {}, "danger") +
-        `<p class="micro">Кванториум · Tower Edition 3.0.0<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
+        `<p class="micro">Кванториум · Tower Edition 3.0.1<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
       reset,
     );
   }
@@ -8333,7 +8392,7 @@ window.QuantumTasks = {
   }
   // Read-only inspection is useful when extending the game in a browser console.
   window.QuantumTower = Object.freeze({
-    version: "6.5.0",
+    version: "6.5.1",
     inspect: () => JSON.parse(JSON.stringify(state)),
     get lift() {
       return {
