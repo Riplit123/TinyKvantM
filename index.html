@@ -1079,6 +1079,11 @@ select {
 .pulse-cell.active:disabled {
   filter: brightness(1.38) saturate(1.25);
 }
+.pulse-cell.player-active {
+  transform: translateY(3px) scale(1.055);
+  filter: brightness(1.28) saturate(1.22);
+  box-shadow: 0 2px #75878a, 0 0 0 5px #dff7ee, 0 0 20px #92d9c6;
+}
 
 /* Reception telephone mini-game. */
 #room-panel.phone-call-panel {
@@ -1707,22 +1712,78 @@ a {
       reward: { coins: 260, knowledge: 100 },
     },
   ];
-  const FIRST = [
-    "Алина","Марк","София","Тимур","Вера","Лев","Артём","Ева","Олег","Нина",
-    "Виктория","Валерия","Людмила","Арина","Дарья","Пётр","Дмитрий","Ксения","Илья","Анна",
-    "Максим","Мария","Никита","Полина","Егор","Анастасия","Глеб","Светлана","Роман","Таисия",
-    "Матвей","Елизавета","Степан","Ульяна","Ирина","Кирилл","Злата","Ярослав","Мирослава","Фёдор"
+  const MALE_FIRST = [
+    "Александр","Алексей","Анатолий","Андрей","Антон","Арсений","Артём","Богдан","Вадим","Валентин",
+    "Василий","Виктор","Владимир","Всеволод","Вячеслав","Георгий","Глеб","Григорий","Даниил","Денис",
+    "Дмитрий","Евгений","Егор","Иван","Игорь","Илья","Кирилл","Константин","Лев","Леонид",
+    "Макар","Максим","Марк","Матвей","Михаил","Никита","Николай","Олег","Павел","Пётр",
+    "Роман","Руслан","Семён","Сергей","Станислав","Степан","Тимофей","Тимур","Фёдор","Эдуард",
+    "Юрий","Ярослав","Аркадий","Владислав","Марат","Родион","Савелий","Тихон","Яков","Дамир"
   ];
-  const LAST = [
-    "Лебедева","Ким","Миронова","Соколов","Волкова","Орлов","Смирнов","Соколова","Морозов","Новикова",
-    "Воробьёва","Никулина","Веденина","Лощева","Авдонина","Зотеева","Евдокимов","Третьяков","Никитин","Уланова",
-    "Рубцова","Баранова","Павлова","Фролова","Кузнецов","Медведева","Федосеева","Гордеев","Данилова","Ларионов",
-    "Белоусова","Жуков","Калашникова","Савельева","Тетерин","Швецова","Аксёнова","Чернов","Шумилова","Громов"
+  const FEMALE_FIRST = [
+    "Алина","Алёна","Александра","Алиса","Анастасия","Анна","Антонина","Арина","Валерия","Вера",
+    "Вероника","Виктория","Галина","Дарья","Диана","Ева","Екатерина","Елена","Елизавета","Злата",
+    "Инна","Ирина","Карина","Кира","Ксения","Лариса","Лидия","Любовь","Людмила","Маргарита",
+    "Марина","Мария","Милана","Мирослава","Надежда","Наталья","Нина","Оксана","Ольга","Полина",
+    "Раиса","Регина","Рената","Светлана","София","Таисия","Тамара","Татьяна","Ульяна","Юлия",
+    "Яна","Агата","Василиса","Евгения","Лилия","Майя","Ника","Серафима","Элина","Эмилия"
   ];
+  const MALE_LAST = [
+    "Алексеев","Андреев","Антонов","Баранов","Белов","Беляев","Бобров","Богданов","Борисов","Васильев",
+    "Волков","Воробьёв","Гаврилов","Герасимов","Голубев","Гордеев","Громов","Гусев","Давыдов","Данилов",
+    "Демидов","Дорофеев","Евдокимов","Егоров","Елисеев","Ершов","Жуков","Зайцев","Захаров","Иванов",
+    "Калашников","Карпов","Ковалёв","Козлов","Колесников","Комаров","Королёв","Крылов","Кузнецов","Ларионов",
+    "Лебедев","Логинов","Макаров","Медведев","Миронов","Морозов","Нестеров","Никитин","Новиков","Орлов",
+    "Осипов","Павлов","Панов","Петров","Романов","Рубцов","Самойлов","Савельев","Семёнов","Смирнов",
+    "Соколов","Тарасов","Тетерин","Тихонов","Третьяков","Уланов","Федосеев","Филатов","Фролов","Чернов",
+    "Шестаков","Шумилов","Яковлев","Аксёнов","Белоусов","Власов","Зотов","Кондратьев","Мельников","Прохоров"
+  ];
+  const FEMALE_LAST = [
+    "Алексеева","Андреева","Антонова","Баранова","Белова","Беляева","Боброва","Богданова","Борисова","Васильева",
+    "Волкова","Воробьёва","Гаврилова","Герасимова","Голубева","Гордеева","Громова","Гусева","Давыдова","Данилова",
+    "Демидова","Дорофеева","Евдокимова","Егорова","Елисеева","Ершова","Жукова","Зайцева","Захарова","Иванова",
+    "Калашникова","Карпова","Ковалёва","Козлова","Колесникова","Комарова","Королёва","Крылова","Кузнецова","Ларионова",
+    "Лебедева","Логинова","Макарова","Медведева","Миронова","Морозова","Нестерова","Никитина","Новикова","Орлова",
+    "Осипова","Павлова","Панова","Петрова","Романова","Рубцова","Самойлова","Савельева","Семёнова","Смирнова",
+    "Соколова","Тарасова","Тетерина","Тихонова","Третьякова","Уланова","Федосеева","Филатова","Фролова","Чернова",
+    "Шестакова","Шумилова","Яковлева","Аксёнова","Белоусова","Власова","Зотова","Кондратьева","Мельникова","Прохорова"
+  ];
+  const UNISEX_LAST = ["Ким"];
+  function nameHash(value) {
+    let h = 2166136261;
+    for (const ch of String(value || "")) {
+      h ^= ch.charCodeAt(0);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+  function candidateName(seed = 1) {
+    const female = Math.abs(Number(seed) || 0) % 2 === 0;
+    const firstPool = female ? FEMALE_FIRST : MALE_FIRST;
+    const lastPool = female ? FEMALE_LAST : MALE_LAST;
+    const n = Math.abs(Number(seed) || 1);
+    const first = firstPool[n % firstPool.length];
+    const last = lastPool[(n * 7 + 11) % lastPool.length];
+    return `${first} ${last}`;
+  }
+  function normalizeCandidateName(name, id = "") {
+    const parts = String(name || "").trim().split(/\s+/);
+    const first = parts[0] || "";
+    const last = parts.slice(1).join(" ");
+    const male = MALE_FIRST.includes(first);
+    const female = FEMALE_FIRST.includes(first);
+    if (!male && !female) return name;
+    const allowed = male ? MALE_LAST : FEMALE_LAST;
+    if (allowed.includes(last) || UNISEX_LAST.includes(last)) return `${first} ${last}`;
+    const seed = nameHash(id || first);
+    return `${first} ${allowed[seed % allowed.length]}`;
+  }
   const CHILD_FIRST = [
     "Миша","Соня","Лиза","Костя","Маша","Даня","Аня","Кирилл","Саша","Ника",
     "Рома","Катя","Таня","Женя","Вика","Яна","Вадим","Лёша","Ира","Паша",
-    "Слава","Алина","Лена","Тимофей","Гоша","Сева","Оля","Юля","Соня","Назар"
+    "Слава","Алина","Лена","Тимофей","Гоша","Сева","Оля","Юля","Назар","Мила",
+    "Матвей","Лада","Гриша","Даша","Арсений","Варя","Макс","Марина","Федя","Ксюша",
+    "Стёпа","Полина","Илья","Алиса","Егор","Василиса","Тёма","Злата","Мирон","Майя"
   ];
   const lab = (id) => LABS.find((l) => l.id === id);
   const capacity = (f) => 4 + (f.level - 1) * 2;
@@ -1739,6 +1800,10 @@ a {
   // After the instant free first quantum: 5 min, then +20 min per next floor.
   const constructionTime = (s) =>
     s.floors.length === 0 ? 0 : 300 + Math.max(0, s.floors.length - 1) * 1200;
+  // One speed-up per construction. The first timed floor (5 minutes) is deliberately cheap;
+  // later floors become expensive to keep knowledge valuable.
+  const constructionBoostCost = (s) =>
+    s.floors.length <= 1 ? 150 : 1500 + Math.max(0, s.floors.length - 2) * 500;
   const upgradeCost = (f) => ({
     coins: 200 * f.level,
     knowledge: 100 * f.level,
@@ -1829,17 +1894,17 @@ a {
   }
   function candidate(s) {
     if (!s.floors.length) return null;
-    let i = s.uid++ % FIRST.length;
-    const domain = s.floors[s.uid % s.floors.length].id;
-    const secondary = LABS[(s.uid + 2) % LABS.length].id;
+    const seed = ++s.uid;
+    const domain = s.floors[seed % s.floors.length].id;
+    const secondary = LABS[(seed + 2) % LABS.length].id;
     return {
-      id: "t" + s.uid,
-      name: FIRST[i] + " " + LAST[i],
+      id: "t" + seed,
+      name: candidateName(seed),
       skills: {
-        [domain]: 4 + (s.uid % 4),
-        ...(secondary !== domain ? { [secondary]: 2 + (s.uid % 3) } : {}),
+        [domain]: 4 + (seed % 4),
+        ...(secondary !== domain ? { [secondary]: 2 + (seed % 3) } : {}),
       },
-      cost: 200 + (s.uid % 4) * 25,
+      cost: 200 + (seed % 4) * 25,
     };
   }
   function chapterProgress(s) {
@@ -1892,10 +1957,22 @@ a {
           result.built = p.id;
         } else {
           const total = constructionTime(s);
-          s.construction = { id: p.id, left: total, total };
+          s.construction = { id: p.id, left: total, total, boosted: false };
           note(s, `Начато строительство: ${l.name}`);
           result.construction = { id: p.id, total };
         }
+        break;
+      }
+      case "accelerateConstruction": {
+        if (!s.construction) return fail("Сейчас ничего не строится");
+        if (s.construction.boosted) return fail("Это строительство уже ускорено");
+        const cost = constructionBoostCost(s);
+        if (s.knowledge < cost) return fail(`Нужно ${cost} знаний`);
+        s.knowledge -= cost;
+        s.construction.left = Math.max(1, s.construction.left / 2);
+        s.construction.boosted = true;
+        note(s, `Строительство ${lab(s.construction.id).name} ускорено вдвое`);
+        result.accelerated = { cost, left: s.construction.left };
         break;
       }
       case "hire": {
@@ -2268,6 +2345,8 @@ a {
     )
       throw Error("Неверный список преподавателей");
     const teacher = (t) => {
+      if (t && typeof t.name === "string")
+        t.name = normalizeCandidateName(t.name, t.id);
       if (
         !t ||
         typeof t.id !== "string" ||
@@ -2344,6 +2423,8 @@ a {
     )
       throw Error("Повторяющийся кандидат в очереди");
     if (x.construction === undefined) x.construction = null;
+    if (x.construction && typeof x.construction.boosted !== "boolean")
+      x.construction.boosted = false;
     if (
       x.construction &&
       (
@@ -2351,7 +2432,8 @@ a {
         x.floors.some((f) => f.id === x.construction.id) ||
         !finite(x.construction.left, 0, 20000) ||
         !finite(x.construction.total, 1, 20000) ||
-        x.construction.left > x.construction.total
+        x.construction.left > x.construction.total ||
+        typeof x.construction.boosted !== "boolean"
       )
     )
       throw Error("Повреждены данные строительства");
@@ -2459,6 +2541,7 @@ a {
     totalProjects,
     floorCost,
     constructionTime,
+    constructionBoostCost,
     upgradeCost,
     incomeRate,
     floorState,
@@ -2466,6 +2549,7 @@ a {
     initialState,
     note,
     candidate,
+    candidateName,
     chapterProgress,
     act,
     advance,
@@ -3938,14 +4022,6 @@ window.QuantumTasks = {
       },
     },
   ];
-  const REWARD_FIRST = [
-    "Алёна","Егор","Станислав","Ольга","Вероника","Павел","Диана","Тихон","Инна","Марат",
-    "Лидия","Руслан","Элина","Алексей","Маргарита","Семён","Агата","Григорий","Юлия","Рената"
-  ];
-  const REWARD_LAST = [
-    "Кузьмина","Ершов","Гусева","Беляев","Кравцова","Филатов","Козлова","Ермаков","Рябинина","Шестаков",
-    "Тихонова","Логинов","Панина","Самойлов","Колесникова","Бобров","Нестерова","Комаров","Зыкова","Тарасов"
-  ];
   function todayKey(time = Date.now()) {
     const d = new Date(time);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -3991,10 +4067,9 @@ window.QuantumTasks = {
     shuffled.forEach((id2, idx) => {
       skills[id2] = elite ? (idx === 0 ? 10 : 7 + Math.floor(Math.random() * 4)) : 4 + Math.floor(Math.random() * 5);
     });
-    const pick = state.uid % REWARD_FIRST.length;
     return {
       id,
-      name: REWARD_FIRST[pick] + " " + REWARD_LAST[(pick * 3) % REWARD_LAST.length],
+      name: E.candidateName(state.uid * 13 + (elite ? 5 : 2)),
       skills,
       cost: 0,
     };
@@ -5734,9 +5809,21 @@ window.QuantumTasks = {
       );
     if (state.construction) {
       const l = E.lab(state.construction.id);
+      const boostCost = E.constructionBoostCost(state);
+      const boosted = !!state.construction.boosted;
       setBody(
         "Строительство",
-        `<div class="construction-card"><h3>${l.name}</h3><p>Новый этаж строится. После завершения он автоматически появится в башне.</p><b data-construction-time>${clock(state.construction.left)}</b></div><p class="micro">Одновременно строится только один новый квантум.</p>`,
+        `<div class="construction-card"><h3>${l.name}</h3><p>Новый этаж строится. После завершения он автоматически появится в башне.</p><b data-construction-time>${clock(state.construction.left)}</b></div>` +
+          (boosted
+            ? `<p class="status">Ускорение уже использовано: время этого строительства уменьшено вдвое.</p>`
+            : button(
+                `Уменьшить оставшееся время вдвое · ${boostCost} ◆`,
+                "accelerate-build",
+                {},
+                "secondary",
+                state.knowledge < boostCost,
+              )) +
+          `<p class="micro">На одно строительство доступно одно ускорение. Первый 5-минутный этаж стоит 150 ◆; следующий — 1500 ◆, далее цена растёт на 500 ◆ за этаж.</p>`,
         reset,
       );
       return;
@@ -5882,6 +5969,7 @@ window.QuantumTasks = {
     g.showIndex = 0;
     g.inputIndex = 0;
     g.lit = null;
+    g.inputLit = null;
     g.nextCueAt = Date.now() + (first ? 700 : 550);
     g.status = `Этап ${g.stage}: запоминайте последовательность.`;
     renderPulseEvent(first);
@@ -5899,6 +5987,7 @@ window.QuantumTasks = {
       showIndex: 0,
       inputIndex: 0,
       lit: null,
+      inputLit: null,
       nextCueAt: 0,
       score: 0,
       done: false,
@@ -5959,7 +6048,7 @@ window.QuantumTasks = {
       `<div class="event-marquee"><h3>${ev.name}</h3><p>Запоминайте световой код, а затем повторяйте его. Каждый следующий этап длиннее предыдущего.</p></div>` +
       `<div class="pulse-head"><div class="pulse-stat"><b data-pulse-time>${left}</b>секунд</div><div class="pulse-stat"><b>${g.stage}</b>этап</div><div class="pulse-stat"><b>${g.score}</b>очков</div></div>` +
       `<div class="pulse-board">${Array.from({ length: 4 }, (_, i) =>
-        `<button class="pulse-cell ${g.lit === i ? "active" : ""}" data-action="pulse-hit" data-index="${i}" ${g.done || showing || g.phase === "between" ? "disabled" : ""} aria-label="Цвет ${i + 1}"></button>`
+        `<button class="pulse-cell ${g.lit === i ? "active" : ""} ${g.inputLit === i ? "player-active" : ""}" data-action="pulse-hit" data-index="${i}" ${g.done || showing || g.phase === "between" ? "disabled" : ""} aria-label="Цвет ${i + 1}"></button>`
       ).join("")}</div>` +
       `<div class="status" role="status">${esc(g.status)}</div>` +
       (g.done
@@ -6543,7 +6632,7 @@ window.QuantumTasks = {
         button("Редактор персонажей", "view", { view: "characters" }, "gold") +
         `<div class="line"></div>` +
         button("Новая башня", "new-game", {}, "danger") +
-        `<p class="micro">Кванториум · Tower Edition 3.0.1<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
+        `<p class="micro">Кванториум · Tower Edition 3.1<br>Вся игра работает локально. Никаких запросов в сеть.</p>`,
       reset,
     );
   }
@@ -7437,6 +7526,14 @@ window.QuantumTasks = {
         }
         break;
       }
+      case "accelerate-build": {
+        const res = perform("accelerateConstruction", {}, false);
+        if (res.ok) {
+          renderBuild(false);
+          tell("Строительство ускорено вдвое.", layouts.length - 1);
+        }
+        break;
+      }
       case "build": {
         const wasFirst = state.floors.length === 0;
         const res = perform("build", { id: d.id }, false);
@@ -7639,6 +7736,7 @@ window.QuantumTasks = {
         )
           break;
         const i = Number(d.index);
+        game.inputLit = i;
         const expected = game.sequence[game.inputIndex];
         if (i !== expected) {
           finishPulseEvent(
@@ -7657,6 +7755,7 @@ window.QuantumTasks = {
           game.stage++;
           game.phase = "between";
           game.lit = null;
+          game.inputLit = null;
           game.nextCueAt = Date.now() + 700;
           sound(true);
         } else {
@@ -8392,7 +8491,7 @@ window.QuantumTasks = {
   }
   // Read-only inspection is useful when extending the game in a browser console.
   window.QuantumTower = Object.freeze({
-    version: "6.5.1",
+    version: "6.6",
     inspect: () => JSON.parse(JSON.stringify(state)),
     get lift() {
       return {
